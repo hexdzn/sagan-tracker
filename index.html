@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagan Tracker</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#E8851A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Sagan Tracker">
+<link rel="apple-touch-icon" href="icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--saffron:#E8851A;--saffron-light:#FFF0DC;--cream:#FDF6EC;--brown:#2C1A0E;--muted:#8B6B4A;--border:#E8D5BC;--card:#FFFFFF;--green:#2D8A4E;--green-light:#E8F5EE;--red:#CC3333;--red-light:#FFEEEE}
+body{font-family:'Poppins',sans-serif;background:#f0f0f0;min-height:100vh;display:flex;justify-content:center}
+#app{background:var(--cream);width:100%;max-width:420px;min-height:100vh;position:relative;display:flex;flex-direction:column;overflow:hidden}
+.top-bar{background:var(--saffron);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30}
+.top-bar-title{font-family:'Playfair Display',serif;color:#fff;font-size:20px;font-weight:700}
+.top-bar-actions{display:flex;gap:8px}
+.icon-btn{background:rgba(255,255,255,0.2);border:none;color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.screen{display:none;flex:1;overflow-y:auto;padding-bottom:72px}
+.screen.active{display:block}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:#fff;border-top:1px solid var(--border);display:flex;height:64px;z-index:30}
+.nav-btn{flex:1;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;color:var(--muted);font-family:'Poppins',sans-serif;font-weight:500}
+.nav-btn.active{color:var(--saffron)}
+.nav-icon{font-size:22px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 16px 0}
+.stat-card{border-radius:14px;padding:16px;color:#fff}
+.stat-card.received{background:var(--saffron)}
+.stat-card.given{background:var(--green)}
+.stat-card .sc-label{font-size:11px;opacity:0.85;margin-bottom:4px}
+.stat-card .sc-amount{font-family:'Playfair Display',serif;font-size:26px;font-weight:700}
+.net-card{margin:10px 16px 0;background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.net-label{font-size:12px;color:var(--muted)}
+.net-amount{font-size:22px;font-weight:700;font-family:'Playfair Display',serif}
+.net-amount.positive{color:var(--green)}
+.net-amount.negative{color:var(--red)}
+.net-amount.zero{color:var(--muted)}
+.pills-row{display:flex;gap:8px;padding:10px 16px 0}
+.pill{flex:1;background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center}
+.pill .pv{font-size:20px;font-weight:700;color:var(--saffron)}
+.pill .pl{font-size:10px;color:var(--muted)}
+.section-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;padding:16px 16px 8px}
+.entry-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:0 16px 10px;cursor:pointer}
+.ec-row1{display:flex;justify-content:space-between;align-items:flex-start}
+.ec-name{font-size:15px;font-weight:600;color:var(--brown)}
+.ec-amount{font-size:16px;font-weight:700}
+.ec-amount.received{color:var(--green)}
+.ec-amount.given{color:var(--saffron)}
+.ec-row2{display:flex;justify-content:space-between;align-items:center;margin-top:6px;flex-wrap:wrap;gap:4px}
+.ec-occasion{font-size:12px;color:var(--muted)}
+.ec-date{font-size:11px;color:var(--muted)}
+.tag{background:var(--saffron-light);color:var(--saffron);font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;display:inline-block}
+.tag.received{background:var(--green-light);color:var(--green)}
+.event-pill{background:#F0F0FF;color:#5555AA;font-size:10px;padding:2px 7px;border-radius:10px;display:inline-block}
+.ec-expanded{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.ec-expanded.show{display:block}
+.ec-notes{font-size:12px;color:var(--muted);margin-bottom:8px}
+.del-btn{background:var(--red-light);border:1px solid #FFCCCC;color:var(--red);border-radius:8px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:'Poppins',sans-serif}
+.empty-state{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-state .es-emoji{font-size:52px;margin-bottom:12px}
+.empty-state p{font-size:14px;line-height:1.6}
+.search-wrap{padding:12px 16px 0;position:relative}
+.search-wrap input{width:100%;border:1.5px solid var(--border);border-radius:24px;padding:10px 14px 10px 36px;font-size:13px;font-family:'Poppins',sans-serif;color:var(--brown);background:#fff;outline:none}
+.search-wrap input:focus{border-color:var(--saffron)}
+.search-icon{position:absolute;left:28px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none}
+.filter-row{display:flex;gap:6px;padding:8px 16px 0;overflow-x:auto}
+.filter-chip{border:1px solid var(--border);background:#fff;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:'Poppins',sans-serif;color:var(--muted)}
+.filter-chip.active{background:var(--saffron);color:#fff;border-color:var(--saffron)}
+.person-card{background:#fff;border:1px solid var(--border);border-radius:12px;margin:0 16px 10px;overflow:hidden}
+.pc-header{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.pc-name{font-size:15px;font-weight:600;color:var(--brown)}
+.pc-rel{font-size:11px;color:var(--muted);margin-top:2px}
+.pc-net{font-size:16px;font-weight:700;font-family:'Playfair Display',serif}
+.pc-detail{display:none;border-top:1px solid var(--border)}
+.pc-detail.show{display:block}
+.pc-totals{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
+.pc-total-cell{background:var(--cream);padding:8px 12px;text-align:center}
+.pc-total-cell .ptv{font-size:14px;font-weight:700}
+.pc-total-cell .ptl{font-size:10px;color:var(--muted)}
+.pc-entry{padding:8px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #FFF5E8;font-size:12px}
+.pc-entry:last-child{border-bottom:none}
+.pc-entry-left{color:var(--muted);flex:1;margin-right:8px}
+.pc-entry-right{font-weight:600;white-space:nowrap}
+.event-card{background:#fff;border:1px solid var(--border);border-radius:12px;margin:0 16px 10px;overflow:hidden;cursor:pointer}
+.evc-header{padding:14px 16px}
+.evc-row1{display:flex;justify-content:space-between;align-items:flex-start}
+.evc-name{font-size:15px;font-weight:600;color:var(--brown)}
+.evc-date{font-size:11px;color:var(--muted)}
+.evc-row2{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.evc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-top:1px solid var(--border)}
+.evc-stat{background:var(--cream);padding:8px;text-align:center}
+.evc-stat .esv{font-size:13px;font-weight:700}
+.evc-stat .esl{font-size:10px;color:var(--muted)}
+.evc-entries{display:none;border-top:1px solid var(--border)}
+.evc-entries.show{display:block}
+.create-event-btn{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px dashed var(--border);border-radius:12px;margin:12px 16px;padding:14px 16px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:14px;color:var(--muted);font-weight:500;width:calc(100% - 32px)}
+.overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:40;align-items:flex-end;justify-content:center}
+.overlay.show{display:flex}
+.sheet{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:420px;max-height:90vh;overflow-y:auto}
+.sheet-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
+.sheet-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--brown);margin-bottom:16px}
+.type-toggle{display:flex;background:var(--cream);border-radius:12px;padding:3px;margin-bottom:16px}
+.type-btn{flex:1;border:none;background:transparent;border-radius:10px;padding:10px;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted)}
+.type-btn.active-received{background:var(--green);color:#fff}
+.type-btn.active-given{background:var(--saffron);color:#fff}
+.form-label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;margin-top:14px;text-transform:uppercase;letter-spacing:0.4px}
+.form-label:first-of-type{margin-top:0}
+.form-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;font-size:14px;font-family:'Poppins',sans-serif;color:var(--brown);background:#fff;outline:none;appearance:none;-webkit-appearance:none}
+.form-input:focus{border-color:var(--saffron)}
+textarea.form-input{resize:none;min-height:70px}
+.save-btn{width:100%;background:var(--saffron);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;font-family:'Poppins',sans-serif;cursor:pointer;margin-top:20px}
+.close-sheet{width:100%;border:none;background:transparent;color:var(--muted);padding:10px;font-size:13px;cursor:pointer;font-family:'Poppins',sans-serif;margin-top:8px}
+.settings-btn-row{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;font-family:'Poppins',sans-serif;font-size:14px;color:var(--brown);font-weight:500;margin-bottom:10px;width:100%;text-align:left}
+.settings-icon{font-size:22px}
+.confirm-box{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;color:var(--muted);line-height:1.5}
+.confirm-row{display:flex;gap:8px}
+.confirm-yes{flex:1;background:var(--saffron);color:#fff;border:none;border-radius:10px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif}
+.confirm-no{flex:1;background:#fff;color:var(--brown);border:1.5px solid var(--border);border-radius:10px;padding:11px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Poppins',sans-serif}
+.toast{position:fixed;top:76px;left:50%;transform:translateX(-50%);background:var(--brown);color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:500;z-index:100;opacity:0;transition:opacity 0.3s;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1}
+#fileInput{display:none}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="top-bar">
+<div class="top-bar-title">🪔 Sagan Tracker</div>
+<div class="top-bar-actions">
+<button class="icon-btn" onclick="openAddSheet()">➕</button>
+<button class="icon-btn" onclick="openSettings()">⚙️</button>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="screen active" id="screen-home">
+<div class="stat-grid">
+<div class="stat-card received"><div class="sc-label">💰 Total Received</div><div class="sc-amount" id="h-received">₹0</div></div>
+<div class="stat-card given"><div class="sc-label">🎁 Total Given</div><div class="sc-amount" id="h-given">₹0</div></div>
+</div>
+<div class="net-card"><div class="net-label">⚖️ Net Balance</div><div class="net-amount zero" id="h-net">₹0</div></div>
+<div class="pills-row">
+<div class="pill"><div class="pv" id="h-entries">0</div><div class="pl">Entries</div></div>
+<div class="pill"><div class="pv" id="h-people">0</div><div class="pl">People</div></div>
+<div class="pill"><div class="pv" id="h-events">0</div><div class="pl">Events</div></div>
+</div>
+<div class="section-title">Recent Entries</div>
+<div id="home-list"></div>
+</div>
+<div class="screen" id="screen-events">
+<button class="create-event-btn" onclick="openCreateEvent()"><span style="font-size:20px">🎪</span> Create New Event</button>
+<div id="events-list"></div>
+</div>
+<div class="screen" id="screen-log">
+<div class="search-wrap"><span class="search-icon">🔍</span><input type="text" id="log-search" placeholder="Search name, occasion, event..." oninput="renderLog()"></div>
+<div class="filter-row">
+<button class="filter-chip active" onclick="setLogFilter('all',this)">All</button>
+<button class="filter-chip" onclick="setLogFilter('Received',this)">Received</button>
+<button class="filter-chip" onclick="setLogFilter('Given',this)">Given</button>
+</div>
+<div class="filter-row" style="padding-top:6px">
+<button class="filter-chip active" onclick="setLogSort('newest',this)">Newest</button>
+<button class="filter-chip" onclick="setLogSort('oldest',this)">Oldest</button>
+<button class="filter-chip" onclick="setLogSort('high',this)">Amount ↑</button>
+<button class="filter-chip" onclick="setLogSort('low',this)">Amount ↓</button>
+</div>
+<div id="log-list" style="margin-top:10px"></div>
+</div>
+<div class="screen" id="screen-people">
+<div class="search-wrap" style="margin-bottom:4px"><span class="search-icon">🔍</span><input type="text" id="people-search" placeholder="Search person..." oninput="renderPeople()"></div>
+<div class="filter-row">
+<button class="filter-chip active" onclick="setPeopleSort('received',this)">By Received</button>
+<button class="filter-chip" onclick="setPeopleSort('given',this)">By Given</button>
+<button class="filter-chip" onclick="setPeopleSort('net',this)">By Net</button>
+<button class="filter-chip" onclick="setPeopleSort('count',this)">By Times</button>
+</div>
+<div id="people-list" style="margin-top:10px"></div>
+</div>
+<div class="bottom-nav">
+<button class="nav-btn active" onclick="goTo('home',this)"><span class="nav-icon">🏠</span>Home</button>
+<button class="nav-btn" onclick="goTo('events',this)"><span class="nav-icon">🎪</span>Events</button>
+<button class="nav-btn" onclick="goTo('log',this)"><span class="nav-icon">📋</span>Log</button>
+<button class="nav-btn" onclick="goTo('people',this)"><span class="nav-icon">👥</span>People</button>
+</div>
+<div class="overlay" id="add-overlay" onclick="closeIfBg(event,'add-overlay')">
+<div class="sheet">
+<div class="sheet-handle"></div>
+<div class="sheet-title" id="add-sheet-title">Add Sagan</div>
+<div class="type-toggle">
+<button class="type-btn active-received" id="type-received" onclick="setType('Received')">💰 Received</button>
+<button class="type-btn" id="type-given" onclick="setType('Given')">🎁 Given</button>
+</div>
+<label class="form-label" id="person-label">Received From</label>
+<input class="form-input" id="f-name" type="text" placeholder="e.g. Ramesh Uncle">
+<label class="form-label">Relationship</label>
+<input class="form-input" id="f-rel" type="text" list="rel-list" placeholder="e.g. Uncle">
+<datalist id="rel-list"><option value="Uncle"><option value="Aunty"><option value="Neighbour"><option value="Family Friend"><option value="Cousin"><option value="Colleague"></datalist>
+<label class="form-label">Occasion</label>
+<input class="form-input" id="f-occasion" type="text" list="occ-list" placeholder="e.g. Diwali 2024">
+<datalist id="occ-list"><option value="Diwali"><option value="Holi"><option value="Wedding"><option value="Birthday"><option value="Navratri"><option value="Bhai Dooj"></datalist>
+<label class="form-label">Link to Event (optional)</label>
+<select class="form-input" id="f-event"><option value="">-- None --</option></select>
+<label class="form-label">Amount (₹)</label>
+<input class="form-input" id="f-amount" type="number" placeholder="e.g. 5100" min="1">
+<label class="form-label">Date</label>
+<input class="form-input" id="f-date" type="date">
+<label class="form-label">Notes (optional)</label>
+<textarea class="form-input" id="f-notes" placeholder="e.g. Given in envelope"></textarea>
+<button class="save-btn" onclick="saveEntry()">Save Entry</button>
+<button class="close-sheet" onclick="closeSheet('add-overlay')">Cancel</button>
+</div>
+</div>
+<div class="overlay" id="event-overlay" onclick="closeIfBg(event,'event-overlay')">
+<div class="sheet">
+<div class="sheet-handle"></div>
+<div class="sheet-title">Create Event</div>
+<label class="form-label">Event Name</label>
+<input class="form-input" id="ev-name" type="text" placeholder="e.g. Rahul's Wedding">
+<label class="form-label">Date</label>
+<input class="form-input" id="ev-date" type="date">
+<label class="form-label">Occasion Type</label>
+<input class="form-input" id="ev-type" type="text" list="evtype-list" placeholder="e.g. Wedding">
+<datalist id="evtype-list"><option value="Wedding"><option value="Diwali"><option value="Birthday"><option value="Holi"><option value="Navratri"><option value="Bhai Dooj"><option value="Other"></datalist>
+<label class="form-label">Notes (optional)</label>
+<textarea class="form-input" id="ev-notes" placeholder="Any notes about this event"></textarea>
+<button class="save-btn" onclick="saveEvent()">Create Event</button>
+<button class="close-sheet" onclick="closeSheet('event-overlay')">Cancel</button>
+</div>
+</div>
+<div class="overlay" id="settings-overlay" onclick="closeIfBg(event,'settings-overlay')">
+<div class="sheet">
+<div class="sheet-handle"></div>
+<div class="sheet-title">⚙️ Settings</div>
+<div id="settings-confirm" style="display:none">
+<div class="confirm-box">⚠️ This will replace ALL your current data with the imported file. Are you sure?</div>
+<div class="confirm-row"><button class="confirm-yes" onclick="doImport()">Yes, Import</button><button class="confirm-no" onclick="cancelImport()">Cancel</button></div>
+</div>
+<div id="settings-btns">
+<button class="settings-btn-row" onclick="exportData()"><span class="settings-icon">📤</span>Export Data (backup .json)</button>
+<button class="settings-btn-row" onclick="document.getElementById('fileInput').click()"><span class="settings-icon">📥</span>Import Data (restore .json)</button>
+<input type="file" id="fileInput" accept=".json" onchange="handleFileSelect(event)">
+</div>
+<button class="close-sheet" onclick="closeSheet('settings-overlay')">Close</button>
+</div>
+</div>
+</div>
+<script>
+let entries=JSON.parse(localStorage.getItem('sagan_entries')||'[]');
+let events=JSON.parse(localStorage.getItem('sagan_events')||'[]');
+let currentType='Received',logFilter='all',logSort='newest',peopleSort='received',pendingImport=null;
+function save(){localStorage.setItem('sagan_entries',JSON.stringify(entries));localStorage.setItem('sagan_events',JSON.stringify(events))}
+function fmt(n){return '₹'+Number(n).toLocaleString('en-IN')}
+function fmtDate(d){if(!d)return '';const dt=new Date(d+'T00:00:00');return dt.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}
+function goTo(tab,btn){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('screen-'+tab).classList.add('active');btn.classList.add('active');if(tab==='home')renderHome();if(tab==='events')renderEvents();if(tab==='log')renderLog();if(tab==='people')renderPeople()}
+function renderHome(){const rec=entries.filter(e=>e.type==='Received').reduce((s,e)=>s+e.amount,0);const giv=entries.filter(e=>e.type==='Given').reduce((s,e)=>s+e.amount,0);const net=rec-giv;document.getElementById('h-received').textContent=fmt(rec);document.getElementById('h-given').textContent=fmt(giv);const netEl=document.getElementById('h-net');netEl.textContent=(net>=0?'+':'')+fmt(net);netEl.className='net-amount '+(net>0?'positive':net<0?'negative':'zero');document.getElementById('h-entries').textContent=entries.length;document.getElementById('h-people').textContent=new Set(entries.map(e=>e.name.toLowerCase().trim())).size;document.getElementById('h-events').textContent=events.length;const recent=[...entries].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,3);const el=document.getElementById('home-list');if(!recent.length){el.innerHTML='<div class="empty-state"><div class="es-emoji">🪔</div><p>No entries yet.<br>Tap + to add your first sagan!</p></div>';return}el.innerHTML=recent.map(e=>entryCardHTML(e,true)).join('')}
+function entryCardHTML(e,compact){const ev=events.find(ev=>ev.id===e.eventId);return '<div class="entry-card" onclick="toggleEC('ec-'+e.id+'')">'+'<div class="ec-row1"><span class="ec-name">'+e.name+' <span class="tag '+(e.type==='Received'?'received':'')+'">'+e.type+'</span></span>'+'<span class="ec-amount '+(e.type==='Received'?'received':'given')+'">'+fmt(e.amount)+'</span></div>'+'<div class="ec-row2"><span class="ec-occasion">'+e.occasion+(ev?' <span class="event-pill">🎪 '+ev.name+'</span>':'')+'  <span class="tag">'+e.relationship+'</span></span><span class="ec-date">'+fmtDate(e.date)+'</span></div>'+'<div class="ec-expanded" id="ec-'+e.id+'"><div class="ec-notes">'+(e.notes?'📝 '+e.notes:'<em>No notes</em>')+'</div>'+(compact?'':'<button class="del-btn" onclick="event.stopPropagation();delEntry(''+e.id+'')">🗑 Delete</button>')+'</div></div>'}
+function toggleEC(id){document.getElementById(id)?.classList.toggle('show')}
+function renderEvents(){const el=document.getElementById('events-list');if(!events.length){el.innerHTML='<div class="empty-state"><div class="es-emoji">🎪</div><p>No events yet.</p></div>';return}el.innerHTML=events.map(ev=>{const linked=entries.filter(e=>e.eventId===ev.id);const rec=linked.filter(e=>e.type==='Received').reduce((s,e)=>s+e.amount,0);const giv=linked.filter(e=>e.type==='Given').reduce((s,e)=>s+e.amount,0);const net=rec-giv;return '<div class="event-card"><div class="evc-header" onclick="toggleEV('evd-'+ev.id+'')">'+'<div class="evc-row1"><div class="evc-name">'+ev.name+'</div><div class="evc-date">'+fmtDate(ev.date)+'</div></div>'+'<div class="evc-row2"><span class="tag">'+(ev.type||'Event')+'</span><span class="tag">'+linked.length+' entries</span></div></div>'+'<div class="evc-stats"><div class="evc-stat"><div class="esv" style="color:var(--green)">'+fmt(rec)+'</div><div class="esl">Received</div></div>'+'<div class="evc-stat"><div class="esv" style="color:var(--saffron)">'+fmt(giv)+'</div><div class="esl">Given</div></div>'+'<div class="evc-stat"><div class="esv" style="color:'+(net>=0?'var(--green)':'var(--red)')+'">'+(net>=0?'+':'')+fmt(net)+'</div><div class="esl">Net</div></div></div>'+'<div class="evc-entries" id="evd-'+ev.id+'">'+(linked.length?linked.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(e=>'<div class="pc-entry"><div class="pc-entry-left">'+e.name+' · '+e.occasion+' · '+fmtDate(e.date)+' <span class="tag '+(e.type==='Received'?'received':'')+'">'+e.type+'</span></div><div class="pc-entry-right" style="color:'+(e.type==='Received'?'var(--green)':'var(--saffron)')+'">'+fmt(e.amount)+'</div></div>').join(''):'<div class="pc-entry" style="color:var(--muted)"><em>No entries linked yet</em></div>')+'</div></div>'}).join('')}
+function toggleEV(id){document.getElementById(id)?.classList.toggle('show')}
+function setLogFilter(f,btn){logFilter=f;document.querySelectorAll('#screen-log .filter-row:nth-child(2) .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderLog()}
+function setLogSort(s,btn){logSort=s;document.querySelectorAll('#screen-log .filter-row:nth-child(3) .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderLog()}
+function renderLog(){const q=(document.getElementById('log-search').value||'').toLowerCase();let list=[...entries];if(logFilter!=='all')list=list.filter(e=>e.type===logFilter);if(q)list=list.filter(e=>e.name.toLowerCase().includes(q)||e.occasion.toLowerCase().includes(q)||(events.find(ev=>ev.id===e.eventId)?.name||'').toLowerCase().includes(q));if(logSort==='newest')list.sort((a,b)=>new Date(b.date)-new Date(a.date));else if(logSort==='oldest')list.sort((a,b)=>new Date(a.date)-new Date(b.date));else if(logSort==='high')list.sort((a,b)=>b.amount-a.amount);else list.sort((a,b)=>a.amount-b.amount);const el=document.getElementById('log-list');if(!list.length){el.innerHTML='<div class="empty-state"><div class="es-emoji">🔍</div><p>No entries found.</p></div>';return}el.innerHTML=list.map(e=>entryCardHTML(e,false)).join('')}
+function setPeopleSort(s,btn){peopleSort=s;document.querySelectorAll('#screen-people .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderPeople()}
+function renderPeople(){const q=(document.getElementById('people-search').value||'').toLowerCase();const map={};entries.forEach(e=>{const k=e.name.toLowerCase().trim();if(!map[k])map[k]={name:e.name,rel:e.relationship,received:0,given:0,count:0,items:[]};if(e.type==='Received')map[k].received+=e.amount;else map[k].given+=e.amount;map[k].count++;map[k].items.push(e)});let list=Object.values(map);if(q)list=list.filter(p=>p.name.toLowerCase().includes(q));if(peopleSort==='received')list.sort((a,b)=>b.received-a.received);else if(peopleSort==='given')list.sort((a,b)=>b.given-a.given);else if(peopleSort==='net')list.sort((a,b)=>(b.received-b.given)-(a.received-a.given));else list.sort((a,b)=>b.count-a.count);const el=document.getElementById('people-list');if(!list.length){el.innerHTML='<div class="empty-state"><div class="es-emoji">👥</div><p>No people yet.</p></div>';return}el.innerHTML=list.map((p,i)=>{const net=p.received-p.given;return '<div class="person-card"><div class="pc-header" onclick="togglePC('pcd-'+i+'')">'+'<div><div class="pc-name">'+p.name+'</div><div class="pc-rel">'+p.rel+' · '+p.count+' time'+(p.count>1?'s':'')+'</div></div>'+'<div class="pc-stats"><div class="pc-net" style="color:'+(net>=0?'var(--green)':'var(--red)')+'">'+(net>=0?'+':'')+fmt(net)+'</div></div></div>'+'<div class="pc-detail" id="pcd-'+i+'"><div class="pc-totals"><div class="pc-total-cell"><div class="ptv" style="color:var(--green)">'+fmt(p.received)+'</div><div class="ptl">Received</div></div><div class="pc-total-cell"><div class="ptv" style="color:var(--saffron)">'+fmt(p.given)+'</div><div class="ptl">Given</div></div></div>'+p.items.sort((a,b)=>new Date(b.date)-new Date(a.date)).map(e=>{const ev=events.find(ev=>ev.id===e.eventId);return '<div class="pc-entry"><div class="pc-entry-left">'+e.occasion+(ev?' · '+ev.name:'')+' · '+fmtDate(e.date)+' <span class="tag '+(e.type==='Received'?'received':'')+'">'+e.type+'</span></div><div class="pc-entry-right" style="color:'+(e.type==='Received'?'var(--green)':'var(--saffron)')+'">'+fmt(e.amount)+'</div></div>'}).join('')+'</div></div>'}).join('')}
+function togglePC(id){document.getElementById(id)?.classList.toggle('show')}
+function openAddSheet(){document.getElementById('f-date').value=new Date().toISOString().split('T')[0];document.getElementById('f-name').value='';document.getElementById('f-occasion').value='';document.getElementById('f-amount').value='';document.getElementById('f-rel').value='';document.getElementById('f-notes').value='';const sel=document.getElementById('f-event');sel.innerHTML='<option value="">-- None --</option>';events.forEach(ev=>sel.innerHTML+='<option value="'+ev.id+'">'+ev.name+'</option>');setType('Received');document.getElementById('add-overlay').classList.add('show')}
+function setType(t){currentType=t;document.getElementById('type-received').className='type-btn'+(t==='Received'?' active-received':'');document.getElementById('type-given').className='type-btn'+(t==='Given'?' active-given':''  );document.getElementById('person-label').textContent=t==='Received'?'Received From':'Given To'}
+function saveEntry(){const d=document.getElementById('f-date').value;const o=document.getElementById('f-occasion').value.trim();const a=document.getElementById('f-amount').value;const n=document.getElementById('f-name').value.trim();const r=document.getElementById('f-rel').value.trim();const nt=document.getElementById('f-notes').value.trim();const evId=document.getElementById('f-event').value||null;if(!d||!o||!a||!n||!r){showToast('Please fill all required fields');return}entries.push({id:Date.now().toString(),type:currentType,date:d,occasion:o,amount:Number(a),name:n,relationship:r,notes:nt,eventId:evId});save();closeSheet('add-overlay');showToast('Sagan saved!');renderHome()}
+function openCreateEvent(){document.getElementById('ev-name').value='';document.getElementById('ev-date').value=new Date().toISOString().split('T')[0];document.getElementById('ev-type').value='';document.getElementById('ev-notes').value='';document.getElementById('event-overlay').classList.add('show')}
+function saveEvent(){const n=document.getElementById('ev-name').value.trim();const d=document.getElementById('ev-date').value;const t=document.getElementById('ev-type').value.trim();const nt=document.getElementById('ev-notes').value.trim();if(!n||!d){showToast('Event name and date required');return}events.push({id:'ev'+Date.now(),name:n,date:d,type:t||'Event',notes:nt});save();closeSheet('event-overlay');showToast('Event created!');renderEvents()}
+function delEntry(id){if(!confirm('Delete this entry?'))return;entries=entries.filter(e=>e.id!==id);save();renderLog();showToast('Deleted')}
+function closeSheet(id){document.getElementById(id).classList.remove('show')}
+function closeIfBg(e,id){if(e.target===document.getElementById(id))closeSheet(id)}
+function openSettings(){document.getElementById('settings-overlay').classList.add('show')}
+function exportData(){const blob=new Blob([JSON.stringify({entries,events},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sagan-backup-'+new Date().toISOString().split('T')[0]+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);document.body.removeChild(a)},1000);showToast('Backup downloaded!');closeSheet('settings-overlay')}
+function handleFileSelect(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=(ev)=>{try{pendingImport=JSON.parse(ev.target.result);document.getElementById('settings-btns').style.display='none';document.getElementById('settings-confirm').style.display='block'}catch{showToast('Invalid file')}};reader.readAsText(file);e.target.value=''}
+function doImport(){if(!pendingImport)return;entries=pendingImport.entries||[];events=pendingImport.events||[];save();showToast('Data imported!');cancelImport();closeSheet('settings-overlay');renderHome()}
+function cancelImport(){pendingImport=null;document.getElementById('settings-confirm').style.display='none';document.getElementById('settings-btns').style.display='block'}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+renderHome();
+</script>
+</body>
+</html>
