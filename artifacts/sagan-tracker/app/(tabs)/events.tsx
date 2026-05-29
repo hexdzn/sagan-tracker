@@ -115,15 +115,15 @@ export default function EventsScreen() {
           </View>
 
           <View style={styles.summaryRow}>
-            <View style={[styles.summaryCard, { backgroundColor: "#2D8A4E" }]}>
+            <View style={[styles.summaryCard, { backgroundColor: colors.received }]}>
               <Text style={[styles.summaryLabel, { fontFamily: "Inter_500Medium" }]}>Received</Text>
               <Text style={[styles.summaryAmt, { fontFamily: "Inter_700Bold" }]}>{formatAmount(stats.received)}</Text>
             </View>
-            <View style={[styles.summaryCard, { backgroundColor: "#E8851A" }]}>
+            <View style={[styles.summaryCard, { backgroundColor: colors.given }]}>
               <Text style={[styles.summaryLabel, { fontFamily: "Inter_500Medium" }]}>Given</Text>
               <Text style={[styles.summaryAmt, { fontFamily: "Inter_700Bold" }]}>{formatAmount(stats.given)}</Text>
             </View>
-            <View style={[styles.summaryCard, { backgroundColor: net >= 0 ? "#2D8A4E" : "#CC3333" }]}>
+            <View style={[styles.summaryCard, { backgroundColor: net >= 0 ? colors.received : colors.negative }]}>
               <Text style={[styles.summaryLabel, { fontFamily: "Inter_500Medium" }]}>Net</Text>
               <Text style={[styles.summaryAmt, { fontFamily: "Inter_700Bold" }]}>
                 {net >= 0 ? "+" : ""}{formatAmount(net)}

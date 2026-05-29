@@ -53,14 +53,14 @@ export default function HomeScreen() {
         contentContainerStyle={[styles.content, { paddingBottom: bottomPad }]}
       >
         <View style={styles.statsRow}>
-          <View style={[styles.statCard, { backgroundColor: "#E8851A" }]}>
+          <View style={[styles.statCard, { backgroundColor: colors.received }]}>
             <Feather name="arrow-down-circle" size={18} color="rgba(255,255,255,0.8)" />
             <Text style={[styles.statLabel, { fontFamily: "Inter_500Medium" }]}>Total Received</Text>
             <Text style={[styles.statAmount, { fontFamily: "Inter_700Bold" }]}>
               {formatAmount(stats.totalReceived)}
             </Text>
           </View>
-          <View style={[styles.statCard, { backgroundColor: "#2D8A4E" }]}>
+          <View style={[styles.statCard, { backgroundColor: colors.given }]}>
             <Feather name="arrow-up-circle" size={18} color="rgba(255,255,255,0.8)" />
             <Text style={[styles.statLabel, { fontFamily: "Inter_500Medium" }]}>Total Given</Text>
             <Text style={[styles.statAmount, { fontFamily: "Inter_700Bold" }]}>
@@ -74,7 +74,7 @@ export default function HomeScreen() {
             styles.netCard,
             {
               backgroundColor: stats.net >= 0 ? colors.positiveBg : colors.negativeBg,
-              borderColor: stats.net >= 0 ? "#2D8A4E" : "#CC3333",
+              borderColor: stats.net >= 0 ? colors.received : colors.negative,
             },
           ]}
         >
