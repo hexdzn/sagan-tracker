@@ -99,9 +99,13 @@ export function AddEntrySheet() {
 
   return (
     <BottomSheet visible={showAddEntry} onClose={() => setShowAddEntry(false)}>
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        style={styles.kavWrapper}
+      >
         <ScrollView
           style={styles.scroll}
+          contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
@@ -286,7 +290,14 @@ export function AddEntrySheet() {
               />
             </View>
           </View>
+        </ScrollView>
 
+        <View
+          style={[
+            styles.floatingBar,
+            { backgroundColor: colors.background, borderTopColor: colors.border },
+          ]}
+        >
           <Pressable
             style={({ pressed }) => [
               styles.saveBtn,
@@ -301,16 +312,32 @@ export function AddEntrySheet() {
               Save Entry
             </Text>
           </Pressable>
-          <View style={{ height: 24 }} />
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </BottomSheet>
   );
 }
 
 const styles = StyleSheet.create({
+  kavWrapper: {
+    flex: 1,
+  },
   scroll: {
     paddingHorizontal: 20,
+  },
+  scrollContent: {
+    paddingBottom: 16,
+  },
+  floatingBar: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 8,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -6 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 8,
   },
   sheetTitle: {
     fontSize: 20,

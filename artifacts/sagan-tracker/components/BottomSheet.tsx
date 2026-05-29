@@ -114,7 +114,7 @@ export function BottomSheet({ visible, onClose, children }: BottomSheetProps) {
           <View {...panResponder.panHandlers} style={styles.handleArea}>
             <View style={[styles.handle, { backgroundColor: colors.border }]} />
           </View>
-          {children}
+          <View style={styles.body}>{children}</View>
         </Animated.View>
       </View>
     </Modal>
@@ -139,6 +139,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 16,
     elevation: 20,
+    overflow: "hidden",
+  },
+  body: {
+    flex: 1,
   },
   handleArea: {
     paddingVertical: 12,
