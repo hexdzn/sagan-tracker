@@ -1,0 +1,136 @@
+Build a mobile-first, browser-based web app called "Sagan Tracker" using HTML, CSS, and vanilla JavaScript (no frameworks). All data should be stored in localStorage so it persists across sessions. No backend needed.
+
+---
+
+## PURPOSE
+This app helps the user track "sagan" — both cash gifts RECEIVED and cash gifts GIVEN during Indian functions and ceremonies. Entries can be standalone or linked to a created Event.
+
+---
+
+## DATA MODEL
+
+### Entry:
+- Type (toggle: "Received" or "Given", required)
+- Date (date picker, required)
+- Occasion (text input with datalist suggestions, required)
+- Event (optional dropdown — link this entry to an existing Event)
+- Amount (number input in ₹, required)
+- Person's Name (required — "Received From" or "Given To" depending on type)
+- Relationship Tag (free-text with datalist suggestions, required)
+- Notes (optional)
+
+### Event:
+- Event Name (text, required — e.g. "Rahul's Wedding")
+- Date (date picker, required)
+- Occasion Type (datalist: Wedding, Diwali, Birthday, Holi, Navratri, Bhai Dooj, Other)
+- Notes (optional)
+
+---
+
+## TOP BAR
+- App title "🪔 Sagan Tracker" on the left
+- Two icon buttons on the right: ➕ Add Sagan and ⚙️ Settings
+- Both open as bottom sheets
+- Top bar is sticky and visible across all 4 tabs
+
+---
+
+## BOTTOM NAV — 4 TABS
+🏠 Home | 🎪 Events | 📋 Log | 👥 People
+No floating action button — Add is only in the top bar.
+
+---
+
+## SCREEN 1: Home / Dashboard
+- Three stat cards at top:
+  - 💰 Total Received — saffron (#E8851A) background, white text
+  - 🎁 Total Given — warm green (#2D8A4E) background, white text
+  - ⚖️ Net Balance (Received minus Given) — green if positive (#2D8A4E), red if negative (#CC3333)
+- Two small stat pills below: Total Entries | Total People
+- Section title "Recent Entries"
+- Most recent 3 entries as cards with colored type badge (green = Received, amber = Given)
+
+---
+
+## SCREEN 2: Events
+- "Create Event" button at the top
+- List of all events as cards showing:
+  - Event Name, Occasion Type badge, Date
+  - Number of entries linked, Total Received, Total Given for that event
+- Tap an event card to open Event Detail:
+  - Header: Event Name, Date, Occasion Type, Notes
+  - Summary row: Total Received | Total Given | Net
+  - Entries grouped under "Received" and "Given" sections
+  - Each entry: Person Name, Relationship Tag, Amount, Date
+- Create Event opens a bottom sheet with: Event Name, Date, Occasion Type (datalist), Notes
+- Empty state if no events yet
+
+---
+
+## SCREEN 3: Log (All Entries)
+- Filter row at top: All | Received | Given
+- Search bar: filter by person name, occasion, or linked event name
+- Sort chips: Newest | Oldest | Amount ↑ | Amount ↓
+- Each entry card shows:
+  - Type badge (green "Received" or amber "Given")
+  - Person Name + Relationship Tag
+  - Amount in green for received, amber for given
+  - Occasion name
+  - Linked Event name (if any) in a small pill
+  - Date
+- Tap to expand: shows Notes + Delete button with confirm prompt
+- Empty state if no entries
+
+---
+
+## SCREEN 4: People Summary
+- Search bar to find a person
+- Group all entries by Person's Name
+- Each person card shows:
+  - Name + Relationship Tag
+  - Total Received FROM them (green)
+  - Total Given TO them (amber)
+  - Net with that person (green if positive, red if negative)
+  - Total interactions count
+- Sort toggle: Total Received | Total Given | Net | Interactions
+- Tap to expand — shows each individual entry:
+  - Type badge, Occasion, linked Event name (if any), Amount, Date
+- Entries linked to events also appear here — People is a full cross-reference view
+- Empty state if no entries
+
+---
+
+## ADD ENTRY (bottom sheet from ➕ in top bar)
+- Received / Given toggle at very top — visually prominent, full width
+- Person label changes: "Received From" or "Given To"
+- Fields in order:
+  1. Date (defaults to today, editable)
+  2. Occasion (text + datalist: Diwali, Holi, Wedding, Birthday, Navratri, Bhai Dooj)
+  3. Link to Event (optional dropdown of existing events, with a "None" option)
+  4. Amount (₹, number input)
+  5. Person's Name
+  6. Relationship Tag (text + datalist: Uncle, Aunty, Neighbour, Family Friend, Cousin, Colleague)
+  7. Notes (optional textarea)
+- Save button at bottom with success toast on save
+
+---
+
+## BACKUP & RESTORE (⚙️ Settings bottom sheet)
+- Export Data: downloads sagan-backup-[date].json with both entries AND events
+- Import Data: upload .json to restore all data
+  - Warning before import: "This will replace all current data. Are you sure?"
+  - Confirm and Cancel buttons
+- Close button at bottom of sheet
+
+---
+
+## PWA SETUP
+Create exactly THREE files:
+
+### File 1: index.html
+The complete app. In <head> include:
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#E8851A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="a

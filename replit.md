@@ -1,6 +1,6 @@
-# [Project name]
+# Sagan Tracker
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A mobile-first app for tracking cash gifts (sagan) received and given during Indian functions and ceremonies.
 
 ## Run & Operate
 
@@ -14,6 +14,7 @@ _Replace the heading above with the project's name, and this line with one sente
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
+- Mobile: Expo (React Native) with Expo Router
 - API: Express 5
 - DB: PostgreSQL + Drizzle ORM
 - Validation: Zod (`zod/v4`), `drizzle-zod`
@@ -22,15 +23,29 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/sagan-tracker/` — Expo mobile app
+  - `app/(tabs)/` — 4 tab screens (Home, Events, Log, People)
+  - `context/SaganContext.tsx` — all data + CRUD with AsyncStorage
+  - `components/` — shared UI (BottomSheet, TopBar, EntryCard, sheets)
+  - `constants/colors.ts` — saffron/green brand palette
+  - `types/index.ts` — Entry, SaganEvent types + suggestion lists
+- `artifacts/api-server/` — Express API server
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- All data stored in AsyncStorage (no backend for sagan data) — offline-first by design
+- SaganContext manages global state including modal visibility (showAddEntry, showSettings) so TopBar can trigger sheets from any tab
+- Bottom sheets are Modal-based (not Expo Router formSheet) since they're triggered by buttons not navigation
+- AddEntry and Settings sheets rendered at tab layout level to overlay all screens
+- Event Detail is inline conditional render within events.tsx (no separate route)
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Track cash gifts received and given at Indian ceremonies
+- Link entries to events (weddings, Diwali, etc.)
+- View summaries per event and per person
+- Full log with filter/search/sort
+- Backup & restore via JSON export/import
 
 ## User preferences
 
@@ -38,7 +53,8 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Version warnings for datetimepicker/document-picker/file-system are benign — they run fine on Expo Go SDK 54
+- Web preview insets differ from native — trust Expo Go for layout verification
 
 ## Pointers
 

@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "WfYOUZP9CTMwRiUn-t16u"
+uri = "file://artifacts/sagan-tracker/assets/images/icon.png"
+type = "image"
+title = "generated_image"
