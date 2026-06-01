@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en"><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -13,25 +12,37 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Inter',sans-serif;background:#f2f2f7;display:flex;justify-content:center;min-height:100vh}
 #app{width:100%;max-width:430px;background:#f2f2f7;min-height:100vh;display:flex;flex-direction:column}
+
+/* TOP BAR */
 .topbar{background:#fff;padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .topbar-title{font-size:24px;font-weight:700;color:#1a1a1a}
 .topbar-actions{display:flex;gap:10px;align-items:center}
-.tb-btn{width:38px;height:38px;border-radius:50%;border:1px solid #e8e8e8;background:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:#1a1a1a}
-.tb-btn.add{background:#1a1a1a;color:#fff;border-color:#1a1a1a;font-size:22px}
+.tb-btn{width:38px;height:38px;border-radius:50%;border:1px solid #e8e8e8;background:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:#1a1a1a;font-weight:300}
+.tb-btn.add{background:#1a1a1a;color:#fff;border-color:#1a1a1a;font-size:22px;font-weight:300}
+
+/* SCREENS */
 .screen{display:none;flex:1;overflow-y:auto;padding-bottom:20px}
 .screen.active{display:block}
+
+/* STAT CARDS */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 16px 0}
-.stat-box{border-radius:16px;padding:18px;color:#fff}
+.stat-box{border-radius:16px;padding:18px;color:#fff;position:relative;overflow:hidden}
 .stat-box.recv{background:#E8851A}
 .stat-box.give{background:#2D8A4E}
 .sb-icon{font-size:18px;margin-bottom:6px;opacity:0.85}
 .sb-label{font-size:12px;opacity:0.85;font-weight:500;margin-bottom:6px}
 .sb-val{font-size:30px;font-weight:700;letter-spacing:-1px}
+
+/* PILLS */
 .pills{display:flex;gap:10px;padding:12px 16px 0}
 .pill{flex:1;background:#fff;border-radius:14px;padding:14px 8px;text-align:center}
 .pill .pnum{font-size:24px;font-weight:700;color:#1a1a1a}
 .pill .plbl{font-size:11px;color:#888;margin-top:2px}
+
+/* SECTION */
 .sec-title{font-size:14px;font-weight:600;color:#1a1a1a;padding:18px 16px 10px}
+
+/* ENTRY CARDS */
 .card{background:#fff;border-radius:14px;padding:14px 16px;margin:0 16px 10px;cursor:pointer}
 .card:active{opacity:0.9}
 .card-row1{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
@@ -49,9 +60,13 @@ body{font-family:'Inter',sans-serif;background:#f2f2f7;display:flex;justify-cont
 .card-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #f5f5f5;font-size:12px;color:#888}
 .card-expand.open{display:block}
 .del-btn{margin-top:8px;background:#FFF0F0;border:1px solid #ffd0d0;color:#e53e3e;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif}
+
+/* EMPTY */
 .empty{text-align:center;padding:48px 20px;color:#bbb;background:#fff;border-radius:14px;margin:0 16px}
 .empty-icon{font-size:44px;margin-bottom:12px;opacity:0.4}
 .empty p{font-size:13px;line-height:1.6}
+
+/* SEARCH + CHIPS */
 .search-box{position:relative;padding:12px 16px 0}
 .search-box input{width:100%;border:none;border-radius:12px;padding:11px 14px 11px 38px;font-size:13px;font-family:'Inter',sans-serif;color:#1a1a1a;background:#fff;outline:none}
 .search-icon{position:absolute;left:28px;top:50%;transform:translateY(-50%);color:#bbb;font-size:14px;pointer-events:none}
@@ -59,6 +74,8 @@ body{font-family:'Inter',sans-serif;background:#f2f2f7;display:flex;justify-cont
 .chips::-webkit-scrollbar{display:none}
 .chip{border:none;background:#fff;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;color:#888;flex-shrink:0}
 .chip.on{background:#1a1a1a;color:#fff}
+
+/* PEOPLE */
 .pcard{background:#fff;border-radius:14px;margin:0 16px 10px;overflow:hidden}
 .pc-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
 .pc-name{font-size:15px;font-weight:600;color:#1a1a1a}
@@ -75,6 +92,8 @@ body{font-family:'Inter',sans-serif;background:#f2f2f7;display:flex;justify-cont
 .pc-row:last-child{border:none}
 .pc-row-left{color:#888;flex:1;margin-right:8px}
 .pc-row-right{font-weight:600;white-space:nowrap}
+
+/* EVENTS */
 .ecard{background:#fff;border-radius:14px;margin:0 16px 10px;overflow:hidden}
 .ec-head{padding:14px 16px;cursor:pointer}
 .ec-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
@@ -87,19 +106,27 @@ body{font-family:'Inter',sans-serif;background:#f2f2f7;display:flex;justify-cont
 .ec-body{display:none;border-top:1px solid #f5f5f5}
 .ec-body.open{display:block}
 .add-event-btn{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;margin:12px 16px;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#aaa;font-weight:500;width:calc(100% - 32px);border:2px dashed #e0e0e0}
+
+/* BOTTOM NAV */
 .botnav{background:#fff;border-top:1px solid #f0f0f0;display:flex;height:72px;flex-shrink:0;position:sticky;bottom:0;z-index:50}
 .nb{flex:1;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;color:#bbb;font-family:'Inter',sans-serif;font-weight:500;padding-bottom:6px}
 .nb.on{color:#1a1a1a}
 .nb-icon{font-size:22px;line-height:1}
+
+/* OVERLAY + SHEET */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:60;align-items:flex-end;justify-content:center}
 .overlay.show{display:flex}
 .sheet{background:#fff;border-radius:24px 24px 0 0;padding:20px 20px 32px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto}
 .sheet-handle{width:36px;height:4px;background:#e0e0e0;border-radius:2px;margin:0 auto 16px}
 .sheet-title{font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:18px}
+
+/* TYPE TOGGLE */
 .type-toggle{display:flex;background:#f5f5f5;border-radius:12px;padding:3px;margin-bottom:20px}
 .tt-btn{flex:1;border:none;background:transparent;border-radius:10px;padding:11px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;color:#aaa;transition:all 0.2s}
-.tt-btn.recv{background:#E8851A;color:#fff}
-.tt-btn.give{background:#2D8A4E;color:#fff}
+.tt-btn.recv{background:#E8851A;color:#fff;box-shadow:0 2px 6px rgba(232,133,26,0.3)}
+.tt-btn.give{background:#2D8A4E;color:#fff;box-shadow:0 2px 6px rgba(45,138,78,0.3)}
+
+/* FORM */
 .flabel{display:block;font-size:11px;font-weight:600;color:#aaa;margin-bottom:5px;margin-top:16px;text-transform:uppercase;letter-spacing:0.4px}
 .flabel .req{color:#E8851A}
 .finput{width:100%;border:1.5px solid #efefef;border-radius:12px;padding:12px 14px;font-size:14px;font-family:'Inter',sans-serif;color:#1a1a1a;background:#fafafa;outline:none;-webkit-appearance:none;appearance:none;transition:border-color 0.2s}
@@ -107,8 +134,11 @@ body{font-family:'Inter',sans-serif;background:#f2f2f7;display:flex;justify-cont
 textarea.finput{resize:none;min-height:68px}
 .sbtn{width:100%;background:#1a1a1a;color:#fff;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;margin-top:22px}
 .cancel-btn{width:100%;border:none;background:transparent;color:#bbb;padding:10px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px}
+
+/* SETTINGS */
 .set-section{font-size:11px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:0.4px;padding:4px 0 8px}
 .set-row{display:flex;align-items:center;gap:12px;background:#fafafa;border-radius:12px;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#1a1a1a;font-weight:500;margin-bottom:10px;width:100%;text-align:left;border:none}
+.set-row:active{background:#f0f0f0}
 .set-icon{font-size:20px;width:28px;text-align:center}
 .set-row-sub{font-size:11px;color:#aaa;margin-top:1px}
 .backup-info{background:#f9f9f9;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#888;display:flex;align-items:center;gap:8px}
@@ -120,262 +150,16 @@ textarea.finput{resize:none;min-height:68px}
 .cy{flex:1;background:#1a1a1a;color:#fff;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
 .cn{flex:1;background:#fff;color:#1a1a1a;border:1.5px solid #e8e8e8;border-radius:10px;padding:12px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif}
 .gdrive-btn{width:100%;display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid #4285F4;border-radius:12px;padding:13px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#4285F4;font-weight:600;margin-bottom:10px;text-align:left}
+.gdrive-btn .gicon{font-size:20px}
 .gdrive-connected{background:#E8F5EE;border-color:#2D8A4E;color:#2D8A4E}
+
+/* TOAST */
 .toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:500;z-index:200;opacity:0;transition:opacity 0.25s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
 #fileInput{display:none}
-</style>
-</head>
-<body>
-<div id="app">
-<div class="topbar"><div class="topbar-title">Sagan Tracker</div><div class="topbar-actions"><button class="tb-btn add" onclick="openAdd()">+</button><button class="tb-btn" onclick="openSettings()">&#9881;</button></div></div>
-<div class="toast" id="toast"></div>
-<div class="screen active" id="s-home">
-<div class="stats-grid"><div class="stat-box recv"><div class="sb-icon">&#8595;</div><div class="sb-label">Total Received</div><div class="sb-val" id="h-recv">&#8377;0</div></div><div class="stat-box give"><div class="sb-icon">&#8593;</div><div class="sb-label">Total Given</div><div class="sb-val" id="h-give">&#8377;0</div></div></div>
-<div class="pills"><div class="pill"><div class="pnum" id="h-ent">0</div><div class="plbl">Entries</div></div><div class="pill"><div class="pnum" id="h-ppl">0</div><div class="plbl">People</div></div><div class="pill"><div class="pnum" id="h-evs">0</div><div class="plbl">Events</div></div></div>
-<div class="sec-title">Recent Entries</div>
-<div id="h-list"></div>
-</div>
-<div class="screen" id="s-events"><button class="add-event-btn" onclick="openCreateEvent()"><span style="font-size:20px;color:#ddd">+</span><span>Create New Event</span></button><div id="ev-list"></div></div>
-<div class="screen" id="s-log">
-<div class="search-box"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search name, occasion, event..." oninput="rLog()" id="log-q"></div>
-<div class="chips" id="lfc"><button class="chip on" onclick="setLF('all',this)">All</button><button class="chip" onclick="setLF('Received',this)">Received</button><button class="chip" onclick="setLF('Given',this)">Given</button></div>
-<div class="chips" id="lsc" style="padding-top:4px"><button class="chip on" onclick="setLS('newest',this)">Newest</button><button class="chip" onclick="setLS('oldest',this)">Oldest</button><button class="chip" onclick="setLS('high',this)">Amount &#8593;</button><button class="chip" onclick="setLS('low',this)">Amount &#8595;</button></div>
-<div style="margin-top:10px" id="log-list"></div>
-</div>
-<div class="screen" id="s-people">
-<div class="search-box"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search person..." oninput="rPeople()" id="ppl-q"></div>
-<div class="chips" id="psc"><button class="chip on" onclick="setPS('recv',this)">By Received</button><button class="chip" onclick="setPS('give',this)">By Given</button><button class="chip" onclick="setPS('net',this)">By Net</button><button class="chip" onclick="setPS('count',this)">By Times</button></div>
-<div style="margin-top:10px" id="ppl-list"></div>
-</div>
-<div class="botnav"><button class="nb on" onclick="nav('home',this)"><span class="nb-icon">&#127968;</span>Home</button><button class="nb" onclick="nav('events',this)"><span class="nb-icon">&#128197;</span>Events</button><button class="nb" onclick="nav('log',this)"><span class="nb-icon">&#9776;</span>Log</button><button class="nb" onclick="nav('people',this)"><span class="nb-icon">&#128101;</span>People</button></div>
-</div>
-<div class="overlay" id="add-overlay" onclick="bgClose(event,'add-overlay')">
-<div class="sheet">
-<div class="sheet-handle"></div>
-<div class="sheet-title">Add Sagan</div>
-<div class="type-toggle"><button class="tt-btn recv" id="tt-recv" onclick="setType('Received')">&#8595; Received</button><button class="tt-btn" id="tt-give" onclick="setType('Given')">&#8593; Given</button></div>
-<label class="flabel" id="fl-person">Received From <span class="req">*</span></label>
-<input class="finput" id="f-name" type="text" placeholder="e.g. Ramesh Uncle">
-<label class="flabel">Amount <span class="req">*</span></label>
-<input class="finput" id="f-amt" type="number" min="1" placeholder="e.g. 5100" inputmode="numeric">
-<label class="flabel">Date</label>
-<input class="finput" id="f-date" type="date">
-<label class="flabel">Occasion</label>
-<input class="finput" id="f-occ" type="text" list="ol" placeholder="e.g. Diwali 2024">
-<datalist id="ol"><option value="Diwali"><option value="Holi"><option value="Wedding"><option value="Birthday"><option value="Navratri"><option value="Bhai Dooj"></datalist>
-<label class="flabel">Relationship</label>
-<input class="finput" id="f-rel" type="text" list="rl" placeholder="e.g. Uncle">
-<datalist id="rl"><option value="Uncle"><option value="Aunty"><option value="Neighbour"><option value="Family Friend"><option value="Cousin"><option value="Colleague"></datalist>
-<label class="flabel">Link to Event</label>
-<select class="finput" id="f-ev"><option value="">-- None --</option></select>
-<label class="flabel">Notes</label>
-<textarea class="finput" id="f-notes" placeholder="e.g. Given in envelope" rows="2"></textarea>
-<button class="sbtn" onclick="saveEntry()">Save Entry</button>
-<button class="cancel-btn" onclick="closeSheet('add-overlay')">Cancel</button>
-</div>
-</div>
-<div class="overlay" id="ev-overlay" onclick="bgClose(event,'ev-overlay')">
-<div class="sheet">
-<div class="sheet-handle"></div>
-<div class="sheet-title">Create Event</div>
-<label class="flabel">Event Name <span class="req">*</span></label>
-<input class="finput" id="ev-name" type="text" placeholder="e.g. Rahul's Wedding">
-<label class="flabel">Date <span class="req">*</span></label>
-<input class="finput" id="ev-date" type="date">
-<label class="flabel">Occasion Type</label>
-<input class="finput" id="ev-type" type="text" list="etl" placeholder="e.g. Wedding">
-<datalist id="etl"><option value="Wedding"><option value="Diwali"><option value="Birthday"><option value="Holi"><option value="Navratri"><option value="Other"></datalist>
-<label class="flabel">Notes</label>
-<textarea class="finput" id="ev-notes" placeholder="Any notes" rows="2"></textarea>
-<button class="sbtn" onclick="saveEvent()">Create Event</button>
-<button class="cancel-btn" onclick="closeSheet('ev-overlay')">Cancel</button>
-</div>
-</div>
-<div class="overlay" id="set-overlay" onclick="bgClose(event,'set-overlay')">
-<div class="sheet">
-<div class="sheet-handle"></div>
-<div class="sheet-title">Settings</div>
-<div class="backup-info" id="backup-status"><div class="backup-dot" id="backup-dot"></div><span id="backup-text">No backup yet</span></div>
-<div class="set-section">Google Drive</div>
-<button class="gdrive-btn" id="gdrive-btn" onclick="gdriveAction()"><span style="font-size:20px">&#9654;</span><div><div id="gdrive-label">Connect Google Drive</div><div class="set-row-sub" id="gdrive-sub">Sign in once, save backups to Drive</div></div></button>
-<button class="set-row" id="gdrive-save-btn" onclick="saveToGDrive()" style="display:none"><span class="set-icon">&#9729;</span><div><div>Save Backup to Drive</div><div class="set-row-sub">Uploads sagan-backup.json to your Drive</div></div></button>
-<div class="set-section" style="margin-top:8px">Local Backup</div>
-<div id="set-confirm" style="display:none"><div class="confirm-box">This will replace ALL your data. Are you sure?</div><div class="confirm-row"><button class="cy" onclick="doImport()">Yes, Import</button><button class="cn" onclick="cancelImport()">Cancel</button></div></div>
-<div id="set-btns">
-<button class="set-row" onclick="exportData()"><span class="set-icon">&#128228;</span><div><div>Export Data</div><div class="set-row-sub">Download .json backup to device</div></div></button>
-<button class="set-row" onclick="document.getElementById('fileInput').click()"><span class="set-icon">&#128229;</span><div><div>Import Data</div><div class="set-row-sub">Restore from .json backup</div></div></button>
-<input type="file" id="fileInput" accept=".json" onchange="onFile(event)">
-</div>
-<button class="cancel-btn" onclick="closeSheet('set-overlay')">Close</button>
-</div>
-</div>
-<script>
-var E=JSON.parse(localStorage.getItem('sg_e')||'[]');
-var V=JSON.parse(localStorage.getItem('sg_v')||'[]');
-var cType='Received',lf='all',ls='newest',ps='recv',imp=null;
-var gToken=localStorage.getItem('sg_gtoken')||null;
-var lastBackup=localStorage.getItem('sg_lastbackup')||null;
-var G_SCOPE='https://www.googleapis.com/auth/drive.file';
-function save(){localStorage.setItem('sg_e',JSON.stringify(E));localStorage.setItem('sg_v',JSON.stringify(V));}
-function rs(n){return '₹'+Number(n).toLocaleString('en-IN');}
-function fd(d){if(!d)return '';return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
-function daysAgo(ts){if(!ts)return null;var diff=Math.floor((Date.now()-Number(ts))/86400000);if(diff===0)return 'today';if(diff===1)return 'yesterday';return diff+' days ago';}
-function nav(t,btn){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});document.getElementById('s-'+t).classList.add('active');btn.classList.add('on');if(t==='home')rHome();if(t==='events')rEvents();if(t==='log')rLog();if(t==='people')rPeople();}
-function rHome(){var rc=E.filter(function(e){return e.t==='Received';}).reduce(function(s,e){return s+e.a;},0);var gv=E.filter(function(e){return e.t==='Given';}).reduce(function(s,e){return s+e.a;},0);document.getElementById('h-recv').textContent=rs(rc);document.getElementById('h-give').textContent=rs(gv);document.getElementById('h-ent').textContent=E.length;document.getElementById('h-ppl').textContent=new Set(E.map(function(e){return e.n.toLowerCase().trim();})).size;document.getElementById('h-evs').textContent=V.length;var recent=[].concat(E).sort(function(a,b){return new Date(b.d)-new Date(a.d);}).slice(0,3);var el=document.getElementById('h-list');el.innerHTML=recent.length?recent.map(function(e){return ecard(e,true);}).join(''):'<div class="empty"><div class="empty-icon">&#128235;</div><p>No entries yet<br>Tap + to add your first sagan</p></div>';}
-function ecard(e,mini){var ev=V.find(function(v){return v.id===e.ev;});var rc=e.t==='Received';var meta=[];if(e.o)meta.push(e.o);if(ev)meta.push('<span class="evbadge">'+ev.n+'</span>');if(e.r)meta.push('<span class="badge tag">'+e.r+'</span>');return '<div class="card" onclick="tog('cx-'+e.id+'')">'+'<div class="card-row1"><span class="card-name">'+e.n+'</span><span class="card-amount '+(rc?'recv':'give')+'">'+rs(e.a)+'</span></div>'+'<div class="card-row2"><span class="card-sub">'+(meta.length?meta.join(' &nbsp;'):'')+'</span><span style="display:flex;align-items:center;gap:6px"><span class="badge '+(rc?'recv':'give')+'">'+e.t+'</span><span class="card-sub">'+fd(e.d)+'</span></span></div>'+'<div class="card-expand" id="cx-'+e.id+'">'+(e.nt?'<div style="margin-bottom:8px">'+e.nt+'</div>':'<div style="margin-bottom:8px;color:#ddd">No notes</div>')+(mini?'':'<button class="del-btn" onclick="event.stopPropagation();del(''+e.id+'')">Delete</button>')+'</div></div>';}
-function tog(id){var el=document.getElementById(id);if(el)el.classList.toggle('open');}
-function rEvents(){var el=document.getElementById('ev-list');if(!V.length){el.innerHTML='<div class="empty"><div class="empty-icon">&#128197;</div><p>No events yet</p></div>';return;}el.innerHTML=V.map(function(v){var linked=E.filter(function(e){return e.ev===v.id;});var rc=linked.filter(function(e){return e.t==='Received';}).reduce(function(s,e){return s+e.a;},0);var gv=linked.filter(function(e){return e.t==='Given';}).reduce(function(s,e){return s+e.a;},0);var net=rc-gv;return '<div class="ecard"><div class="ec-head" onclick="tog('ecb-'+v.id+'')">'+'<div class="ec-top"><div class="ec-name">'+v.n+'</div><div class="ec-date">'+fd(v.d)+'</div></div>'+'<div><span class="badge tag">'+(v.tp||'Event')+'</span>&nbsp;<span class="badge tag">'+linked.length+' entries</span></div></div>'+'<div class="ec-stats"><div class="ec-stat"><div class="esv" style="color:#E8851A">'+rs(rc)+'</div><div class="esl">Received</div></div><div class="ec-stat"><div class="esv" style="color:#2D8A4E">'+rs(gv)+'</div><div class="esl">Given</div></div><div class="ec-stat"><div class="esv" style="color:'+(net>=0?'#2D8A4E':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div><div class="esl">Net</div></div></div>'+'<div class="ec-body" id="ecb-'+v.id+'">'+(linked.length?linked.sort(function(a,b){return new Date(b.d)-new Date(a.d);}).map(function(e){return '<div class="pc-row"><div class="pc-row-left">'+e.n+(e.o?' &middot; '+e.o:'')+' &middot; '+fd(e.d)+' <span class="badge '+(e.t==='Received'?'recv':'give')+'">'+e.t+'</span></div><div class="pc-row-right" style="color:'+(e.t==='Received'?'#E8851A':'#2D8A4E')+'">'+rs(e.a)+'</div></div>';}).join(''):'<div class="pc-row" style="color:#ccc">No entries</div>')+'</div></div>';}).join('');}
-function setLF(f,btn){lf=f;document.querySelectorAll('#lfc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rLog();}
-function setLS(s,btn){ls=s;document.querySelectorAll('#lsc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rLog();}
-function rLog(){var q=(document.getElementById('log-q').value||'').toLowerCase();var list=[].concat(E);if(lf!=='all')list=list.filter(function(e){return e.t===lf;});if(q)list=list.filter(function(e){return e.n.toLowerCase().includes(q)||(e.o||'').toLowerCase().includes(q)||(V.find(function(v){return v.id===e.ev;})||{n:''}).n.toLowerCase().includes(q);});if(ls==='newest')list.sort(function(a,b){return new Date(b.d)-new Date(a.d);});else if(ls==='oldest')list.sort(function(a,b){return new Date(a.d)-new Date(b.d);});else if(ls==='high')list.sort(function(a,b){return b.a-a.a;});else list.sort(function(a,b){return a.a-b.a;});var el=document.getElementById('log-list');el.innerHTML=list.length?list.map(function(e){return ecard(e,false);}).join(''):'<div class="empty"><div class="empty-icon">&#128269;</div><p>No entries found</p></div>';}
-function setPS(s,btn){ps=s;document.querySelectorAll('#psc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rPeople();}
-function rPeople(){var q=(document.getElementById('ppl-q').value||'').toLowerCase();var map={};E.forEach(function(e){var k=e.n.toLowerCase().trim();if(!map[k])map[k]={n:e.n,r:e.r||'',recv:0,give:0,cnt:0,items:[]};if(e.t==='Received')map[k].recv+=e.a;else map[k].give+=e.a;map[k].cnt++;map[k].items.push(e);});var list=Object.values(map);if(q)list=list.filter(function(p){return p.n.toLowerCase().includes(q);});if(ps==='recv')list.sort(function(a,b){return b.recv-a.recv;});else if(ps==='give')list.sort(function(a,b){return b.give-a.give;});else if(ps==='net')list.sort(function(a,b){return(b.recv-b.give)-(a.recv-a.give);});else list.sort(function(a,b){return b.cnt-a.cnt;});var el=document.getElementById('ppl-list');if(!list.length){el.innerHTML='<div class="empty"><div class="empty-icon">&#128101;</div><p>No people yet</p></div>';return;}el.innerHTML=list.map(function(p,i){var net=p.recv-p.give;return '<div class="pcard"><div class="pc-head" onclick="tog('pb-'+i+'')">'+'<div><div class="pc-name">'+p.n+'</div><div class="pc-rel">'+(p.r?p.r+' &middot; ':'')+p.cnt+' time'+(p.cnt>1?'s':'')+'</div></div>'+'<div><div class="pc-net" style="color:'+(net>=0?'#2D8A4E':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div><div class="pc-cnt">net</div></div></div>'+'<div class="pc-body" id="pb-'+i+'"><div class="pc-totals"><div class="pc-tot"><div class="ptv" style="color:#E8851A">'+rs(p.recv)+'</div><div class="ptl">Received</div></div><div class="pc-tot"><div class="ptv" style="color:#2D8A4E">'+rs(p.give)+'</div><div class="ptl">Given</div></div></div>'+p.items.sort(function(a,b){return new Date(b.d)-new Date(a.d);}).map(function(e){var ev=V.find(function(v){return v.id===e.ev;});return '<div class="pc-row"><div class="pc-row-left">'+(e.o||'No occasion')+(ev?' &middot; '+ev.n:'')+' &middot; '+fd(e.d)+' <span class="badge '+(e.t==='Received'?'recv':'give')+'">'+e.t+'</span></div><div class="pc-row-right" style="color:'+(e.t==='Received'?'#E8851A':'#2D8A4E')+'">'+rs(e.a)+'</div></div>';}).join('')+'</div></div>';}).join('');}
-function openAdd(){document.getElementById('f-date').value=new Date().toISOString().split('T')[0];['f-name','f-rel','f-occ','f-amt','f-notes'].forEach(function(id){document.getElementById(id).value='';});var sel=document.getElementById('f-ev');sel.innerHTML='<option value="">-- None --</option>';V.forEach(function(v){sel.innerHTML+='<option value="'+v.id+'">'+v.n+'</option>';});setType('Received');document.getElementById('add-overlay').classList.add('show');}
-function setType(t){cType=t;document.getElementById('tt-recv').className='tt-btn'+(t==='Received'?' recv':'');document.getElementById('tt-give').className='tt-btn'+(t==='Given'?' give':'');document.getElementById('fl-person').innerHTML=(t==='Received'?'Received From':'Given To')+' <span class="req">*</span>';}
-function saveEntry(){var n=document.getElementById('f-name').value.trim();var a=document.getElementById('f-amt').value;if(!n||!a){toast('Name and amount are required');return;}var d=document.getElementById('f-date').value;var o=document.getElementById('f-occ').value.trim();var r=document.getElementById('f-rel').value.trim();var nt=document.getElementById('f-notes').value.trim();var ev=document.getElementById('f-ev').value||null;E.push({id:Date.now().toString(),t:cType,d:d||new Date().toISOString().split('T')[0],o:o,a:Number(a),n:n,r:r,nt:nt,ev:ev});save();closeSheet('add-overlay');toast('Sagan saved!');rHome();}
-function openCreateEvent(){document.getElementById('ev-date').value=new Date().toISOString().split('T')[0];['ev-name','ev-type','ev-notes'].forEach(function(id){document.getElementById(id).value='';});document.getElementById('ev-overlay').classList.add('show');}
-function saveEvent(){var n=document.getElementById('ev-name').value.trim();var d=document.getElementById('ev-date').value;if(!n||!d){toast('Name and date required');return;}V.push({id:'v'+Date.now(),n:n,d:d,tp:document.getElementById('ev-type').value.trim()||'Event',nt:document.getElementById('ev-notes').value.trim()});save();closeSheet('ev-overlay');toast('Event created!');rEvents();}
-function del(id){if(!confirm('Delete this entry?'))return;E=E.filter(function(e){return e.id!==id;});save();rLog();toast('Deleted');}
-function closeSheet(id){document.getElementById(id).classList.remove('show');}
-function bgClose(e,id){if(e.target.id===id)closeSheet(id);}
-function openSettings(){updateBackupStatus();updateGDriveUI();document.getElementById('set-overlay').classList.add('show');}
-function updateBackupStatus(){var dot=document.getElementById('backup-dot');var txt=document.getElementById('backup-text');if(!lastBackup){dot.className='backup-dot';txt.textContent='No backup yet - export to stay safe';return;}var days=Math.floor((Date.now()-Number(lastBackup))/86400000);if(days===0){dot.className='backup-dot fresh';txt.textContent='Last backed up today';}else if(days<=7){dot.className='backup-dot fresh';txt.textContent='Last backed up '+daysAgo(lastBackup);}else{dot.className='backup-dot old';txt.textContent='Last backup was '+daysAgo(lastBackup)+' - consider backing up';}}
-function updateGDriveUI(){var btn=document.getElementById('gdrive-btn');var saveBtn=document.getElementById('gdrive-save-btn');var label=document.getElementById('gdrive-label');var sub=document.getElementById('gdrive-sub');if(gToken){btn.className='gdrive-btn gdrive-connected';label.textContent='Google Drive Connected';sub.textContent='Tap to disconnect';saveBtn.style.display='flex';}else{btn.className='gdrive-btn';label.textContent='Connect Google Drive';sub.textContent='Sign in once, save backups to Drive';saveBtn.style.display='none';}}
-function gdriveAction(){if(gToken){if(confirm('Disconnect Google Drive?')){gToken=null;localStorage.removeItem('sg_gtoken');updateGDriveUI();toast('Disconnected');}return;}var clientId=localStorage.getItem('sg_gclientid')||'';if(!clientId){clientId=prompt('Enter your Google API Client ID
-(Get free at console.cloud.google.com)');if(!clientId)return;localStorage.setItem('sg_gclientid',clientId);}var redirectUri=window.location.href.split('?')[0].split('#')[0];var authUrl='https://accounts.google.com/o/oauth2/auth?client_id='+encodeURIComponent(clientId)+'&redirect_uri='+encodeURIComponent(redirectUri)+'&response_type=token&scope='+encodeURIComponent(G_SCOPE);window.open(authUrl,'_blank','width=500,height=600');toast('Complete sign-in in the popup');}
-(function(){var hash=window.location.hash;if(hash&&hash.includes('access_token')){var params={};hash.substring(1).split('&').forEach(function(p){var kv=p.split('=');params[kv[0]]=decodeURIComponent(kv[1]||'');});if(params.access_token){gToken=params.access_token;localStorage.setItem('sg_gtoken',gToken);window.location.hash='';toast('Google Drive connected!');}}}());
-function saveToGDrive(){if(!gToken){toast('Please connect Google Drive first');return;}var data=JSON.stringify({entries:E,events:V},null,2);var filename='sagan-backup-'+new Date().toISOString().split('T')[0]+'.json';fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:{'Authorization':'Bearer '+gToken,'Content-Type':'multipart/related; boundary=boundary123'},body:'--boundary123
-Content-Type: application/json
 
-'+JSON.stringify({name:filename,mimeType:'application/json'})+'
---boundary123
-Content-Type: application/json
-
-'+data+'
---boundary123--'}).then(function(r){if(r.ok){lastBackup=Date.now().toString();localStorage.setItem('sg_lastbackup',lastBackup);updateBackupStatus();toast('Saved to Google Drive!');}else if(r.status===401){gToken=null;localStorage.removeItem('sg_gtoken');updateGDriveUI();toast('Session expired, reconnect Drive');}else{toast('Upload failed, try again');}}).catch(function(){toast('Could not reach Google Drive');});}
-function exportData(){var b=new Blob([JSON.stringify({entries:E,events:V},null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='sagan-backup-'+new Date().toISOString().split('T')[0]+'.json';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);document.body.removeChild(a);},1000);lastBackup=Date.now().toString();localStorage.setItem('sg_lastbackup',lastBackup);updateBackupStatus();toast('Backup downloaded');}
-function onFile(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){try{imp=JSON.parse(ev.target.result);document.getElementById('set-btns').style.display='none';document.getElementById('set-confirm').style.display='block';}catch(err){toast('Invalid file');}};r.readAsText(f);e.target.value='';}
-function doImport(){if(!imp)return;E=imp.entries||[];V=imp.events||[];save();toast('Data imported!');cancelImport();closeSheet('set-overlay');rHome();}
-function cancelImport(){imp=null;document.getElementById('set-confirm').style.display='none';document.getElementById('set-btns').style.display='block';}
-function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2500);}
-rHome();
-</script>
-</body>
-</html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Sagan Tracker</title>
-<meta name="theme-color" content="#E8851A">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Sagan Tracker">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:'Inter',sans-serif;background:#f2f2f7;display:flex;justify-content:center;min-height:100vh}
-#app{width:100%;max-width:430px;background:#fff;min-height:100vh;display:flex;flex-direction:column}
-.topbar{background:#fff;padding:16px 20px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;position:sticky;top:0;z-index:50}
-.topbar-title{font-size:22px;font-weight:700;color:#1a1a1a}
-.topbar-actions{display:flex;gap:10px}
-.tb-btn{width:36px;height:36px;border-radius:50%;border:none;background:#f2f2f7;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:#1a1a1a}
-.screen{display:none;flex:1;overflow-y:auto;padding-bottom:20px}
-.screen.active{display:block}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 16px 0}
-.stat-box{border-radius:16px;padding:16px;color:#fff}
-.stat-box.recv{background:#E8851A}
-.stat-box.give{background:#2D8A4E}
-.sb-icon{font-size:16px;margin-bottom:4px;opacity:0.9}
-.sb-label{font-size:12px;opacity:0.85;font-weight:500;margin-bottom:4px}
-.sb-val{font-size:28px;font-weight:700;letter-spacing:-0.5px}
-.net-row{margin:12px 16px 0;background:#fff;border:1.5px solid #e8e8e8;border-radius:14px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
-.nr-left{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:#666}
-.nr-val{font-size:20px;font-weight:700}
-.nr-val.pos{color:#2D8A4E}.nr-val.neg{color:#e53e3e}.nr-val.zero{color:#999}
-.pills{display:flex;gap:10px;padding:12px 16px 0}
-.pill{flex:1;background:#f9f9f9;border:1px solid #efefef;border-radius:12px;padding:12px 8px;text-align:center}
-.pill .pnum{font-size:22px;font-weight:700;color:#1a1a1a}
-.pill .plbl{font-size:11px;color:#888;margin-top:2px}
-.sec-title{font-size:13px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:0.5px;padding:16px 16px 8px}
-.card{background:#fff;border:1px solid #efefef;border-radius:14px;padding:14px 16px;margin:0 16px 10px;cursor:pointer}
-.card:active{background:#fafafa}
-.card-row1{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
-.card-name{font-size:15px;font-weight:600;color:#1a1a1a}
-.card-amount{font-size:16px;font-weight:700}
-.card-amount.recv{color:#E8851A}.card-amount.give{color:#2D8A4E}
-.card-row2{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
-.card-sub{font-size:12px;color:#888}
-.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
-.badge.recv{background:#FFF3E0;color:#E8851A}.badge.give{background:#E8F5EE;color:#2D8A4E}.badge.tag{background:#f2f2f7;color:#666}
-.evbadge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;background:#EEF2FF;color:#5B6AD0}
-.card-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #f0f0f0;font-size:12px;color:#888}
-.card-expand.open{display:block}
-.del-btn{margin-top:8px;background:#FFF0F0;border:1px solid #ffd0d0;color:#e53e3e;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif}
-.empty{text-align:center;padding:48px 20px;color:#aaa}
-.empty-icon{font-size:48px;margin-bottom:12px}
-.empty p{font-size:14px;line-height:1.6}
-.search-box{position:relative;padding:12px 16px 0}
-.search-box input{width:100%;border:1.5px solid #e8e8e8;border-radius:24px;padding:10px 14px 10px 38px;font-size:13px;font-family:'Inter',sans-serif;color:#1a1a1a;background:#f9f9f9;outline:none}
-.search-box input:focus{border-color:#E8851A;background:#fff}
-.search-icon{position:absolute;left:28px;top:50%;transform:translateY(-50%);color:#aaa;font-size:14px;pointer-events:none}
-.chips{display:flex;gap:6px;padding:8px 16px 0;overflow-x:auto;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{border:1.5px solid #e8e8e8;background:#fff;border-radius:20px;padding:5px 14px;font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;color:#666;transition:all 0.15s;flex-shrink:0}
-.chip.on{background:#E8851A;color:#fff;border-color:#E8851A}
-.pcard{background:#fff;border:1px solid #efefef;border-radius:14px;margin:0 16px 10px;overflow:hidden}
-.pc-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-.pc-name{font-size:15px;font-weight:600;color:#1a1a1a}
-.pc-rel{font-size:11px;color:#aaa;margin-top:2px}
-.pc-net{font-size:17px;font-weight:700;text-align:right}
-.pc-cnt{font-size:11px;color:#aaa;text-align:right}
-.pc-body{display:none;border-top:1px solid #f0f0f0}
-.pc-body.open{display:block}
-.pc-totals{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #f0f0f0}
-.pc-tot{padding:10px 16px;text-align:center}
-.ptv{font-size:14px;font-weight:700}.ptl{font-size:10px;color:#aaa;margin-top:2px}
-.pc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-bottom:1px solid #fafafa;font-size:12px}
-.pc-row:last-child{border:none}
-.pc-row-left{color:#888;flex:1;margin-right:8px}
-.pc-row-right{font-weight:600;white-space:nowrap}
-.ecard{background:#fff;border:1px solid #efefef;border-radius:14px;margin:0 16px 10px;overflow:hidden}
-.ec-head{padding:14px 16px;cursor:pointer}
-.ec-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-.ec-name{font-size:15px;font-weight:600;color:#1a1a1a}
-.ec-date{font-size:11px;color:#aaa}
-.ec-stats{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid #f0f0f0}
-.ec-stat{padding:10px 8px;text-align:center}
-.esv{font-size:13px;font-weight:700}.esl{font-size:10px;color:#aaa;margin-top:2px}
-.ec-body{display:none;border-top:1px solid #f0f0f0}
-.ec-body.open{display:block}
-.add-event-btn{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px dashed #ddd;border-radius:14px;margin:12px 16px;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#aaa;font-weight:500;width:calc(100% - 32px)}
-.botnav{background:#fff;border-top:1px solid #f0f0f0;display:flex;height:72px;flex-shrink:0;position:sticky;bottom:0;z-index:50}
-.nb{flex:1;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;color:#aaa;font-family:'Inter',sans-serif;font-weight:500;padding-bottom:4px}
-.nb.on{color:#E8851A}
-.nb-icon{font-size:22px;line-height:1}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:60;align-items:flex-end;justify-content:center}
-.overlay.show{display:flex}
-.sheet{background:#fff;border-radius:24px 24px 0 0;padding:20px;width:100%;max-width:430px;max-height:88vh;overflow-y:auto}
-.sheet-handle{width:40px;height:4px;background:#e0e0e0;border-radius:2px;margin:0 auto 18px}
-.sheet-title{font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:18px}
-.type-toggle{display:flex;background:#f2f2f7;border-radius:12px;padding:3px;margin-bottom:18px}
-.tt-btn{flex:1;border:none;background:transparent;border-radius:10px;padding:10px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;color:#888;transition:all 0.2s}
-.tt-btn.recv{background:#E8851A;color:#fff}
-.tt-btn.give{background:#2D8A4E;color:#fff}
-.flabel{display:block;font-size:12px;font-weight:600;color:#888;margin-bottom:5px;margin-top:14px;text-transform:uppercase;letter-spacing:0.3px}
-.finput{width:100%;border:1.5px solid #e8e8e8;border-radius:10px;padding:11px 13px;font-size:14px;font-family:'Inter',sans-serif;color:#1a1a1a;background:#fff;outline:none;-webkit-appearance:none;appearance:none}
-.finput:focus{border-color:#E8851A}
-textarea.finput{resize:none;min-height:68px}
-.sbtn{width:100%;background:#E8851A;color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;margin-top:20px}
-.cancel-btn{width:100%;border:none;background:transparent;color:#aaa;padding:10px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:6px}
-.set-row{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid #e8e8e8;border-radius:12px;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#1a1a1a;font-weight:500;margin-bottom:10px;width:100%;text-align:left}
-.set-icon{font-size:22px}
-.confirm-box{background:#f9f9f9;border:1px solid #e8e8e8;border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;color:#666;line-height:1.5}
-.confirm-row{display:flex;gap:8px}
-.cy{flex:1;background:#E8851A;color:#fff;border:none;border-radius:10px;padding:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
-.cn{flex:1;background:#fff;color:#1a1a1a;border:1.5px solid #e8e8e8;border-radius:10px;padding:11px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif}
-.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:500;z-index:200;opacity:0;transition:opacity 0.25s;pointer-events:none;white-space:nowrap}
-.toast.show{opacity:1}
-#fileInput{display:none}
+/* CALENDAR CUSTOM */
+input[type="date"]::-webkit-calendar-picker-indicator{opacity:0.5;cursor:pointer}
 </style>
 </head>
 <body>
@@ -383,20 +167,25 @@ textarea.finput{resize:none;min-height:68px}
   <div class="topbar">
     <div class="topbar-title">Sagan Tracker</div>
     <div class="topbar-actions">
-      <button class="tb-btn" onclick="openAdd()">+</button>
+      <button class="tb-btn add" onclick="openAdd()">+</button>
       <button class="tb-btn" onclick="openSettings()">&#9881;</button>
     </div>
   </div>
   <div class="toast" id="toast"></div>
 
+  <!-- HOME -->
   <div class="screen active" id="s-home">
     <div class="stats-grid">
-      <div class="stat-box recv"><div class="sb-icon">&#8595;</div><div class="sb-label">Total Received</div><div class="sb-val" id="h-recv">&#8377;0</div></div>
-      <div class="stat-box give"><div class="sb-icon">&#8593;</div><div class="sb-label">Total Given</div><div class="sb-val" id="h-give">&#8377;0</div></div>
-    </div>
-    <div class="net-row">
-      <div class="nr-left">&#9878; Net Balance</div>
-      <div class="nr-val zero" id="h-net">+&#8377;0</div>
+      <div class="stat-box recv">
+        <div class="sb-icon">&#8595;</div>
+        <div class="sb-label">Total Received</div>
+        <div class="sb-val" id="h-recv">&#8377;0</div>
+      </div>
+      <div class="stat-box give">
+        <div class="sb-icon">&#8593;</div>
+        <div class="sb-label">Total Given</div>
+        <div class="sb-val" id="h-give">&#8377;0</div>
+      </div>
     </div>
     <div class="pills">
       <div class="pill"><div class="pnum" id="h-ent">0</div><div class="plbl">Entries</div></div>
@@ -407,13 +196,21 @@ textarea.finput{resize:none;min-height:68px}
     <div id="h-list"></div>
   </div>
 
+  <!-- EVENTS -->
   <div class="screen" id="s-events">
-    <button class="add-event-btn" onclick="openCreateEvent()"><span style="font-size:18px">+</span> Create New Event</button>
+    <button class="add-event-btn" onclick="openCreateEvent()">
+      <span style="font-size:20px;color:#ddd">+</span>
+      <span>Create New Event</span>
+    </button>
     <div id="ev-list"></div>
   </div>
 
+  <!-- LOG -->
   <div class="screen" id="s-log">
-    <div class="search-box"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search name, occasion, event..." oninput="rLog()" id="log-q"></div>
+    <div class="search-box">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" placeholder="Search name, occasion, event..." oninput="rLog()" id="log-q">
+    </div>
     <div class="chips" id="lfc">
       <button class="chip on" onclick="setLF('all',this)">All</button>
       <button class="chip" onclick="setLF('Received',this)">Received</button>
@@ -428,8 +225,12 @@ textarea.finput{resize:none;min-height:68px}
     <div style="margin-top:10px" id="log-list"></div>
   </div>
 
+  <!-- PEOPLE -->
   <div class="screen" id="s-people">
-    <div class="search-box"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search person..." oninput="rPeople()" id="ppl-q"></div>
+    <div class="search-box">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" placeholder="Search person..." oninput="rPeople()" id="ppl-q">
+    </div>
     <div class="chips" id="psc">
       <button class="chip on" onclick="setPS('recv',this)">By Received</button>
       <button class="chip" onclick="setPS('give',this)">By Given</button>
@@ -439,72 +240,117 @@ textarea.finput{resize:none;min-height:68px}
     <div style="margin-top:10px" id="ppl-list"></div>
   </div>
 
+  <!-- BOTTOM NAV -->
   <div class="botnav">
     <button class="nb on" onclick="nav('home',this)"><span class="nb-icon">&#127968;</span>Home</button>
-    <button class="nb" onclick="nav('events',this)"><span class="nb-icon">&#127914;</span>Events</button>
-    <button class="nb" onclick="nav('log',this)"><span class="nb-icon">&#128203;</span>Log</button>
+    <button class="nb" onclick="nav('events',this)"><span class="nb-icon">&#128197;</span>Events</button>
+    <button class="nb" onclick="nav('log',this)"><span class="nb-icon">&#9776;</span>Log</button>
     <button class="nb" onclick="nav('people',this)"><span class="nb-icon">&#128101;</span>People</button>
   </div>
 </div>
 
+<!-- ADD ENTRY SHEET -->
 <div class="overlay" id="add-overlay" onclick="bgClose(event,'add-overlay')">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-title">Add Sagan</div>
     <div class="type-toggle">
-      <button class="tt-btn recv" id="tt-recv" onclick="setType('Received')">Received</button>
-      <button class="tt-btn" id="tt-give" onclick="setType('Given')">Given</button>
+      <button class="tt-btn recv" id="tt-recv" onclick="setType('Received')">&#8595; Received</button>
+      <button class="tt-btn" id="tt-give" onclick="setType('Given')">&#8593; Given</button>
     </div>
-    <label class="flabel" id="fl-person">Received From</label>
+    <label class="flabel" id="fl-person">Received From <span class="req">*</span></label>
     <input class="finput" id="f-name" type="text" placeholder="e.g. Ramesh Uncle">
-    <label class="flabel">Relationship</label>
-    <input class="finput" id="f-rel" type="text" list="rl" placeholder="e.g. Uncle">
-    <datalist id="rl"><option value="Uncle"><option value="Aunty"><option value="Neighbour"><option value="Family Friend"><option value="Cousin"><option value="Colleague"></datalist>
+    <label class="flabel">Amount <span class="req">*</span></label>
+    <input class="finput" id="f-amt" type="number" min="1" placeholder="e.g. 5100" inputmode="numeric">
+    <label class="flabel">Date</label>
+    <input class="finput" id="f-date" type="date">
     <label class="flabel">Occasion</label>
     <input class="finput" id="f-occ" type="text" list="ol" placeholder="e.g. Diwali 2024">
     <datalist id="ol"><option value="Diwali"><option value="Holi"><option value="Wedding"><option value="Birthday"><option value="Navratri"><option value="Bhai Dooj"></datalist>
-    <label class="flabel">Link to Event (optional)</label>
+    <label class="flabel">Relationship</label>
+    <input class="finput" id="f-rel" type="text" list="rl" placeholder="e.g. Uncle">
+    <datalist id="rl"><option value="Uncle"><option value="Aunty"><option value="Neighbour"><option value="Family Friend"><option value="Cousin"><option value="Colleague"></datalist>
+    <label class="flabel">Link to Event</label>
     <select class="finput" id="f-ev"><option value="">-- None --</option></select>
-    <label class="flabel">Amount</label>
-    <input class="finput" id="f-amt" type="number" min="1" placeholder="e.g. 5100">
-    <label class="flabel">Date</label>
-    <input class="finput" id="f-date" type="date">
-    <label class="flabel">Notes (optional)</label>
-    <textarea class="finput" id="f-notes" placeholder="e.g. Given in envelope"></textarea>
+    <label class="flabel">Notes</label>
+    <textarea class="finput" id="f-notes" placeholder="e.g. Given in envelope" rows="2"></textarea>
     <button class="sbtn" onclick="saveEntry()">Save Entry</button>
     <button class="cancel-btn" onclick="closeSheet('add-overlay')">Cancel</button>
   </div>
 </div>
 
+<!-- CREATE EVENT SHEET -->
 <div class="overlay" id="ev-overlay" onclick="bgClose(event,'ev-overlay')">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-title">Create Event</div>
-    <label class="flabel">Event Name</label>
+    <label class="flabel">Event Name <span class="req">*</span></label>
     <input class="finput" id="ev-name" type="text" placeholder="e.g. Rahul's Wedding">
-    <label class="flabel">Date</label>
+    <label class="flabel">Date <span class="req">*</span></label>
     <input class="finput" id="ev-date" type="date">
     <label class="flabel">Occasion Type</label>
     <input class="finput" id="ev-type" type="text" list="etl" placeholder="e.g. Wedding">
     <datalist id="etl"><option value="Wedding"><option value="Diwali"><option value="Birthday"><option value="Holi"><option value="Navratri"><option value="Other"></datalist>
-    <label class="flabel">Notes (optional)</label>
-    <textarea class="finput" id="ev-notes" placeholder="Any notes"></textarea>
+    <label class="flabel">Notes</label>
+    <textarea class="finput" id="ev-notes" placeholder="Any notes" rows="2"></textarea>
     <button class="sbtn" onclick="saveEvent()">Create Event</button>
     <button class="cancel-btn" onclick="closeSheet('ev-overlay')">Cancel</button>
   </div>
 </div>
 
+<!-- SETTINGS SHEET -->
 <div class="overlay" id="set-overlay" onclick="bgClose(event,'set-overlay')">
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div class="sheet-title">Settings</div>
+
+    <!-- BACKUP STATUS -->
+    <div class="backup-info" id="backup-status">
+      <div class="backup-dot" id="backup-dot"></div>
+      <span id="backup-text">No backup yet</span>
+    </div>
+
+    <!-- GOOGLE DRIVE -->
+    <div class="set-section">Google Drive</div>
+    <button class="gdrive-btn" id="gdrive-btn" onclick="gdriveAction()">
+      <span class="gicon">&#9654;</span>
+      <div>
+        <div id="gdrive-label">Connect Google Drive</div>
+        <div class="set-row-sub" id="gdrive-sub">Sign in once, save backups to Drive</div>
+      </div>
+    </button>
+    <button class="set-row" id="gdrive-save-btn" onclick="saveToGDrive()" style="display:none">
+      <span class="set-icon">&#9729;</span>
+      <div>
+        <div>Save Backup to Drive</div>
+        <div class="set-row-sub">Uploads sagan-backup.json to your Drive</div>
+      </div>
+    </button>
+
+    <!-- LOCAL BACKUP -->
+    <div class="set-section" style="margin-top:8px">Local Backup</div>
     <div id="set-confirm" style="display:none">
       <div class="confirm-box">This will replace ALL your data. Are you sure?</div>
-      <div class="confirm-row"><button class="cy" onclick="doImport()">Yes, Import</button><button class="cn" onclick="cancelImport()">Cancel</button></div>
+      <div class="confirm-row">
+        <button class="cy" onclick="doImport()">Yes, Import</button>
+        <button class="cn" onclick="cancelImport()">Cancel</button>
+      </div>
     </div>
     <div id="set-btns">
-      <button class="set-row" onclick="exportData()"><span class="set-icon">&#128228;</span>Export Data (backup .json)</button>
-      <button class="set-row" onclick="document.getElementById('fileInput').click()"><span class="set-icon">&#128229;</span>Import Data (restore .json)</button>
+      <button class="set-row" onclick="exportData()">
+        <span class="set-icon">&#128228;</span>
+        <div>
+          <div>Export Data</div>
+          <div class="set-row-sub">Download .json backup to device</div>
+        </div>
+      </button>
+      <button class="set-row" onclick="document.getElementById('fileInput').click()">
+        <span class="set-icon">&#128229;</span>
+        <div>
+          <div>Import Data</div>
+          <div class="set-row-sub">Restore from .json backup</div>
+        </div>
+      </button>
       <input type="file" id="fileInput" accept=".json" onchange="onFile(event)">
     </div>
     <button class="cancel-btn" onclick="closeSheet('set-overlay')">Close</button>
@@ -512,199 +358,429 @@ textarea.finput{resize:none;min-height:68px}
 </div>
 
 <script>
-var E=JSON.parse(localStorage.getItem('sg_e')||'[]');
-var V=JSON.parse(localStorage.getItem('sg_v')||'[]');
-var cType='Received',lf='all',ls='newest',ps='recv',imp=null;
+var E = JSON.parse(localStorage.getItem('sg_e') || '[]');
+var V = JSON.parse(localStorage.getItem('sg_v') || '[]');
+var cType = 'Received', lf = 'all', ls = 'newest', ps = 'recv', imp = null;
+var gToken = localStorage.getItem('sg_gtoken') || null;
+var lastBackup = localStorage.getItem('sg_lastbackup') || null;
 
-function save(){localStorage.setItem('sg_e',JSON.stringify(E));localStorage.setItem('sg_v',JSON.stringify(V));}
-function rs(n){return '\u20B9'+Number(n).toLocaleString('en-IN');}
-function fd(d){if(!d)return '';return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
+// Google OAuth config
+var G_CLIENT_ID = ''; // placeholder — user sets up their own
+var G_SCOPE = 'https://www.googleapis.com/auth/drive.file';
 
-function nav(t,btn){
-  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
-  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});
-  document.getElementById('s-'+t).classList.add('active');
+function save() {
+  localStorage.setItem('sg_e', JSON.stringify(E));
+  localStorage.setItem('sg_v', JSON.stringify(V));
+}
+function rs(n) { return '\u20B9' + Number(n).toLocaleString('en-IN'); }
+function fd(d) {
+  if (!d) return '';
+  return new Date(d + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+function daysAgo(ts) {
+  if (!ts) return null;
+  var diff = Math.floor((Date.now() - Number(ts)) / 86400000);
+  if (diff === 0) return 'today';
+  if (diff === 1) return 'yesterday';
+  return diff + ' days ago';
+}
+
+// NAV
+function nav(t, btn) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.querySelectorAll('.nb').forEach(function(b) { b.classList.remove('on'); });
+  document.getElementById('s-' + t).classList.add('active');
   btn.classList.add('on');
-  if(t==='home')rHome();
-  if(t==='events')rEvents();
-  if(t==='log')rLog();
-  if(t==='people')rPeople();
+  if (t === 'home') rHome();
+  if (t === 'events') rEvents();
+  if (t === 'log') rLog();
+  if (t === 'people') rPeople();
 }
 
-function rHome(){
-  var rc=E.filter(function(e){return e.t==='Received';}).reduce(function(s,e){return s+e.a;},0);
-  var gv=E.filter(function(e){return e.t==='Given';}).reduce(function(s,e){return s+e.a;},0);
-  var net=rc-gv;
-  document.getElementById('h-recv').textContent=rs(rc);
-  document.getElementById('h-give').textContent=rs(gv);
-  var nel=document.getElementById('h-net');
-  nel.textContent=(net>=0?'+':'')+rs(net);
-  nel.className='nr-val '+(net>0?'pos':net<0?'neg':'zero');
-  document.getElementById('h-ent').textContent=E.length;
-  document.getElementById('h-ppl').textContent=new Set(E.map(function(e){return e.n.toLowerCase().trim();})).size;
-  document.getElementById('h-evs').textContent=V.length;
-  var recent=[].concat(E).sort(function(a,b){return new Date(b.d)-new Date(a.d);}).slice(0,3);
-  var el=document.getElementById('h-list');
-  el.innerHTML=recent.length?recent.map(function(e){return ecard(e,true);}).join(''):'<div class="empty"><div class="empty-icon">&#128235;</div><p>No entries yet<br>Tap + to add your first sagan</p></div>';
+// HOME
+function rHome() {
+  var rc = E.filter(function(e) { return e.t === 'Received'; }).reduce(function(s, e) { return s + e.a; }, 0);
+  var gv = E.filter(function(e) { return e.t === 'Given'; }).reduce(function(s, e) { return s + e.a; }, 0);
+  document.getElementById('h-recv').textContent = rs(rc);
+  document.getElementById('h-give').textContent = rs(gv);
+  document.getElementById('h-ent').textContent = E.length;
+  document.getElementById('h-ppl').textContent = new Set(E.map(function(e) { return e.n.toLowerCase().trim(); })).size;
+  document.getElementById('h-evs').textContent = V.length;
+  var recent = [].concat(E).sort(function(a, b) { return new Date(b.d) - new Date(a.d); }).slice(0, 3);
+  var el = document.getElementById('h-list');
+  el.innerHTML = recent.length
+    ? recent.map(function(e) { return ecard(e, true); }).join('')
+    : '<div class="empty"><div class="empty-icon">&#128235;</div><p>No entries yet<br>Tap + to add your first sagan</p></div>';
 }
 
-function ecard(e,mini){
-  var ev=V.find(function(v){return v.id===e.ev;});
-  var rc=e.t==='Received';
-  return '<div class="card" onclick="tog(\'cx-'+e.id+'\')">'
-    +'<div class="card-row1"><span class="card-name">'+e.n+'</span><span class="card-amount '+(rc?'recv':'give')+'">'+rs(e.a)+'</span></div>'
-    +'<div class="card-row2"><span class="card-sub">'+e.o+(ev?' &nbsp;<span class="evbadge">'+ev.n+'</span>':'')+'&nbsp;<span class="badge tag">'+e.r+'</span></span>'
-    +'<span class="badge '+(rc?'recv':'give')+'">'+e.t+'</span>&nbsp;<span class="card-sub">'+fd(e.d)+'</span></div>'
-    +'<div class="card-expand" id="cx-'+e.id+'"><div style="margin-bottom:6px">'+(e.nt?e.nt:'No notes')+'</div>'
-    +(mini?'':'<button class="del-btn" onclick="event.stopPropagation();del(\''+e.id+'\')">Delete</button>')+'</div>'
-    +'</div>';
+function ecard(e, mini) {
+  var ev = V.find(function(v) { return v.id === e.ev; });
+  var rc = e.t === 'Received';
+  var meta = [];
+  if (e.o) meta.push(e.o);
+  if (ev) meta.push('<span class="evbadge">' + ev.n + '</span>');
+  if (e.r) meta.push('<span class="badge tag">' + e.r + '</span>');
+  return '<div class="card" onclick="tog(\'cx-' + e.id + '\')">'
+    + '<div class="card-row1"><span class="card-name">' + e.n + '</span>'
+    + '<span class="card-amount ' + (rc ? 'recv' : 'give') + '">' + rs(e.a) + '</span></div>'
+    + '<div class="card-row2">'
+    + '<span class="card-sub">' + (meta.length ? meta.join(' &nbsp;') : '') + '</span>'
+    + '<span style="display:flex;align-items:center;gap:6px">'
+    + '<span class="badge ' + (rc ? 'recv' : 'give') + '">' + e.t + '</span>'
+    + '<span class="card-sub">' + fd(e.d) + '</span>'
+    + '</span></div>'
+    + '<div class="card-expand" id="cx-' + e.id + '">'
+    + (e.nt ? '<div style="margin-bottom:8px">&#128221; ' + e.nt + '</div>' : '<div style="margin-bottom:8px;color:#ddd">No notes</div>')
+    + (mini ? '' : '<button class="del-btn" onclick="event.stopPropagation();del(\'' + e.id + '\')">Delete entry</button>')
+    + '</div></div>';
 }
-function tog(id){var el=document.getElementById(id);if(el)el.classList.toggle('open');}
 
-function rEvents(){
-  var el=document.getElementById('ev-list');
-  if(!V.length){el.innerHTML='<div class="empty"><div class="empty-icon">&#127914;</div><p>No events yet.<br>Create one to group sagans!</p></div>';return;}
-  el.innerHTML=V.map(function(v){
-    var linked=E.filter(function(e){return e.ev===v.id;});
-    var rc=linked.filter(function(e){return e.t==='Received';}).reduce(function(s,e){return s+e.a;},0);
-    var gv=linked.filter(function(e){return e.t==='Given';}).reduce(function(s,e){return s+e.a;},0);
-    var net=rc-gv;
-    return '<div class="ecard"><div class="ec-head" onclick="tog(\'ecb-'+v.id+'\')">'
-      +'<div class="ec-top"><div class="ec-name">'+v.n+'</div><div class="ec-date">'+fd(v.d)+'</div></div>'
-      +'<div><span class="badge tag">'+v.tp+'</span>&nbsp;<span class="badge tag">'+linked.length+' entries</span></div></div>'
-      +'<div class="ec-stats">'
-      +'<div class="ec-stat"><div class="esv" style="color:#E8851A">'+rs(rc)+'</div><div class="esl">Received</div></div>'
-      +'<div class="ec-stat"><div class="esv" style="color:#2D8A4E">'+rs(gv)+'</div><div class="esl">Given</div></div>'
-      +'<div class="ec-stat"><div class="esv" style="color:'+(net>=0?'#2D8A4E':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div><div class="esl">Net</div></div>'
-      +'</div><div class="ec-body" id="ecb-'+v.id+'">'
-      +(linked.length?linked.map(function(e){return '<div class="pc-row"><div class="pc-row-left">'+e.n+' &middot; '+e.o+' &middot; '+fd(e.d)+' <span class="badge '+(e.t==='Received'?'recv':'give')+'">'+e.t+'</span></div>'
-      +'<div class="pc-row-right" style="color:'+(e.t==='Received'?'#E8851A':'#2D8A4E')+'">'+rs(e.a)+'</div></div>';}).join('')
-      :'<div class="pc-row" style="color:#aaa">No entries linked yet</div>')
-      +'</div></div>';
+function tog(id) {
+  var el = document.getElementById(id);
+  if (el) el.classList.toggle('open');
+}
+
+// EVENTS
+function rEvents() {
+  var el = document.getElementById('ev-list');
+  if (!V.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">&#128197;</div><p>No events yet.<br>Create one to group sagans!</p></div>';
+    return;
+  }
+  el.innerHTML = V.map(function(v) {
+    var linked = E.filter(function(e) { return e.ev === v.id; });
+    var rc = linked.filter(function(e) { return e.t === 'Received'; }).reduce(function(s, e) { return s + e.a; }, 0);
+    var gv = linked.filter(function(e) { return e.t === 'Given'; }).reduce(function(s, e) { return s + e.a; }, 0);
+    var net = rc - gv;
+    return '<div class="ecard"><div class="ec-head" onclick="tog(\'ecb-' + v.id + '\')">'
+      + '<div class="ec-top"><div class="ec-name">' + v.n + '</div><div class="ec-date">' + fd(v.d) + '</div></div>'
+      + '<div><span class="badge tag">' + (v.tp || 'Event') + '</span>&nbsp;<span class="badge tag">' + linked.length + ' entries</span></div></div>'
+      + '<div class="ec-stats">'
+      + '<div class="ec-stat"><div class="esv" style="color:#E8851A">' + rs(rc) + '</div><div class="esl">Received</div></div>'
+      + '<div class="ec-stat"><div class="esv" style="color:#2D8A4E">' + rs(gv) + '</div><div class="esl">Given</div></div>'
+      + '<div class="ec-stat"><div class="esv" style="color:' + (net >= 0 ? '#2D8A4E' : '#e53e3e') + '">' + (net >= 0 ? '+' : '') + rs(net) + '</div><div class="esl">Net</div></div>'
+      + '</div><div class="ec-body" id="ecb-' + v.id + '">'
+      + (linked.length ? linked.sort(function(a, b) { return new Date(b.d) - new Date(a.d); }).map(function(e) {
+        return '<div class="pc-row"><div class="pc-row-left">' + e.n + (e.o ? ' &middot; ' + e.o : '') + ' &middot; ' + fd(e.d)
+          + ' <span class="badge ' + (e.t === 'Received' ? 'recv' : 'give') + '">' + e.t + '</span></div>'
+          + '<div class="pc-row-right" style="color:' + (e.t === 'Received' ? '#E8851A' : '#2D8A4E') + '">' + rs(e.a) + '</div></div>';
+      }).join('') : '<div class="pc-row" style="color:#ccc">No entries linked yet</div>')
+      + '</div></div>';
   }).join('');
 }
 
-function setLF(f,btn){lf=f;document.querySelectorAll('#lfc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rLog();}
-function setLS(s,btn){ls=s;document.querySelectorAll('#lsc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rLog();}
-function rLog(){
-  var q=(document.getElementById('log-q').value||'').toLowerCase();
-  var list=[].concat(E);
-  if(lf!=='all')list=list.filter(function(e){return e.t===lf;});
-  if(q)list=list.filter(function(e){return e.n.toLowerCase().includes(q)||e.o.toLowerCase().includes(q)||(V.find(function(v){return v.id===e.ev;})||{n:''}).n.toLowerCase().includes(q);});
-  if(ls==='newest')list.sort(function(a,b){return new Date(b.d)-new Date(a.d);});
-  else if(ls==='oldest')list.sort(function(a,b){return new Date(a.d)-new Date(b.d);});
-  else if(ls==='high')list.sort(function(a,b){return b.a-a.a;});
-  else list.sort(function(a,b){return a.a-b.a;});
-  var el=document.getElementById('log-list');
-  el.innerHTML=list.length?list.map(function(e){return ecard(e,false);}).join(''):'<div class="empty"><div class="empty-icon">&#128269;</div><p>No entries found</p></div>';
+// LOG
+function setLF(f, btn) {
+  lf = f;
+  document.querySelectorAll('#lfc .chip').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  rLog();
 }
-
-function setPS(s,btn){ps=s;document.querySelectorAll('#psc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rPeople();}
-function rPeople(){
-  var q=(document.getElementById('ppl-q').value||'').toLowerCase();
-  var map={};
-  E.forEach(function(e){
-    var k=e.n.toLowerCase().trim();
-    if(!map[k])map[k]={n:e.n,r:e.r,recv:0,give:0,cnt:0,items:[]};
-    if(e.t==='Received')map[k].recv+=e.a;else map[k].give+=e.a;
-    map[k].cnt++;map[k].items.push(e);
+function setLS(s, btn) {
+  ls = s;
+  document.querySelectorAll('#lsc .chip').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  rLog();
+}
+function rLog() {
+  var q = (document.getElementById('log-q').value || '').toLowerCase();
+  var list = [].concat(E);
+  if (lf !== 'all') list = list.filter(function(e) { return e.t === lf; });
+  if (q) list = list.filter(function(e) {
+    return e.n.toLowerCase().includes(q) || (e.o || '').toLowerCase().includes(q)
+      || (V.find(function(v) { return v.id === e.ev; }) || { n: '' }).n.toLowerCase().includes(q);
   });
-  var list=Object.values(map);
-  if(q)list=list.filter(function(p){return p.n.toLowerCase().includes(q);});
-  if(ps==='recv')list.sort(function(a,b){return b.recv-a.recv;});
-  else if(ps==='give')list.sort(function(a,b){return b.give-a.give;});
-  else if(ps==='net')list.sort(function(a,b){return (b.recv-b.give)-(a.recv-a.give);});
-  else list.sort(function(a,b){return b.cnt-a.cnt;});
-  var el=document.getElementById('ppl-list');
-  if(!list.length){el.innerHTML='<div class="empty"><div class="empty-icon">&#128101;</div><p>No people yet</p></div>';return;}
-  el.innerHTML=list.map(function(p,i){
-    var net=p.recv-p.give;
-    return '<div class="pcard"><div class="pc-head" onclick="tog(\'pb-'+i+'\')">'
-      +'<div><div class="pc-name">'+p.n+'</div><div class="pc-rel">'+p.r+' &middot; '+p.cnt+' time'+(p.cnt>1?'s':'')+'</div></div>'
-      +'<div><div class="pc-net" style="color:'+(net>=0?'#2D8A4E':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div><div class="pc-cnt">net</div></div></div>'
-      +'<div class="pc-body" id="pb-'+i+'"><div class="pc-totals">'
-      +'<div class="pc-tot"><div class="ptv" style="color:#E8851A">'+rs(p.recv)+'</div><div class="ptl">Received</div></div>'
-      +'<div class="pc-tot"><div class="ptv" style="color:#2D8A4E">'+rs(p.give)+'</div><div class="ptl">Given</div></div>'
-      +'</div>'+p.items.sort(function(a,b){return new Date(b.d)-new Date(a.d);}).map(function(e){
-        var ev=V.find(function(v){return v.id===e.ev;});
-        return '<div class="pc-row"><div class="pc-row-left">'+e.o+(ev?' &middot; '+ev.n:'')+' &middot; '+fd(e.d)+' <span class="badge '+(e.t==='Received'?'recv':'give')+'">'+e.t+'</span></div>'
-          +'<div class="pc-row-right" style="color:'+(e.t==='Received'?'#E8851A':'#2D8A4E')+'">'+rs(e.a)+'</div></div>';
-      }).join('')+'</div></div>';
+  if (ls === 'newest') list.sort(function(a, b) { return new Date(b.d) - new Date(a.d); });
+  else if (ls === 'oldest') list.sort(function(a, b) { return new Date(a.d) - new Date(b.d); });
+  else if (ls === 'high') list.sort(function(a, b) { return b.a - a.a; });
+  else list.sort(function(a, b) { return a.a - b.a; });
+  var el = document.getElementById('log-list');
+  el.innerHTML = list.length
+    ? list.map(function(e) { return ecard(e, false); }).join('')
+    : '<div class="empty"><div class="empty-icon">&#128269;</div><p>No entries found</p></div>';
+}
+
+// PEOPLE
+function setPS(s, btn) {
+  ps = s;
+  document.querySelectorAll('#psc .chip').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  rPeople();
+}
+function rPeople() {
+  var q = (document.getElementById('ppl-q').value || '').toLowerCase();
+  var map = {};
+  E.forEach(function(e) {
+    var k = e.n.toLowerCase().trim();
+    if (!map[k]) map[k] = { n: e.n, r: e.r || '', recv: 0, give: 0, cnt: 0, items: [] };
+    if (e.t === 'Received') map[k].recv += e.a; else map[k].give += e.a;
+    map[k].cnt++;
+    map[k].items.push(e);
+  });
+  var list = Object.values(map);
+  if (q) list = list.filter(function(p) { return p.n.toLowerCase().includes(q); });
+  if (ps === 'recv') list.sort(function(a, b) { return b.recv - a.recv; });
+  else if (ps === 'give') list.sort(function(a, b) { return b.give - a.give; });
+  else if (ps === 'net') list.sort(function(a, b) { return (b.recv - b.give) - (a.recv - a.give); });
+  else list.sort(function(a, b) { return b.cnt - a.cnt; });
+  var el = document.getElementById('ppl-list');
+  if (!list.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">&#128101;</div><p>No people yet</p></div>'; return; }
+  el.innerHTML = list.map(function(p, i) {
+    var net = p.recv - p.give;
+    return '<div class="pcard"><div class="pc-head" onclick="tog(\'pb-' + i + '\')">'
+      + '<div><div class="pc-name">' + p.n + '</div>'
+      + (p.r ? '<div class="pc-rel">' + p.r + ' &middot; ' + p.cnt + ' time' + (p.cnt > 1 ? 's' : '') + '</div>' : '<div class="pc-rel">' + p.cnt + ' time' + (p.cnt > 1 ? 's' : '') + '</div>')
+      + '</div>'
+      + '<div><div class="pc-net" style="color:' + (net >= 0 ? '#2D8A4E' : '#e53e3e') + '">' + (net >= 0 ? '+' : '') + rs(net) + '</div>'
+      + '<div class="pc-cnt">net</div></div></div>'
+      + '<div class="pc-body" id="pb-' + i + '"><div class="pc-totals">'
+      + '<div class="pc-tot"><div class="ptv" style="color:#E8851A">' + rs(p.recv) + '</div><div class="ptl">Received</div></div>'
+      + '<div class="pc-tot"><div class="ptv" style="color:#2D8A4E">' + rs(p.give) + '</div><div class="ptl">Given</div></div>'
+      + '</div>'
+      + p.items.sort(function(a, b) { return new Date(b.d) - new Date(a.d); }).map(function(e) {
+        var ev = V.find(function(v) { return v.id === e.ev; });
+        return '<div class="pc-row"><div class="pc-row-left">'
+          + (e.o || 'No occasion') + (ev ? ' &middot; ' + ev.n : '') + ' &middot; ' + fd(e.d)
+          + ' <span class="badge ' + (e.t === 'Received' ? 'recv' : 'give') + '">' + e.t + '</span></div>'
+          + '<div class="pc-row-right" style="color:' + (e.t === 'Received' ? '#E8851A' : '#2D8A4E') + '">' + rs(e.a) + '</div></div>';
+      }).join('')
+      + '</div></div>';
   }).join('');
 }
 
-function openAdd(){
-  document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
-  ['f-name','f-rel','f-occ','f-amt','f-notes'].forEach(function(id){document.getElementById(id).value='';});
-  var sel=document.getElementById('f-ev');
-  sel.innerHTML='<option value="">-- None --</option>';
-  V.forEach(function(v){sel.innerHTML+='<option value="'+v.id+'">'+v.n+'</option>';});
+// ADD ENTRY
+function openAdd() {
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  ['f-name', 'f-rel', 'f-occ', 'f-amt', 'f-notes'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  var sel = document.getElementById('f-ev');
+  sel.innerHTML = '<option value="">-- None --</option>';
+  V.forEach(function(v) { sel.innerHTML += '<option value="' + v.id + '">' + v.n + '</option>'; });
   setType('Received');
   document.getElementById('add-overlay').classList.add('show');
 }
-function setType(t){
-  cType=t;
-  document.getElementById('tt-recv').className='tt-btn'+(t==='Received'?' recv':'');
-  document.getElementById('tt-give').className='tt-btn'+(t==='Given'?' give':'');
-  document.getElementById('fl-person').textContent=t==='Received'?'Received From':'Given To';
-}
-function saveEntry(){
-  var d=document.getElementById('f-date').value;
-  var o=document.getElementById('f-occ').value.trim();
-  var a=document.getElementById('f-amt').value;
-  var n=document.getElementById('f-name').value.trim();
-  var r=document.getElementById('f-rel').value.trim();
-  var nt=document.getElementById('f-notes').value.trim();
-  var ev=document.getElementById('f-ev').value||null;
-  if(!d||!o||!a||!n||!r){toast('Please fill all required fields');return;}
-  E.push({id:Date.now().toString(),t:cType,d:d,o:o,a:Number(a),n:n,r:r,nt:nt,ev:ev});
-  save();closeSheet('add-overlay');toast('Sagan saved!');rHome();
+
+function setType(t) {
+  cType = t;
+  document.getElementById('tt-recv').className = 'tt-btn' + (t === 'Received' ? ' recv' : '');
+  document.getElementById('tt-give').className = 'tt-btn' + (t === 'Given' ? ' give' : '');
+  document.getElementById('fl-person').innerHTML = (t === 'Received' ? 'Received From' : 'Given To') + ' <span class="req">*</span>';
 }
 
-function openCreateEvent(){
-  document.getElementById('ev-date').value=new Date().toISOString().split('T')[0];
-  ['ev-name','ev-type','ev-notes'].forEach(function(id){document.getElementById(id).value='';});
+function saveEntry() {
+  var n = document.getElementById('f-name').value.trim();
+  var a = document.getElementById('f-amt').value;
+  if (!n || !a) { toast('Name and amount are required'); return; }
+  var d = document.getElementById('f-date').value;
+  var o = document.getElementById('f-occ').value.trim();
+  var r = document.getElementById('f-rel').value.trim();
+  var nt = document.getElementById('f-notes').value.trim();
+  var ev = document.getElementById('f-ev').value || null;
+  E.push({ id: Date.now().toString(), t: cType, d: d || new Date().toISOString().split('T')[0], o: o, a: Number(a), n: n, r: r, nt: nt, ev: ev });
+  save();
+  closeSheet('add-overlay');
+  toast('Sagan saved!');
+  rHome();
+}
+
+// EVENTS
+function openCreateEvent() {
+  document.getElementById('ev-date').value = new Date().toISOString().split('T')[0];
+  ['ev-name', 'ev-type', 'ev-notes'].forEach(function(id) { document.getElementById(id).value = ''; });
   document.getElementById('ev-overlay').classList.add('show');
 }
-function saveEvent(){
-  var n=document.getElementById('ev-name').value.trim();
-  var d=document.getElementById('ev-date').value;
-  var tp=document.getElementById('ev-type').value.trim();
-  var nt=document.getElementById('ev-notes').value.trim();
-  if(!n||!d){toast('Name and date required');return;}
-  V.push({id:'v'+Date.now(),n:n,d:d,tp:tp||'Event',nt:nt});
-  save();closeSheet('ev-overlay');toast('Event created!');rEvents();
+function saveEvent() {
+  var n = document.getElementById('ev-name').value.trim();
+  var d = document.getElementById('ev-date').value;
+  if (!n || !d) { toast('Name and date required'); return; }
+  V.push({ id: 'v' + Date.now(), n: n, d: d, tp: document.getElementById('ev-type').value.trim() || 'Event', nt: document.getElementById('ev-notes').value.trim() });
+  save();
+  closeSheet('ev-overlay');
+  toast('Event created!');
+  rEvents();
 }
 
-function del(id){
-  if(!confirm('Delete this entry?'))return;
-  E=E.filter(function(e){return e.id!==id;});save();rLog();toast('Deleted');
+function del(id) {
+  if (!confirm('Delete this entry?')) return;
+  E = E.filter(function(e) { return e.id !== id; });
+  save();
+  rLog();
+  toast('Deleted');
 }
 
-function closeSheet(id){document.getElementById(id).classList.remove('show');}
-function bgClose(e,id){if(e.target.id===id)closeSheet(id);}
-function openSettings(){document.getElementById('set-overlay').classList.add('show');}
+// SHEETS
+function closeSheet(id) { document.getElementById(id).classList.remove('show'); }
+function bgClose(e, id) { if (e.target.id === id) closeSheet(id); }
 
-function exportData(){
-  var b=new Blob([JSON.stringify({entries:E,events:V},null,2)],{type:'application/json'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(b);
-  a.download='sagan-backup-'+new Date().toISOString().split('T')[0]+'.json';
-  document.body.appendChild(a);a.click();
-  setTimeout(function(){URL.revokeObjectURL(a.href);document.body.removeChild(a);},1000);
-  toast('Backup downloaded');closeSheet('set-overlay');
+// SETTINGS
+function openSettings() {
+  updateBackupStatus();
+  updateGDriveUI();
+  document.getElementById('set-overlay').classList.add('show');
 }
-function onFile(e){
-  var f=e.target.files[0];if(!f)return;
-  var r=new FileReader();
-  r.onload=function(ev){
-    try{imp=JSON.parse(ev.target.result);document.getElementById('set-btns').style.display='none';document.getElementById('set-confirm').style.display='block';}
-    catch(err){toast('Invalid file');}
+
+function updateBackupStatus() {
+  var dot = document.getElementById('backup-dot');
+  var txt = document.getElementById('backup-text');
+  if (!lastBackup) {
+    dot.className = 'backup-dot';
+    txt.textContent = 'No backup yet — export to stay safe';
+    return;
+  }
+  var days = Math.floor((Date.now() - Number(lastBackup)) / 86400000);
+  if (days === 0) { dot.className = 'backup-dot fresh'; txt.textContent = 'Last backed up today'; }
+  else if (days <= 7) { dot.className = 'backup-dot fresh'; txt.textContent = 'Last backed up ' + daysAgo(lastBackup); }
+  else { dot.className = 'backup-dot old'; txt.textContent = 'Last backup was ' + daysAgo(lastBackup) + ' — consider backing up'; }
+}
+
+function updateGDriveUI() {
+  var btn = document.getElementById('gdrive-btn');
+  var saveBtn = document.getElementById('gdrive-save-btn');
+  var label = document.getElementById('gdrive-label');
+  var sub = document.getElementById('gdrive-sub');
+  if (gToken) {
+    btn.className = 'gdrive-btn gdrive-connected';
+    label.textContent = 'Google Drive Connected';
+    sub.textContent = 'Tap to disconnect';
+    saveBtn.style.display = 'flex';
+  } else {
+    btn.className = 'gdrive-btn';
+    label.textContent = 'Connect Google Drive';
+    sub.textContent = 'Sign in once, save backups to Drive';
+    saveBtn.style.display = 'none';
+  }
+}
+
+function gdriveAction() {
+  if (gToken) {
+    if (confirm('Disconnect Google Drive?')) {
+      gToken = null;
+      localStorage.removeItem('sg_gtoken');
+      updateGDriveUI();
+      toast('Google Drive disconnected');
+    }
+    return;
+  }
+  // Google OAuth2 implicit flow
+  var clientId = localStorage.getItem('sg_gclientid') || '';
+  if (!clientId) {
+    clientId = prompt('Enter your Google API Client ID:\n(Get it free from console.cloud.google.com — see Settings help)');
+    if (!clientId) return;
+    localStorage.setItem('sg_gclientid', clientId);
+  }
+  var redirectUri = window.location.href.split('?')[0].split('#')[0];
+  var authUrl = 'https://accounts.google.com/o/oauth2/auth'
+    + '?client_id=' + encodeURIComponent(clientId)
+    + '&redirect_uri=' + encodeURIComponent(redirectUri)
+    + '&response_type=token'
+    + '&scope=' + encodeURIComponent(G_SCOPE);
+  window.open(authUrl, '_blank', 'width=500,height=600');
+  toast('Complete sign-in in the popup window');
+}
+
+// Handle OAuth redirect token
+(function() {
+  var hash = window.location.hash;
+  if (hash && hash.includes('access_token')) {
+    var params = {};
+    hash.substring(1).split('&').forEach(function(p) {
+      var kv = p.split('=');
+      params[kv[0]] = decodeURIComponent(kv[1] || '');
+    });
+    if (params.access_token) {
+      gToken = params.access_token;
+      localStorage.setItem('sg_gtoken', gToken);
+      window.location.hash = '';
+      toast('Google Drive connected!');
+    }
+  }
+})();
+
+function saveToGDrive() {
+  if (!gToken) { toast('Please connect Google Drive first'); return; }
+  var data = JSON.stringify({ entries: E, events: V }, null, 2);
+  var filename = 'sagan-backup-' + new Date().toISOString().split('T')[0] + '.json';
+  // Step 1: Create file metadata
+  fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + gToken,
+      'Content-Type': 'multipart/related; boundary=boundary123'
+    },
+    body: '--boundary123\r\nContent-Type: application/json\r\n\r\n'
+      + JSON.stringify({ name: filename, mimeType: 'application/json' })
+      + '\r\n--boundary123\r\nContent-Type: application/json\r\n\r\n'
+      + data + '\r\n--boundary123--'
+  }).then(function(r) {
+    if (r.ok) {
+      lastBackup = Date.now().toString();
+      localStorage.setItem('sg_lastbackup', lastBackup);
+      updateBackupStatus();
+      toast('Saved to Google Drive!');
+    } else if (r.status === 401) {
+      gToken = null;
+      localStorage.removeItem('sg_gtoken');
+      updateGDriveUI();
+      toast('Session expired — please reconnect Drive');
+    } else {
+      toast('Drive upload failed, try again');
+    }
+  }).catch(function() {
+    toast('Could not reach Google Drive');
+  });
+}
+
+// LOCAL BACKUP
+function exportData() {
+  var b = new Blob([JSON.stringify({ entries: E, events: V }, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'sagan-backup-' + new Date().toISOString().split('T')[0] + '.json';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 1000);
+  lastBackup = Date.now().toString();
+  localStorage.setItem('sg_lastbackup', lastBackup);
+  updateBackupStatus();
+  toast('Backup downloaded');
+}
+function onFile(e) {
+  var f = e.target.files[0];
+  if (!f) return;
+  var r = new FileReader();
+  r.onload = function(ev) {
+    try {
+      imp = JSON.parse(ev.target.result);
+      document.getElementById('set-btns').style.display = 'none';
+      document.getElementById('set-confirm').style.display = 'block';
+    } catch (err) { toast('Invalid file'); }
   };
-  r.readAsText(f);e.target.value='';
+  r.readAsText(f);
+  e.target.value = '';
 }
-function doImport(){if(!imp)return;E=imp.entries||[];V=imp.events||[];save();toast('Data imported!');cancelImport();closeSheet('set-overlay');rHome();}
-function cancelImport(){imp=null;document.getElementById('set-confirm').style.display='none';document.getElementById('set-btns').style.display='block';}
-function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
+function doImport() {
+  if (!imp) return;
+  E = imp.entries || [];
+  V = imp.events || [];
+  save();
+  toast('Data imported!');
+  cancelImport();
+  closeSheet('set-overlay');
+  rHome();
+}
+function cancelImport() {
+  imp = null;
+  document.getElementById('set-confirm').style.display = 'none';
+  document.getElementById('set-btns').style.display = 'block';
+}
+
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2500);
+}
 
 rHome();
 </script>
