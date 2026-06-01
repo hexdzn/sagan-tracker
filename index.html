@@ -4,65 +4,87 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Sagan Tracker</title>
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#6C63FF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Sagan Tracker">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:'Inter',sans-serif;background:#f2f2f7;display:flex;justify-content:center;min-height:100vh}
-#app{width:100%;max-width:430px;background:#f2f2f7;min-height:100vh;display:flex;flex-direction:column}
-.topbar{background:#fff;padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.topbar-title{font-size:24px;font-weight:700;color:#1a1a1a}
+body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-content:center;min-height:100vh}
+#app{width:100%;max-width:430px;background:#f0f0f8;min-height:100vh;display:flex;flex-direction:column}
+
+/* TOP BAR */
+.topbar{background:#fff;padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 1px 0 #efefef}
+.topbar-title{font-size:22px;font-weight:700;color:#1a1a2e}
 .topbar-actions{display:flex;gap:10px;align-items:center}
-.tb-btn{width:38px;height:38px;border-radius:50%;border:1px solid #e8e8e8;background:#fff;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:#1a1a1a}
-.tb-btn.add{background:#1a1a1a;color:#fff;border-color:#1a1a1a;font-size:22px}
+.tb-btn{width:38px;height:38px;border-radius:50%;border:none;background:#f0f0f8;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:#6C63FF}
+.tb-btn.add{background:#6C63FF;color:#fff;font-size:24px;font-weight:300;box-shadow:0 4px 12px rgba(108,99,255,0.35)}
+
+/* SCREENS */
 .screen{display:none;flex:1;overflow-y:auto;padding-bottom:20px}
 .screen.active{display:block}
+
+/* STAT CARDS */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 16px 0}
-.stat-box{border-radius:16px;padding:18px;color:#fff}
-.stat-box.recv{background:#E8851A}
-.stat-box.give{background:#2D8A4E}
-.sb-icon{font-size:18px;margin-bottom:6px;opacity:0.85}
+.stat-box{border-radius:18px;padding:18px;color:#fff;position:relative;overflow:hidden}
+.stat-box.recv{background:linear-gradient(135deg,#6C63FF,#8B85FF)}
+.stat-box.give{background:linear-gradient(135deg,#A855F7,#C084FC)}
+.stat-box::after{content:'';position:absolute;right:-20px;top:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.1)}
+.sb-icon{font-size:20px;margin-bottom:6px;opacity:0.9}
 .sb-label{font-size:12px;opacity:0.85;font-weight:500;margin-bottom:6px}
-.sb-val{font-size:30px;font-weight:700;letter-spacing:-1px}
+.sb-val{font-size:28px;font-weight:700;letter-spacing:-0.5px}
+
+/* PILLS */
 .pills{display:flex;gap:10px;padding:12px 16px 0}
-.pill{flex:1;background:#fff;border-radius:14px;padding:14px 8px;text-align:center}
-.pill .pnum{font-size:24px;font-weight:700;color:#1a1a1a}
+.pill{flex:1;background:#fff;border-radius:14px;padding:14px 8px;text-align:center;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
+.pill .pnum{font-size:22px;font-weight:700;color:#1a1a2e}
 .pill .plbl{font-size:11px;color:#888;margin-top:2px}
-.sec-title{font-size:14px;font-weight:600;color:#1a1a1a;padding:18px 16px 10px}
-.card{background:#fff;border-radius:14px;padding:14px 16px;margin:0 16px 10px;cursor:pointer}
-.card:active{opacity:0.9}
+
+/* SECTION */
+.sec-title{font-size:14px;font-weight:600;color:#1a1a2e;padding:18px 16px 10px}
+
+/* CARDS */
+.card{background:#fff;border-radius:16px;padding:14px 16px;margin:0 16px 10px;cursor:pointer;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
+.card:active{opacity:0.95;transform:scale(0.99)}
 .card-row1{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
-.card-name{font-size:15px;font-weight:600;color:#1a1a1a;flex:1;margin-right:8px}
+.card-name{font-size:15px;font-weight:600;color:#1a1a2e;flex:1;margin-right:8px}
 .card-amount{font-size:16px;font-weight:700;white-space:nowrap}
-.card-amount.recv{color:#E8851A}
-.card-amount.give{color:#2D8A4E}
+.card-amount.recv{color:#6C63FF}
+.card-amount.give{color:#A855F7}
 .card-row2{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
 .card-sub{font-size:12px;color:#888}
-.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
-.badge.recv{background:#FFF3E0;color:#E8851A}
-.badge.give{background:#E8F5EE;color:#2D8A4E}
-.badge.tag{background:#f2f2f7;color:#666}
-.evbadge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;background:#EEF2FF;color:#5B6AD0}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600}
+.badge.recv{background:#EEF0FF;color:#6C63FF}
+.badge.give{background:#F5EEFF;color:#A855F7}
+.badge.tag{background:#f0f0f8;color:#888}
+.evbadge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;background:#EEF0FF;color:#6C63FF}
 .card-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #f5f5f5;font-size:12px;color:#888}
 .card-expand.open{display:block}
 .del-btn{margin-top:8px;background:#FFF0F0;border:1px solid #ffd0d0;color:#e53e3e;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif}
-.empty{text-align:center;padding:48px 20px;color:#bbb;background:#fff;border-radius:14px;margin:0 16px}
-.empty-icon{font-size:44px;margin-bottom:12px;opacity:0.4}
+
+/* EMPTY */
+.empty{text-align:center;padding:48px 20px;color:#bbb;background:#fff;border-radius:16px;margin:0 16px;box-shadow:0 1px 4px rgba(108,99,255,0.06)}
+.empty-icon{font-size:44px;margin-bottom:12px;opacity:0.35}
 .empty p{font-size:13px;line-height:1.6}
+
+/* SEARCH */
 .search-box{position:relative;padding:12px 16px 0}
-.search-box input{width:100%;border:none;border-radius:12px;padding:11px 14px 11px 38px;font-size:13px;font-family:'Inter',sans-serif;color:#1a1a1a;background:#fff;outline:none}
+.search-box input{width:100%;border:none;border-radius:14px;padding:11px 14px 11px 40px;font-size:13px;font-family:'Inter',sans-serif;color:#1a1a2e;background:#fff;outline:none;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
+.search-box input:focus{box-shadow:0 0 0 2px rgba(108,99,255,0.2)}
 .search-icon{position:absolute;left:28px;top:50%;transform:translateY(-50%);color:#bbb;font-size:14px;pointer-events:none}
+
+/* CHIPS */
 .chips{display:flex;gap:6px;padding:8px 16px 0;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chip{border:none;background:#fff;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;color:#888;flex-shrink:0}
-.chip.on{background:#1a1a1a;color:#fff}
-.pcard{background:#fff;border-radius:14px;margin:0 16px 10px;overflow:hidden}
+.chip{border:none;background:#fff;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;color:#888;flex-shrink:0;box-shadow:0 1px 3px rgba(108,99,255,0.08)}
+.chip.on{background:#6C63FF;color:#fff;box-shadow:0 2px 8px rgba(108,99,255,0.3)}
+
+/* PEOPLE */
+.pcard{background:#fff;border-radius:16px;margin:0 16px 10px;overflow:hidden;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
 .pc-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-.pc-name{font-size:15px;font-weight:600;color:#1a1a1a}
+.pc-name{font-size:15px;font-weight:600;color:#1a1a2e}
 .pc-rel{font-size:11px;color:#aaa;margin-top:2px}
-.pc-net{font-size:17px;font-weight:700;text-align:right}
+.pc-net{font-size:16px;font-weight:700;text-align:right}
 .pc-body{display:none;border-top:1px solid #f5f5f5}
 .pc-body.open{display:block}
 .pc-totals{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #f5f5f5}
@@ -73,10 +95,12 @@ body{font-family:'Inter',sans-serif;background:#f2f2f7;display:flex;justify-cont
 .pc-row:last-child{border:none}
 .pc-row-left{color:#888;flex:1;margin-right:8px}
 .pc-row-right{font-weight:600;white-space:nowrap}
-.ecard{background:#fff;border-radius:14px;margin:0 16px 10px;overflow:hidden}
+
+/* EVENTS */
+.ecard{background:#fff;border-radius:16px;margin:0 16px 10px;overflow:hidden;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
 .ec-head{padding:14px 16px;cursor:pointer}
 .ec-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-.ec-name{font-size:15px;font-weight:600;color:#1a1a1a}
+.ec-name{font-size:15px;font-weight:600;color:#1a1a2e}
 .ec-date{font-size:11px;color:#aaa}
 .ec-stats{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid #f5f5f5}
 .ec-stat{padding:10px 8px;text-align:center}
@@ -84,41 +108,53 @@ body{font-family:'Inter',sans-serif;background:#f2f2f7;display:flex;justify-cont
 .esl{font-size:10px;color:#aaa;margin-top:2px}
 .ec-body{display:none;border-top:1px solid #f5f5f5}
 .ec-body.open{display:block}
-.add-event-btn{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;margin:12px 16px;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#aaa;font-weight:500;width:calc(100% - 32px);border:2px dashed #e0e0e0}
-.botnav{background:#fff;border-top:1px solid #f0f0f0;display:flex;height:72px;flex-shrink:0;position:sticky;bottom:0;z-index:50}
-.nb{flex:1;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;color:#bbb;font-family:'Inter',sans-serif;font-weight:500;padding-bottom:6px}
-.nb.on{color:#1a1a1a}
-.nb-icon{font-size:22px;line-height:1}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:60;align-items:flex-end;justify-content:center}
+.add-event-btn{display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;margin:12px 16px;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#aaa;font-weight:500;width:calc(100% - 32px);border:2px dashed #d8d8f0;box-shadow:0 1px 4px rgba(108,99,255,0.06)}
+
+/* BOTTOM NAV */
+.botnav{background:#fff;border-top:1px solid #efefef;display:flex;height:72px;flex-shrink:0;position:sticky;bottom:0;z-index:50;box-shadow:0 -2px 12px rgba(108,99,255,0.08)}
+.nb{flex:1;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:#bbb;font-family:'Inter',sans-serif;font-weight:500;padding-bottom:4px;transition:color 0.15s}
+.nb.on{color:#6C63FF}
+.nb svg{width:22px;height:22px;stroke-width:1.8}
+
+/* OVERLAY + SHEET */
+.overlay{display:none;position:fixed;inset:0;background:rgba(26,26,46,0.45);z-index:60;align-items:flex-end;justify-content:center}
 .overlay.show{display:flex}
 .sheet{background:#fff;border-radius:24px 24px 0 0;padding:20px 20px 32px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto}
-.sheet-handle{width:36px;height:4px;background:#e0e0e0;border-radius:2px;margin:0 auto 16px}
-.sheet-title{font-size:18px;font-weight:700;color:#1a1a1a;margin-bottom:18px}
-.type-toggle{display:flex;background:#f5f5f5;border-radius:12px;padding:3px;margin-bottom:20px}
-.tt-btn{flex:1;border:none;background:transparent;border-radius:10px;padding:11px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;color:#aaa;transition:all 0.2s}
-.tt-btn.recv{background:#E8851A;color:#fff}
-.tt-btn.give{background:#2D8A4E;color:#fff}
+.sheet-handle{width:36px;height:4px;background:#e8e8f0;border-radius:2px;margin:0 auto 18px}
+.sheet-title{font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:18px}
+
+/* TYPE TOGGLE */
+.type-toggle{display:flex;background:#f0f0f8;border-radius:14px;padding:3px;margin-bottom:20px}
+.tt-btn{flex:1;border:none;background:transparent;border-radius:12px;padding:11px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;color:#aaa;transition:all 0.2s}
+.tt-btn.recv{background:#6C63FF;color:#fff;box-shadow:0 2px 8px rgba(108,99,255,0.3)}
+.tt-btn.give{background:#A855F7;color:#fff;box-shadow:0 2px 8px rgba(168,85,247,0.3)}
+
+/* FORM */
 .flabel{display:block;font-size:11px;font-weight:600;color:#aaa;margin-bottom:5px;margin-top:16px;text-transform:uppercase;letter-spacing:0.4px}
-.flabel .req{color:#E8851A}
-.finput{width:100%;border:1.5px solid #efefef;border-radius:12px;padding:12px 14px;font-size:14px;font-family:'Inter',sans-serif;color:#1a1a1a;background:#fafafa;outline:none;-webkit-appearance:none;appearance:none;transition:border-color 0.2s}
-.finput:focus{border-color:#1a1a1a;background:#fff}
+.flabel .req{color:#6C63FF}
+.finput{width:100%;border:1.5px solid #ececf5;border-radius:12px;padding:12px 14px;font-size:14px;font-family:'Inter',sans-serif;color:#1a1a2e;background:#fafafa;outline:none;-webkit-appearance:none;appearance:none;transition:border-color 0.2s}
+.finput:focus{border-color:#6C63FF;background:#fff}
 textarea.finput{resize:none;min-height:68px}
-.sbtn{width:100%;background:#1a1a1a;color:#fff;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;margin-top:22px}
+.sbtn{width:100%;background:linear-gradient(135deg,#6C63FF,#A855F7);color:#fff;border:none;border-radius:14px;padding:15px;font-size:15px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;margin-top:22px;box-shadow:0 4px 12px rgba(108,99,255,0.3)}
 .cancel-btn{width:100%;border:none;background:transparent;color:#bbb;padding:10px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px}
+
+/* SETTINGS */
 .set-section{font-size:11px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:0.4px;padding:4px 0 8px}
-.set-row{display:flex;align-items:center;gap:12px;background:#fafafa;border-radius:12px;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#1a1a1a;font-weight:500;margin-bottom:10px;width:100%;text-align:left;border:none}
-.set-row:active{background:#f0f0f0}
+.set-row{display:flex;align-items:center;gap:12px;background:#fafafa;border-radius:14px;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#1a1a2e;font-weight:500;margin-bottom:10px;width:100%;text-align:left;border:none;transition:background 0.15s}
+.set-row:active{background:#f0f0f8}
 .set-icon{font-size:20px;width:28px;text-align:center}
 .set-row-sub{font-size:11px;color:#aaa;margin-top:1px}
-.backup-info{background:#f9f9f9;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#888;display:flex;align-items:center;gap:8px}
-.backup-dot{width:8px;height:8px;border-radius:50%;background:#bbb;flex-shrink:0}
-.backup-dot.fresh{background:#2D8A4E}
-.backup-dot.old{background:#E8851A}
-.confirm-box{background:#fafafa;border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;color:#666;line-height:1.5}
+.backup-info{background:#f0f0f8;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#666;display:flex;align-items:center;gap:8px}
+.backup-dot{width:8px;height:8px;border-radius:50%;background:#ddd;flex-shrink:0}
+.backup-dot.fresh{background:#22c55e}
+.backup-dot.old{background:#f59e0b}
+.confirm-box{background:#f0f0f8;border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;color:#666;line-height:1.5}
 .confirm-row{display:flex;gap:8px}
-.cy{flex:1;background:#1a1a1a;color:#fff;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
-.cn{flex:1;background:#fff;color:#1a1a1a;border:1.5px solid #e8e8e8;border-radius:10px;padding:12px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif}
-.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:500;z-index:200;opacity:0;transition:opacity 0.25s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+.cy{flex:1;background:#6C63FF;color:#fff;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.cn{flex:1;background:#fff;color:#1a1a2e;border:1.5px solid #e8e8f0;border-radius:10px;padding:12px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif}
+
+/* TOAST */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:500;z-index:200;opacity:0;transition:opacity 0.25s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
 #fileInput{display:none}
 </style>
@@ -129,7 +165,9 @@ textarea.finput{resize:none;min-height:68px}
   <div class="topbar-title">Sagan Tracker</div>
   <div class="topbar-actions">
     <button class="tb-btn add" onclick="openAdd()">+</button>
-    <button class="tb-btn" onclick="openSettings()">&#9881;</button>
+    <button class="tb-btn" onclick="openSettings()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -137,8 +175,16 @@ textarea.finput{resize:none;min-height:68px}
 <!-- HOME -->
 <div class="screen active" id="s-home">
   <div class="stats-grid">
-    <div class="stat-box recv"><div class="sb-icon">&#8595;</div><div class="sb-label">Total Received</div><div class="sb-val" id="h-recv">&#8377;0</div></div>
-    <div class="stat-box give"><div class="sb-icon">&#8593;</div><div class="sb-label">Total Given</div><div class="sb-val" id="h-give">&#8377;0</div></div>
+    <div class="stat-box recv">
+      <div class="sb-icon">&#8595;</div>
+      <div class="sb-label">Total Received</div>
+      <div class="sb-val" id="h-recv">&#8377;0</div>
+    </div>
+    <div class="stat-box give">
+      <div class="sb-icon">&#8593;</div>
+      <div class="sb-label">Total Given</div>
+      <div class="sb-val" id="h-give">&#8377;0</div>
+    </div>
   </div>
   <div class="pills">
     <div class="pill"><div class="pnum" id="h-ent">0</div><div class="plbl">Entries</div></div>
@@ -151,13 +197,21 @@ textarea.finput{resize:none;min-height:68px}
 
 <!-- EVENTS -->
 <div class="screen" id="s-events">
-  <button class="add-event-btn" onclick="openCreateEvent()"><span style="font-size:20px;color:#ddd">+</span><span>Create New Event</span></button>
+  <button class="add-event-btn" onclick="openCreateEvent()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#6C63FF" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+    <span>Create New Event</span>
+  </button>
   <div id="ev-list"></div>
 </div>
 
 <!-- LOG -->
 <div class="screen" id="s-log">
-  <div class="search-box"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search name, occasion, event..." oninput="rLog()" id="log-q"></div>
+  <div class="search-box">
+    <span class="search-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </span>
+    <input type="text" placeholder="Search name, occasion, event..." oninput="rLog()" id="log-q">
+  </div>
   <div class="chips" id="lfc">
     <button class="chip on" onclick="setLF('all',this)">All</button>
     <button class="chip" onclick="setLF('Received',this)">Received</button>
@@ -174,7 +228,12 @@ textarea.finput{resize:none;min-height:68px}
 
 <!-- PEOPLE -->
 <div class="screen" id="s-people">
-  <div class="search-box"><span class="search-icon">&#128269;</span><input type="text" placeholder="Search person..." oninput="rPeople()" id="ppl-q"></div>
+  <div class="search-box">
+    <span class="search-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </span>
+    <input type="text" placeholder="Search person..." oninput="rPeople()" id="ppl-q">
+  </div>
   <div class="chips" id="psc">
     <button class="chip on" onclick="setPS('recv',this)">By Received</button>
     <button class="chip" onclick="setPS('give',this)">By Given</button>
@@ -186,10 +245,22 @@ textarea.finput{resize:none;min-height:68px}
 
 <!-- BOTTOM NAV -->
 <div class="botnav">
-  <button class="nb on" onclick="nav('home',this)"><span class="nb-icon">&#127968;</span>Home</button>
-  <button class="nb" onclick="nav('events',this)"><span class="nb-icon">&#128197;</span>Events</button>
-  <button class="nb" onclick="nav('log',this)"><span class="nb-icon">&#9776;</span>Log</button>
-  <button class="nb" onclick="nav('people',this)"><span class="nb-icon">&#128101;</span>People</button>
+  <button class="nb on" onclick="nav('home',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </button>
+  <button class="nb" onclick="nav('events',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Events
+  </button>
+  <button class="nb" onclick="nav('log',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+    Log
+  </button>
+  <button class="nb" onclick="nav('people',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    People
+  </button>
 </div>
 </div>
 
@@ -247,18 +318,16 @@ textarea.finput{resize:none;min-height:68px}
 <div class="sheet">
   <div class="sheet-handle"></div>
   <div class="sheet-title">Settings</div>
-
   <div class="backup-info" id="backup-status">
     <div class="backup-dot" id="backup-dot"></div>
-    <span id="backup-text">No backup yet</span>
+    <span id="backup-text">No backup yet — back up your data!</span>
   </div>
-
   <div class="set-section">Backup</div>
-  <button class="set-row" onclick="emailBackup()">
-    <span class="set-icon">&#128231;</span>
+  <button class="set-row" onclick="shareBackup()">
+    <span class="set-icon">&#128279;</span>
     <div>
-      <div>Email Backup to Myself</div>
-      <div class="set-row-sub">Opens mail app with your data attached</div>
+      <div>Share Backup</div>
+      <div class="set-row-sub">Share .json via WhatsApp, Gmail, Drive etc.</div>
     </div>
   </button>
   <button class="set-row" onclick="exportData()">
@@ -268,7 +337,6 @@ textarea.finput{resize:none;min-height:68px}
       <div class="set-row-sub">Save .json file to your device</div>
     </div>
   </button>
-
   <div class="set-section" style="margin-top:4px">Restore</div>
   <div id="set-confirm" style="display:none">
     <div class="confirm-box">This will replace ALL your current data. Are you sure?</div>
@@ -357,14 +425,14 @@ function rEvents(){
       +'<div class="ec-top"><div class="ec-name">'+v.n+'</div><div class="ec-date">'+fd(v.d)+'</div></div>'
       +'<div><span class="badge tag">'+(v.tp||'Event')+'</span>&nbsp;<span class="badge tag">'+lk.length+' entries</span></div></div>'
       +'<div class="ec-stats">'
-      +'<div class="ec-stat"><div class="esv" style="color:#E8851A">'+rs(rc)+'</div><div class="esl">Received</div></div>'
-      +'<div class="ec-stat"><div class="esv" style="color:#2D8A4E">'+rs(gv)+'</div><div class="esl">Given</div></div>'
-      +'<div class="ec-stat"><div class="esv" style="color:'+(net>=0?'#2D8A4E':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div><div class="esl">Net</div></div>'
+      +'<div class="ec-stat"><div class="esv" style="color:#6C63FF">'+rs(rc)+'</div><div class="esl">Received</div></div>'
+      +'<div class="ec-stat"><div class="esv" style="color:#A855F7">'+rs(gv)+'</div><div class="esl">Given</div></div>'
+      +'<div class="ec-stat"><div class="esv" style="color:'+(net>=0?'#22c55e':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div><div class="esl">Net</div></div>'
       +'</div><div class="ec-body" id="ecb-'+v.id+'">'
       +(lk.length?lk.sort(function(a,b){return new Date(b.d)-new Date(a.d);}).map(function(e){
         return '<div class="pc-row"><div class="pc-row-left">'+e.n+(e.o?' &middot; '+e.o:'')+' &middot; '+fd(e.d)
           +' <span class="badge '+(e.t==='Received'?'recv':'give')+'">'+e.t+'</span></div>'
-          +'<div class="pc-row-right" style="color:'+(e.t==='Received'?'#E8851A':'#2D8A4E')+'">'+rs(e.a)+'</div></div>';
+          +'<div class="pc-row-right" style="color:'+(e.t==='Received'?'#6C63FF':'#A855F7')+'">'+rs(e.a)+'</div></div>';
       }).join(''):'<div class="pc-row" style="color:#ccc">No entries linked yet</div>')
       +'</div></div>';
   }).join('');
@@ -412,16 +480,16 @@ function rPeople(){
     var net=p.recv-p.give;
     return '<div class="pcard"><div class="pc-head" onclick="tog(\'pb-'+i+'\')">'
       +'<div><div class="pc-name">'+p.n+'</div><div class="pc-rel">'+(p.r?p.r+' &middot; ':'')+p.cnt+' time'+(p.cnt>1?'s':'')+'</div></div>'
-      +'<div><div class="pc-net" style="color:'+(net>=0?'#2D8A4E':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div></div></div>'
+      +'<div><div class="pc-net" style="color:'+(net>=0?'#22c55e':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div></div></div>'
       +'<div class="pc-body" id="pb-'+i+'"><div class="pc-totals">'
-      +'<div class="pc-tot"><div class="ptv" style="color:#E8851A">'+rs(p.recv)+'</div><div class="ptl">Received</div></div>'
-      +'<div class="pc-tot"><div class="ptv" style="color:#2D8A4E">'+rs(p.give)+'</div><div class="ptl">Given</div></div>'
+      +'<div class="pc-tot"><div class="ptv" style="color:#6C63FF">'+rs(p.recv)+'</div><div class="ptl">Received</div></div>'
+      +'<div class="pc-tot"><div class="ptv" style="color:#A855F7">'+rs(p.give)+'</div><div class="ptl">Given</div></div>'
       +'</div>'
       +p.items.sort(function(a,b){return new Date(b.d)-new Date(a.d);}).map(function(e){
         var ev=V.find(function(v){return v.id===e.ev;});
         return '<div class="pc-row"><div class="pc-row-left">'+(e.o||'No occasion')+(ev?' &middot; '+ev.n:'')+' &middot; '+fd(e.d)
           +' <span class="badge '+(e.t==='Received'?'recv':'give')+'">'+e.t+'</span></div>'
-          +'<div class="pc-row-right" style="color:'+(e.t==='Received'?'#E8851A':'#2D8A4E')+'">'+rs(e.a)+'</div></div>';
+          +'<div class="pc-row-right" style="color:'+(e.t==='Received'?'#6C63FF':'#A855F7')+'">'+rs(e.a)+'</div></div>';
       }).join('')
       +'</div></div>';
   }).join('');
@@ -449,11 +517,15 @@ function saveEntry(){
   var a=document.getElementById('f-amt').value;
   if(!n||!a){toast('Name and amount are required');return;}
   var d=document.getElementById('f-date').value;
-  var o=document.getElementById('f-occ').value.trim();
-  var r=document.getElementById('f-rel').value.trim();
-  var nt=document.getElementById('f-notes').value.trim();
-  var ev=document.getElementById('f-ev').value||null;
-  E.push({id:Date.now().toString(),t:cType,d:d||new Date().toISOString().split('T')[0],o:o,a:Number(a),n:n,r:r,nt:nt,ev:ev});
+  E.push({
+    id:Date.now().toString(),t:cType,
+    d:d||new Date().toISOString().split('T')[0],
+    o:document.getElementById('f-occ').value.trim(),
+    a:Number(a),n:n,
+    r:document.getElementById('f-rel').value.trim(),
+    nt:document.getElementById('f-notes').value.trim(),
+    ev:document.getElementById('f-ev').value||null
+  });
   save();closeSheet('add-overlay');toast('Sagan saved!');rHome();
 }
 
@@ -495,17 +567,25 @@ function updateBackupStatus(){
   else{dot.className='backup-dot old';txt.textContent='Last backup '+daysAgo(lastBackup)+' - please back up!';}
 }
 
-function emailBackup(){
+function shareBackup(){
   var data=JSON.stringify({entries:E,events:V},null,2);
-  var date=new Date().toISOString().split('T')[0];
-  var subject='Sagan Tracker Backup - '+date;
-  var body='Your Sagan Tracker backup is attached below.\n\nTo restore: open the app Settings, tap Import Backup, and paste or upload this data.\n\n--- BACKUP DATA ---\n\n'+data;
-  var mailto='mailto:?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-  window.location.href=mailto;
-  lastBackup=Date.now().toString();
-  localStorage.setItem('sg_lastbackup',lastBackup);
-  updateBackupStatus();
-  toast('Opening mail app...');
+  var filename='sagan-backup-'+new Date().toISOString().split('T')[0]+'.json';
+  if(navigator.share&&navigator.canShare){
+    var file=new File([data],filename,{type:'application/json'});
+    if(navigator.canShare({files:[file]})){
+      navigator.share({files:[file],title:'Sagan Tracker Backup',text:'My Sagan Tracker backup - '+filename})
+        .then(function(){
+          lastBackup=Date.now().toString();
+          localStorage.setItem('sg_lastbackup',lastBackup);
+          updateBackupStatus();
+          toast('Backup shared!');
+        })
+        .catch(function(){});
+      return;
+    }
+  }
+  // Fallback to download if share not supported
+  exportData();
 }
 
 function exportData(){
