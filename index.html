@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Sagan Tracker</title>
+<title>Shagun</title>
 <meta name="theme-color" content="#6C63FF">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Sagan Tracker">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="apple-mobile-web-app-title" content="Shagun">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -18,23 +18,43 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 .topbar{background:#fff;padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 1px 0 #efefef}
 .topbar-title{font-size:22px;font-weight:700;color:#1a1a2e}
 .topbar-actions{display:flex;gap:10px;align-items:center}
-.tb-btn{width:38px;height:38px;border-radius:50%;border:none;background:#f0f0f8;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:#6C63FF}
+.tb-btn{width:38px;height:38px;border-radius:50%;border:none;background:#f0f0f8;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6C63FF}
 .tb-btn.add{background:#6C63FF;color:#fff;font-size:24px;box-shadow:0 4px 12px rgba(108,99,255,0.35)}
 .screen{display:none;flex:1;overflow-y:auto;padding-bottom:20px}
 .screen.active{display:block}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 16px 0}
-.stat-box{border-radius:18px;padding:18px;color:#fff;position:relative;overflow:hidden}
-.stat-box.recv{background:linear-gradient(135deg,#6C63FF,#8B85FF)}
-.stat-box.give{background:linear-gradient(135deg,#A855F7,#C084FC)}
-.stat-box::after{content:'';position:absolute;right:-20px;top:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.1)}
-.sb-icon{font-size:20px;margin-bottom:6px;opacity:0.9}
-.sb-label{font-size:12px;opacity:0.85;font-weight:500;margin-bottom:6px}
-.sb-val{font-size:28px;font-weight:700;letter-spacing:-0.5px}
+
+/* DASHBOARD */
+.dash-hero{margin:16px;background:linear-gradient(135deg,#6C63FF,#A855F7);border-radius:20px;padding:20px;color:#fff;position:relative;overflow:hidden}
+.dash-hero::after{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.08)}
+.dash-hero::before{content:'';position:absolute;left:-20px;bottom:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.06)}
+.dash-label{font-size:12px;opacity:0.8;font-weight:500;margin-bottom:6px}
+.dash-amount{font-size:36px;font-weight:700;letter-spacing:-1px;margin-bottom:4px}
+.dash-sub{font-size:12px;opacity:0.7}
+.dash-row{display:flex;justify-content:space-between;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.2)}
+.dash-mini{text-align:center}
+.dash-mini .dv{font-size:18px;font-weight:700}
+.dash-mini .dl{font-size:11px;opacity:0.75;margin-top:2px}
+
+/* PREMIUM BANNER */
+.premium-banner{margin:0 16px 0;background:linear-gradient(135deg,#FF6B6B,#FF8E53);border-radius:14px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.pb-left{color:#fff}
+.pb-title{font-size:13px;font-weight:700}
+.pb-sub{font-size:11px;opacity:0.85;margin-top:1px}
+.pb-btn{background:rgba(255,255,255,0.25);border:none;color:#fff;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap}
+
+/* AD BANNER */
+.ad-banner{margin:10px 16px 0;background:#fff;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;border:1px solid #efefef}
+.ad-label{font-size:9px;color:#bbb;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0}
+.ad-content{font-size:12px;color:#888;flex:1}
+
+/* PILLS */
 .pills{display:flex;gap:10px;padding:12px 16px 0}
-.pill{flex:1;background:#fff;border-radius:14px;padding:14px 8px;text-align:center;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
-.pill .pnum{font-size:22px;font-weight:700;color:#1a1a2e}
-.pill .plbl{font-size:11px;color:#888;margin-top:2px}
-.sec-title{font-size:14px;font-weight:600;color:#1a1a2e;padding:18px 16px 10px}
+.pill{flex:1;background:#fff;border-radius:14px;padding:12px 8px;text-align:center;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
+.pill .pnum{font-size:20px;font-weight:700;color:#1a1a2e}
+.pill .plbl{font-size:10px;color:#888;margin-top:2px}
+.sec-title{font-size:14px;font-weight:600;color:#1a1a2e;padding:16px 16px 10px}
+
+/* ENTRY CARDS */
 .card{background:#fff;border-radius:16px;padding:14px 16px;margin:0 16px 10px;cursor:pointer;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
 .card:active{opacity:0.95}
 .card-row1{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
@@ -42,42 +62,69 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 .card-amount{font-size:16px;font-weight:700;white-space:nowrap}
 .card-amount.recv{color:#6C63FF}
 .card-amount.give{color:#A855F7}
+.card-amount.gift{color:#FF6B6B}
 .card-row2{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
 .card-sub{font-size:12px;color:#888}
 .badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600}
 .badge.recv{background:#EEF0FF;color:#6C63FF}
 .badge.give{background:#F5EEFF;color:#A855F7}
+.badge.gift{background:#FFF0F0;color:#FF6B6B}
+.badge.both{background:#FFF5E0;color:#FF8C00}
 .badge.tag{background:#f0f0f8;color:#888}
 .evbadge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;background:#EEF0FF;color:#6C63FF}
 .card-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #f5f5f5;font-size:12px;color:#888}
 .card-expand.open{display:block}
-.del-btn{margin-top:8px;background:#FFF0F0;border:1px solid #ffd0d0;color:#e53e3e;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif}
+.card-actions{display:flex;gap:8px;margin-top:10px}
+.edit-btn{flex:1;background:#EEF0FF;border:none;color:#6C63FF;border-radius:8px;padding:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.del-btn{flex:1;background:#FFF0F0;border:none;color:#e53e3e;border-radius:8px;padding:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.gift-img{width:100%;border-radius:10px;margin-bottom:8px;max-height:180px;object-fit:cover}
+
+/* FREE LIMIT BAR */
+.limit-bar{margin:0 16px 10px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 1px 4px rgba(108,99,255,0.06)}
+.lb-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.lb-label{font-size:12px;color:#888}
+.lb-count{font-size:12px;font-weight:600;color:#1a1a2e}
+.lb-track{background:#f0f0f8;border-radius:20px;height:6px;overflow:hidden}
+.lb-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#6C63FF,#A855F7);transition:width 0.3s}
+.lb-fill.warn{background:linear-gradient(90deg,#FF8C00,#FF6B6B)}
+
+/* EMPTY */
 .empty{text-align:center;padding:48px 20px;color:#bbb;background:#fff;border-radius:16px;margin:0 16px;box-shadow:0 1px 4px rgba(108,99,255,0.06)}
 .empty-icon{font-size:44px;margin-bottom:12px;opacity:0.35}
 .empty p{font-size:13px;line-height:1.6}
+
+/* SEARCH */
 .search-box{position:relative;padding:12px 16px 0}
 .search-box input{width:100%;border:none;border-radius:14px;padding:11px 14px 11px 40px;font-size:13px;font-family:'Inter',sans-serif;color:#1a1a2e;background:#fff;outline:none;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
 .search-box input:focus{box-shadow:0 0 0 2px rgba(108,99,255,0.2)}
 .si{position:absolute;left:28px;top:50%;transform:translateY(-50%);color:#bbb;pointer-events:none}
+
+/* CHIPS */
 .chips{display:flex;gap:6px;padding:8px 16px 0;overflow-x:auto;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{border:none;background:#fff;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;color:#888;flex-shrink:0;box-shadow:0 1px 3px rgba(108,99,255,0.08)}
 .chip.on{background:#6C63FF;color:#fff;box-shadow:0 2px 8px rgba(108,99,255,0.3)}
+
+/* PEOPLE */
 .pcard{background:#fff;border-radius:16px;margin:0 16px 10px;overflow:hidden;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
 .pc-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
 .pc-name{font-size:15px;font-weight:600;color:#1a1a2e}
 .pc-rel{font-size:11px;color:#aaa;margin-top:2px}
-.pc-net{font-size:16px;font-weight:700;text-align:right}
+.pc-right .pc-net{font-size:16px;font-weight:700;text-align:right}
+.pc-right .pc-cnt{font-size:11px;color:#aaa;text-align:right;margin-top:2px}
 .pc-body{display:none;border-top:1px solid #f5f5f5}
 .pc-body.open{display:block}
-.pc-totals{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #f5f5f5}
-.pc-tot{padding:10px 16px;text-align:center}
-.ptv{font-size:15px;font-weight:700}
-.ptl{font-size:10px;color:#aaa;margin-top:2px}
+.pc-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid #f5f5f5}
+.pc-stat{padding:10px 8px;text-align:center}
+.pc-stat .psv{font-size:14px;font-weight:700}
+.pc-stat .psl{font-size:10px;color:#aaa;margin-top:2px}
+.pc-timeline-title{font-size:11px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:0.4px;padding:10px 16px 6px}
 .pc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-bottom:1px solid #fafafa;font-size:12px}
 .pc-row:last-child{border:none}
 .pc-row-left{color:#888;flex:1;margin-right:8px}
 .pc-row-right{font-weight:600;white-space:nowrap}
+
+/* EVENTS */
 .ecard{background:#fff;border-radius:16px;margin:0 16px 10px;overflow:hidden;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
 .ec-head{padding:14px 16px;cursor:pointer}
 .ec-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
@@ -89,64 +136,102 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 .esl{font-size:10px;color:#aaa;margin-top:2px}
 .ec-body{display:none;border-top:1px solid #f5f5f5}
 .ec-body.open{display:block}
-.add-event-btn{display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;margin:12px 16px;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#aaa;font-weight:500;width:calc(100% - 32px);border:2px dashed #d8d8f0;box-shadow:0 1px 4px rgba(108,99,255,0.06)}
+.add-event-btn{display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;margin:12px 16px;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#aaa;font-weight:500;width:calc(100% - 32px);border:2px dashed #d8d8f0}
+
+/* BOTTOM NAV */
 .botnav{background:#fff;border-top:1px solid #efefef;display:flex;height:72px;flex-shrink:0;position:sticky;bottom:0;z-index:50;box-shadow:0 -2px 12px rgba(108,99,255,0.08)}
 .nb{flex:1;border:none;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:#bbb;font-family:'Inter',sans-serif;font-weight:500;padding-bottom:4px}
 .nb.on{color:#6C63FF}
 .nb svg{width:22px;height:22px}
+
+/* OVERLAY + SHEET */
 .overlay{display:none;position:fixed;inset:0;background:rgba(26,26,46,0.45);z-index:60;align-items:flex-end;justify-content:center}
 .overlay.show{display:flex}
-.sheet{background:#fff;border-radius:24px 24px 0 0;padding:20px 20px 32px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto}
+.sheet{background:#fff;border-radius:24px 24px 0 0;padding:20px 20px 32px;width:100%;max-width:430px;max-height:92vh;overflow-y:auto}
 .sheet-handle{width:36px;height:4px;background:#e8e8f0;border-radius:2px;margin:0 auto 18px}
 .sheet-title{font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:18px}
-.type-toggle{display:flex;background:#f0f0f8;border-radius:14px;padding:3px;margin-bottom:20px}
-.tt-btn{flex:1;border:none;background:transparent;border-radius:12px;padding:11px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;color:#aaa;transition:all 0.2s}
+
+/* ENTRY TYPE TOGGLE */
+.type-toggle{display:flex;background:#f0f0f8;border-radius:14px;padding:3px;margin-bottom:16px}
+.tt-btn{flex:1;border:none;background:transparent;border-radius:12px;padding:10px 6px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;color:#aaa;transition:all 0.2s}
 .tt-btn.recv{background:#6C63FF;color:#fff;box-shadow:0 2px 8px rgba(108,99,255,0.3)}
 .tt-btn.give{background:#A855F7;color:#fff;box-shadow:0 2px 8px rgba(168,85,247,0.3)}
+
+/* GIFT TYPE TOGGLE */
+.gift-toggle{display:flex;background:#f0f0f8;border-radius:14px;padding:3px;margin-bottom:16px}
+.gt-btn{flex:1;border:none;background:transparent;border-radius:12px;padding:9px 4px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;cursor:pointer;color:#aaa;transition:all 0.2s}
+.gt-btn.on{background:#fff;color:#1a1a2e;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+
+/* FORM */
 .flabel{display:block;font-size:11px;font-weight:600;color:#aaa;margin-bottom:5px;margin-top:16px;text-transform:uppercase;letter-spacing:0.4px}
 .flabel .req{color:#6C63FF}
 .finput{width:100%;border:1.5px solid #ececf5;border-radius:12px;padding:12px 14px;font-size:14px;font-family:'Inter',sans-serif;color:#1a1a2e;background:#fafafa;outline:none;-webkit-appearance:none;appearance:none;transition:border-color 0.2s}
 .finput:focus{border-color:#6C63FF;background:#fff}
 textarea.finput{resize:none;min-height:68px}
+.photo-upload{border:2px dashed #d8d8f0;border-radius:12px;padding:20px;text-align:center;cursor:pointer;background:#fafafa;margin-top:0}
+.photo-upload:active{background:#f0f0f8}
+.photo-preview{width:100%;border-radius:12px;margin-top:8px;max-height:200px;object-fit:cover;display:none}
+.premium-lock{background:#f0f0f8;border-radius:12px;padding:12px 14px;text-align:center;font-size:12px;color:#888;margin-top:0}
+.premium-lock strong{color:#6C63FF;cursor:pointer}
 .sbtn{width:100%;background:linear-gradient(135deg,#6C63FF,#A855F7);color:#fff;border:none;border-radius:14px;padding:15px;font-size:15px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;margin-top:22px;box-shadow:0 4px 12px rgba(108,99,255,0.3)}
 .sbtn:disabled{opacity:0.6;cursor:not-allowed}
 .cancel-btn{width:100%;border:none;background:transparent;color:#bbb;padding:10px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px}
+
+/* SETTINGS */
 .set-section{font-size:11px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:0.4px;padding:4px 0 8px}
 .set-row{display:flex;align-items:center;gap:12px;background:#fafafa;border-radius:14px;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;color:#1a1a2e;font-weight:500;margin-bottom:10px;width:100%;text-align:left;border:none}
 .set-row:active{background:#f0f0f8}
 .set-icon{font-size:20px;width:28px;text-align:center}
 .set-row-sub{font-size:11px;color:#aaa;margin-top:1px}
 .user-info{background:#f0f0f8;border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
-.user-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#6C63FF,#A855F7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:600;flex-shrink:0}
+.user-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6C63FF,#A855F7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700;flex-shrink:0}
 .user-email{font-size:13px;color:#1a1a2e;font-weight:500;word-break:break-all}
-.user-label{font-size:11px;color:#aaa;margin-top:1px}
+.user-plan{font-size:11px;margin-top:2px}
+.user-plan.free{color:#888}
+.user-plan.premium{color:#6C63FF;font-weight:600}
 .confirm-box{background:#f0f0f8;border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;color:#666;line-height:1.5}
 .confirm-row{display:flex;gap:8px}
 .cy{flex:1;background:#6C63FF;color:#fff;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
 .cn{flex:1;background:#fff;color:#1a1a2e;border:1.5px solid #e8e8f0;border-radius:10px;padding:12px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif}
-.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:500;z-index:200;opacity:0;transition:opacity 0.25s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
-.toast.show{opacity:1}
-/* AUTH SCREEN */
+
+/* PREMIUM SHEET */
+.premium-hero{background:linear-gradient(135deg,#6C63FF,#A855F7);border-radius:16px;padding:24px;text-align:center;margin-bottom:20px;color:#fff}
+.premium-hero .ph-icon{font-size:40px;margin-bottom:10px}
+.premium-hero .ph-title{font-size:20px;font-weight:700;margin-bottom:6px}
+.premium-hero .ph-sub{font-size:13px;opacity:0.85}
+.feature-list{margin-bottom:20px}
+.feature-item{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px;color:#1a1a2e;border-bottom:1px solid #f5f5f5}
+.feature-item:last-child{border:none}
+.fi-icon{font-size:18px;width:28px;text-align:center;flex-shrink:0}
+.price-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.price-card{border:2px solid #ececf5;border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:all 0.2s}
+.price-card.selected{border-color:#6C63FF;background:#EEF0FF}
+.price-card .pc-period{font-size:11px;color:#888;margin-bottom:4px}
+.price-card .pc-price{font-size:20px;font-weight:700;color:#1a1a2e}
+.price-card .pc-save{font-size:10px;color:#22c55e;font-weight:600;margin-top:2px}
+
+/* AUTH */
 #auth-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:32px 24px;background:linear-gradient(160deg,#f0f0f8 0%,#e8e8ff 100%)}
-.auth-logo{width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,#6C63FF,#A855F7);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:24px;box-shadow:0 8px 24px rgba(108,99,255,0.3)}
-.auth-title{font-size:26px;font-weight:700;color:#1a1a2e;margin-bottom:8px;text-align:center}
-.auth-sub{font-size:14px;color:#888;text-align:center;margin-bottom:40px;line-height:1.6}
-.google-btn{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid #e0e0f0;border-radius:16px;padding:14px 24px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#1a1a2e;cursor:pointer;width:100%;max-width:320px;box-shadow:0 2px 12px rgba(108,99,255,0.1);transition:all 0.2s;margin-bottom:16px}
-.google-btn:active{background:#f8f8ff;transform:scale(0.98)}
+.auth-logo{width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,#6C63FF,#A855F7);display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:20px;box-shadow:0 8px 24px rgba(108,99,255,0.3)}
+.auth-title{font-size:28px;font-weight:700;color:#1a1a2e;margin-bottom:6px}
+.auth-sub{font-size:14px;color:#888;text-align:center;margin-bottom:36px;line-height:1.6;max-width:280px}
+.google-btn{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid #e0e0f0;border-radius:16px;padding:14px 24px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#1a1a2e;cursor:pointer;width:100%;max-width:320px;box-shadow:0 2px 12px rgba(108,99,255,0.1);margin-bottom:14px}
+.google-btn:active{background:#f8f8ff}
 .google-icon{width:22px;height:22px;flex-shrink:0}
-.auth-divider{display:flex;align-items:center;gap:12px;width:100%;max-width:320px;margin-bottom:16px}
+.auth-divider{display:flex;align-items:center;gap:12px;width:100%;max-width:320px;margin-bottom:14px}
 .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:#e8e8f0}
 .auth-divider span{font-size:12px;color:#bbb}
 .magic-input{width:100%;max-width:320px;border:1.5px solid #e0e0f0;border-radius:14px;padding:13px 16px;font-size:14px;font-family:'Inter',sans-serif;color:#1a1a2e;background:#fff;outline:none;margin-bottom:10px}
 .magic-input:focus{border-color:#6C63FF}
-.magic-btn{width:100%;max-width:320px;background:linear-gradient(135deg,#6C63FF,#A855F7);color:#fff;border:none;border-radius:14px;padding:13px;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;box-shadow:0 4px 12px rgba(108,99,255,0.3)}
-.magic-btn:disabled{opacity:0.6;cursor:not-allowed}
-.auth-note{font-size:11px;color:#bbb;text-align:center;margin-top:20px;max-width:280px;line-height:1.6}
-/* LOADING */
-.loading{display:flex;align-items:center;justify-content:center;padding:40px;color:#aaa;font-size:14px;gap:10px}
-.spinner{width:20px;height:20px;border:2px solid #e8e8f0;border-top-color:#6C63FF;border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0}
-@keyframes spin{to{transform:rotate(360deg)}}
+.magic-btn{width:100%;max-width:320px;background:linear-gradient(135deg,#6C63FF,#A855F7);color:#fff;border:none;border-radius:14px;padding:13px;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer}
+.magic-btn:disabled{opacity:0.6}
+.auth-note{font-size:11px;color:#bbb;text-align:center;margin-top:16px;max-width:280px;line-height:1.6}
+
+/* TOAST */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:500;z-index:200;opacity:0;transition:opacity 0.25s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
 #fileInput{display:none}
+#photoInput{display:none}
 </style>
 </head>
 <body>
@@ -154,8 +239,8 @@ textarea.finput{resize:none;min-height:68px}
 <!-- AUTH SCREEN -->
 <div id="auth-screen">
   <div class="auth-logo">&#128179;</div>
-  <div class="auth-title">Sagan Tracker</div>
-  <div class="auth-sub">Track sagan received and given<br>at every occasion. Sign in to sync<br>your data across all devices.</div>
+  <div class="auth-title">Shagun</div>
+  <div class="auth-sub">Track sagan and gifts received and given at every occasion.</div>
   <button class="google-btn" onclick="signInGoogle()">
     <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
     Continue with Google
@@ -163,15 +248,15 @@ textarea.finput{resize:none;min-height:68px}
   <div class="auth-divider"><span>or use email</span></div>
   <input class="magic-input" id="magic-email" type="email" placeholder="your@email.com">
   <button class="magic-btn" id="magic-btn" onclick="signInMagic()">Send Magic Link</button>
-  <div class="auth-note">We'll send you a sign-in link. No password needed.</div>
+  <div class="auth-note">No password needed. We'll send you a sign-in link.</div>
 </div>
 
 <!-- MAIN APP -->
 <div id="app" style="display:none">
 <div class="topbar">
-  <div class="topbar-title">Sagan Tracker</div>
+  <div class="topbar-title">Shagun</div>
   <div class="topbar-actions">
-    <button class="tb-btn add" onclick="openAdd()">+</button>
+    <button class="tb-btn add" onclick="openAdd(null)">+</button>
     <button class="tb-btn" onclick="openSettings()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
@@ -179,20 +264,31 @@ textarea.finput{resize:none;min-height:68px}
 </div>
 <div class="toast" id="toast"></div>
 
+<!-- HOME -->
 <div class="screen active" id="s-home">
-  <div class="stats-grid">
-    <div class="stat-box recv"><div class="sb-icon">&#8595;</div><div class="sb-label">Total Received</div><div class="sb-val" id="h-recv">&#8377;0</div></div>
-    <div class="stat-box give"><div class="sb-icon">&#8593;</div><div class="sb-label">Total Given</div><div class="sb-val" id="h-give">&#8377;0</div></div>
+  <div class="dash-hero">
+    <div class="dash-label">Net Received</div>
+    <div class="dash-amount" id="h-net">&#8377;0</div>
+    <div class="dash-sub" id="h-sub">across 0 occasions</div>
+    <div class="dash-row">
+      <div class="dash-mini"><div class="dv" id="h-recv">&#8377;0</div><div class="dl">Received</div></div>
+      <div class="dash-mini"><div class="dv" id="h-give">&#8377;0</div><div class="dl">Given</div></div>
+      <div class="dash-mini"><div class="dv" id="h-gifts">0</div><div class="dl">Gifts</div></div>
+    </div>
   </div>
-  <div class="pills">
+  <div class="pills" style="padding-top:12px">
     <div class="pill"><div class="pnum" id="h-ent">0</div><div class="plbl">Entries</div></div>
     <div class="pill"><div class="pnum" id="h-ppl">0</div><div class="plbl">People</div></div>
     <div class="pill"><div class="pnum" id="h-evs">0</div><div class="plbl">Events</div></div>
   </div>
-  <div class="sec-title">Recent Entries</div>
+  <div id="limit-bar-wrap"></div>
+  <div id="premium-banner-wrap"></div>
+  <div class="sec-title">Recent Activity</div>
   <div id="h-list"></div>
+  <div id="ad-wrap"></div>
 </div>
 
+<!-- EVENTS -->
 <div class="screen" id="s-events">
   <button class="add-event-btn" onclick="openCreateEvent()">
     <svg viewBox="0 0 24 24" fill="none" stroke="#6C63FF" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
@@ -201,6 +297,7 @@ textarea.finput{resize:none;min-height:68px}
   <div id="ev-list"></div>
 </div>
 
+<!-- LOG -->
 <div class="screen" id="s-log">
   <div class="search-box">
     <span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
@@ -210,6 +307,7 @@ textarea.finput{resize:none;min-height:68px}
     <button class="chip on" onclick="setLF('all',this)">All</button>
     <button class="chip" onclick="setLF('Received',this)">Received</button>
     <button class="chip" onclick="setLF('Given',this)">Given</button>
+    <button class="chip" onclick="setLF('Gift',this)">Gift</button>
   </div>
   <div class="chips" id="lsc" style="padding-top:4px">
     <button class="chip on" onclick="setLS('newest',this)">Newest</button>
@@ -220,6 +318,7 @@ textarea.finput{resize:none;min-height:68px}
   <div style="margin-top:10px" id="log-list"></div>
 </div>
 
+<!-- PEOPLE -->
 <div class="screen" id="s-people">
   <div class="search-box">
     <span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
@@ -234,6 +333,7 @@ textarea.finput{resize:none;min-height:68px}
   <div style="margin-top:10px" id="ppl-list"></div>
 </div>
 
+<!-- BOTTOM NAV -->
 <div class="botnav">
   <button class="nb on" onclick="nav('home',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</button>
   <button class="nb" onclick="nav('events',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Events</button>
@@ -242,19 +342,42 @@ textarea.finput{resize:none;min-height:68px}
 </div>
 </div>
 
-<!-- ADD ENTRY SHEET -->
+<!-- ADD / EDIT ENTRY SHEET -->
 <div class="overlay" id="add-overlay" onclick="bgClose(event,'add-overlay')">
 <div class="sheet">
   <div class="sheet-handle"></div>
-  <div class="sheet-title">Add Sagan</div>
+  <div class="sheet-title" id="add-title">Add Entry</div>
   <div class="type-toggle">
     <button class="tt-btn recv" id="tt-recv" onclick="setType('Received')">&#8595; Received</button>
     <button class="tt-btn" id="tt-give" onclick="setType('Given')">&#8593; Given</button>
   </div>
+  <label class="flabel">Entry Type</label>
+  <div class="gift-toggle">
+    <button class="gt-btn on" id="gt-cash" onclick="setGiftType('cash')">&#128181; Cash</button>
+    <button class="gt-btn" id="gt-gift" onclick="setGiftType('gift')">&#127873; Gift</button>
+    <button class="gt-btn" id="gt-both" onclick="setGiftType('both')">&#127873;+&#128181; Both</button>
+  </div>
   <label class="flabel" id="fl-person">Received From <span class="req">*</span></label>
   <input class="finput" id="f-name" type="text" placeholder="e.g. Ramesh Uncle">
-  <label class="flabel">Amount <span class="req">*</span></label>
-  <input class="finput" id="f-amt" type="number" min="1" placeholder="e.g. 5100" inputmode="numeric">
+  <div id="amount-section">
+    <label class="flabel">Amount <span class="req">*</span></label>
+    <input class="finput" id="f-amt" type="number" min="1" placeholder="e.g. 5100" inputmode="numeric">
+  </div>
+  <div id="gift-section" style="display:none">
+    <label class="flabel">Gift Description</label>
+    <input class="finput" id="f-gift-desc" type="text" placeholder="e.g. Silver bowl, Dry fruits">
+    <label class="flabel">Gift Photo</label>
+    <div id="photo-section">
+      <div class="photo-upload" onclick="document.getElementById('photoInput').click()">
+        <div style="font-size:24px;margin-bottom:6px">📷</div>
+        <div style="font-size:13px;color:#aaa">Tap to take photo or upload</div>
+      </div>
+      <img id="photo-preview" class="photo-preview">
+    </div>
+    <div id="photo-premium-lock" class="premium-lock" style="display:none">
+      📷 Gift photos are a <strong onclick="openPremium()">Premium feature</strong>. Upgrade to attach photos.
+    </div>
+  </div>
   <label class="flabel">Date</label>
   <input class="finput" id="f-date" type="date">
   <label class="flabel">Occasion</label>
@@ -266,7 +389,8 @@ textarea.finput{resize:none;min-height:68px}
   <label class="flabel">Link to Event</label>
   <select class="finput" id="f-ev"><option value="">-- None --</option></select>
   <label class="flabel">Notes</label>
-  <textarea class="finput" id="f-notes" placeholder="e.g. Given in envelope" rows="2"></textarea>
+  <textarea class="finput" id="f-notes" placeholder="Any notes" rows="2"></textarea>
+  <input type="file" id="photoInput" accept="image/*" capture="environment" onchange="onPhotoSelect(event)">
   <button class="sbtn" id="save-entry-btn" onclick="saveEntry()">Save Entry</button>
   <button class="cancel-btn" onclick="closeSheet('add-overlay')">Cancel</button>
 </div>
@@ -300,9 +424,14 @@ textarea.finput{resize:none;min-height:68px}
     <div class="user-avatar" id="user-avatar">?</div>
     <div>
       <div class="user-email" id="user-email">Loading...</div>
-      <div class="user-label">Signed in</div>
+      <div class="user-plan free" id="user-plan">Free Plan</div>
     </div>
   </div>
+  <div class="set-section">Account</div>
+  <button class="set-row" onclick="openPremium()">
+    <span class="set-icon">&#11088;</span>
+    <div><div>Upgrade to Premium</div><div class="set-row-sub">₹99/month · Unlimited entries + photos</div></div>
+  </button>
   <div class="set-section">Backup</div>
   <button class="set-row" onclick="shareBackup()">
     <span class="set-icon">&#128279;</span>
@@ -312,7 +441,7 @@ textarea.finput{resize:none;min-height:68px}
     <span class="set-icon">&#128228;</span>
     <div><div>Download Backup</div><div class="set-row-sub">Save .json file to your device</div></div>
   </button>
-  <div class="set-section" style="margin-top:4px">Restore</div>
+  <div class="set-section">Restore</div>
   <div id="set-confirm" style="display:none">
     <div class="confirm-box">This will replace ALL your current data. Are you sure?</div>
     <div class="confirm-row"><button class="cy" onclick="doImport()">Yes, Import</button><button class="cn" onclick="cancelImport()">Cancel</button></div>
@@ -324,8 +453,8 @@ textarea.finput{resize:none;min-height:68px}
     </button>
     <input type="file" id="fileInput" accept=".json" onchange="onFile(event)">
   </div>
-  <div class="set-section" style="margin-top:4px">Account</div>
-  <button class="set-row" onclick="signOut()" style="color:#e53e3e">
+  <div class="set-section">Sign Out</div>
+  <button class="set-row" onclick="signOut()">
     <span class="set-icon">&#128682;</span>
     <div><div style="color:#e53e3e">Sign Out</div><div class="set-row-sub">You will need to sign in again</div></div>
   </button>
@@ -333,297 +462,409 @@ textarea.finput{resize:none;min-height:68px}
 </div>
 </div>
 
-<script>
-var SUPA_URL = 'https://apemhtjldbjlbymolehm.supabase.co';
-var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwZW1odGpsZGJqbGJ5bW9sZWhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0Nzk4MDAsImV4cCI6MjA5NjA1NTgwMH0.ojZJN10-Tr_ZAMsK2sn7U3-o7g5etGskJbBRys1dCZg';
+<!-- PREMIUM SHEET -->
+<div class="overlay" id="premium-overlay" onclick="bgClose(event,'premium-overlay')">
+<div class="sheet">
+  <div class="sheet-handle"></div>
+  <div class="premium-hero">
+    <div class="ph-icon">&#11088;</div>
+    <div class="ph-title">Shagun Premium</div>
+    <div class="ph-sub">Everything you need to track every occasion</div>
+  </div>
+  <div class="feature-list">
+    <div class="feature-item"><span class="fi-icon">&#9899;</span><span>Unlimited entries (free limit: 50)</span></div>
+    <div class="feature-item"><span class="fi-icon">&#128247;</span><span>Gift photo capture and storage</span></div>
+    <div class="feature-item"><span class="fi-icon">&#128197;</span><span>Unlimited events</span></div>
+    <div class="feature-item"><span class="fi-icon">&#128228;</span><span>Export and backup your data</span></div>
+    <div class="feature-item"><span class="fi-icon">&#9940;</span><span>No ads</span></div>
+    <div class="feature-item"><span class="fi-icon">&#9729;</span><span>Cloud sync across all devices</span></div>
+  </div>
+  <div class="price-options">
+    <div class="price-card" id="pc-monthly" onclick="selectPlan('monthly')">
+      <div class="pc-period">Monthly</div>
+      <div class="pc-price">&#8377;99</div>
+      <div class="pc-save">&nbsp;</div>
+    </div>
+    <div class="price-card selected" id="pc-yearly" onclick="selectPlan('yearly')">
+      <div class="pc-period">Yearly</div>
+      <div class="pc-price">&#8377;499</div>
+      <div class="pc-save">Save &#8377;689</div>
+    </div>
+  </div>
+  <button class="sbtn" onclick="upgradePremium()">Upgrade Now</button>
+  <button class="cancel-btn" onclick="closeSheet('premium-overlay')">Maybe later</button>
+</div>
+</div>
 
-var supa = supabase.createClient(SUPA_URL, SUPA_KEY);
-var currentUser = null;
-var E = [], V = [];
-var cType = 'Received', lf = 'all', ls = 'newest', ps = 'recv', imp = null;
+<script>
+var SUPA_URL='https://apemhtjldbjlbymolehm.supabase.co';
+var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwZW1odGpsZGJqbGJ5bW9sZWhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0Nzk4MDAsImV4cCI6MjA5NjA1NTgwMH0.ojZJN10-Tr_ZAMsK2sn7U3-o7g5etGskJbBRys1dCZg';
+var FREE_LIMIT=50;
+var supa=supabase.createClient(SUPA_URL,SUPA_KEY);
+var currentUser=null,isPremium=false;
+var E=[],V=[],editingId=null;
+var cType='Received',gType='cash',lf='all',ls='newest',ps='recv',imp=null;
+var selectedPlan='yearly',photoBase64=null;
 
 // AUTH
-async function initAuth() {
-  var s = await supa.auth.getSession();
-  if (s.data.session) {
-    currentUser = s.data.session.user;
-    showApp();
-  } else {
-    showAuth();
-  }
-  supa.auth.onAuthStateChange(function(event, session) {
-    if (event === 'SIGNED_IN' && session) {
-      currentUser = session.user;
-      showApp();
-    } else if (event === 'SIGNED_OUT') {
-      currentUser = null;
-      E = []; V = [];
-      showAuth();
-    }
+async function initAuth(){
+  var s=await supa.auth.getSession();
+  if(s.data.session){currentUser=s.data.session.user;showApp();}
+  else showAuth();
+  supa.auth.onAuthStateChange(function(event,session){
+    if(event==='SIGNED_IN'&&session){currentUser=session.user;showApp();}
+    else if(event==='SIGNED_OUT'){currentUser=null;E=[];V=[];showAuth();}
   });
 }
-
-function showApp() {
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  document.getElementById('app').style.flexDirection = 'column';
+function showApp(){
+  document.getElementById('auth-screen').style.display='none';
+  var a=document.getElementById('app');
+  a.style.display='flex';a.style.flexDirection='column';
   loadAll();
 }
-
-function showAuth() {
-  document.getElementById('auth-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
+function showAuth(){
+  document.getElementById('auth-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
 }
-
-async function signInGoogle() {
-  var r = await supa.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.href }
-  });
-  if (r.error) toast('Error: ' + r.error.message);
+async function signInGoogle(){
+  var r=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});
+  if(r.error)toast('Error: '+r.error.message);
 }
-
-async function signInMagic() {
-  var email = document.getElementById('magic-email').value.trim();
-  if (!email) { toast('Please enter your email'); return; }
-  var btn = document.getElementById('magic-btn');
-  btn.disabled = true; btn.textContent = 'Sending...';
-  var r = await supa.auth.signInWithOtp({
-    email: email,
-    options: { emailRedirectTo: window.location.href }
-  });
-  if (r.error) {
-    toast('Error: ' + r.error.message);
-    btn.disabled = false; btn.textContent = 'Send Magic Link';
-  } else {
-    btn.textContent = 'Check your email!';
-    toast('Magic link sent to ' + email);
-  }
+async function signInMagic(){
+  var email=document.getElementById('magic-email').value.trim();
+  if(!email){toast('Please enter your email');return;}
+  var btn=document.getElementById('magic-btn');
+  btn.disabled=true;btn.textContent='Sending...';
+  var r=await supa.auth.signInWithOtp({email:email,options:{emailRedirectTo:window.location.href}});
+  if(r.error){toast('Error: '+r.error.message);btn.disabled=false;btn.textContent='Send Magic Link';}
+  else{btn.textContent='Check your email!';toast('Magic link sent!');}
 }
-
-async function signOut() {
-  await supa.auth.signOut();
-  closeSheet('set-overlay');
-  toast('Signed out');
-}
+async function signOut(){await supa.auth.signOut();closeSheet('set-overlay');toast('Signed out');}
 
 // DATA
-async function loadAll() {
-  if (!currentUser) return;
-  var email = currentUser.email || '';
-  document.getElementById('user-email').textContent = email;
-  document.getElementById('user-avatar').textContent = email ? email[0].toUpperCase() : '?';
-
-  var [er, vr] = await Promise.all([
-    supa.from('entries').select('*').eq('user_id', currentUser.id).order('created_at', {ascending: false}),
-    supa.from('events').select('*').eq('user_id', currentUser.id).order('created_at', {ascending: false})
+async function loadAll(){
+  if(!currentUser)return;
+  var email=currentUser.email||'';
+  document.getElementById('user-email').textContent=email;
+  document.getElementById('user-avatar').textContent=email?email[0].toUpperCase():'?';
+  // Check premium (stored in localStorage for now — replace with DB later)
+  isPremium=localStorage.getItem('sg_premium_'+currentUser.id)==='true';
+  document.getElementById('user-plan').textContent=isPremium?'Premium ⭐':'Free Plan';
+  document.getElementById('user-plan').className='user-plan '+(isPremium?'premium':'free');
+  var [er,vr]=await Promise.all([
+    supa.from('entries').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false}),
+    supa.from('events').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false})
   ]);
-
-  if (er.error) { toast('Error loading data'); return; }
-  E = (er.data || []).map(dbToEntry);
-  V = (vr.data || []).map(dbToEvent);
+  if(er.error){toast('Error loading data');return;}
+  E=(er.data||[]).map(dbToEntry);
+  V=(vr.data||[]).map(dbToEvent);
   rHome();
 }
-
-function dbToEntry(r) {
-  return { id: r.id, t: r.type, d: r.date, o: r.occasion || '', a: Number(r.amount), n: r.person_name, r: r.relationship || '', nt: r.notes || '', ev: r.event_id };
+function dbToEntry(r){
+  return{id:r.id,t:r.type,gt:r.gift_type||'cash',d:r.date,o:r.occasion||'',a:Number(r.amount||0),n:r.person_name,r:r.relationship||'',nt:r.notes||'',ev:r.event_id,gd:r.gift_description||'',gi:r.gift_image||null};
 }
-function dbToEvent(r) {
-  return { id: r.id, n: r.name, d: r.date, tp: r.occasion_type || 'Event', nt: r.notes || '' };
-}
+function dbToEvent(r){return{id:r.id,n:r.name,d:r.date,tp:r.occasion_type||'Event',nt:r.notes||''};}
+function rs(n){return'\u20B9'+Number(n).toLocaleString('en-IN');}
+function fd(d){if(!d)return'';return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
 
-function rs(n) { return '\u20B9' + Number(n).toLocaleString('en-IN'); }
-function fd(d) { if (!d) return ''; return new Date(d + 'T00:00:00').toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'}); }
-
-function nav(t, btn) {
+// NAV
+function nav(t,btn){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
   document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});
   document.getElementById('s-'+t).classList.add('active');
   btn.classList.add('on');
-  if (t==='home') rHome();
-  if (t==='events') rEvents();
-  if (t==='log') rLog();
-  if (t==='people') rPeople();
+  if(t==='home')rHome();
+  if(t==='events')rEvents();
+  if(t==='log')rLog();
+  if(t==='people')rPeople();
 }
 
-function rHome() {
-  var rc = E.filter(function(e){return e.t==='Received';}).reduce(function(s,e){return s+e.a;},0);
-  var gv = E.filter(function(e){return e.t==='Given';}).reduce(function(s,e){return s+e.a;},0);
-  document.getElementById('h-recv').textContent = rs(rc);
-  document.getElementById('h-give').textContent = rs(gv);
-  document.getElementById('h-ent').textContent = E.length;
-  document.getElementById('h-ppl').textContent = new Set(E.map(function(e){return e.n.toLowerCase().trim();})).size;
-  document.getElementById('h-evs').textContent = V.length;
-  var recent = [].concat(E).sort(function(a,b){return new Date(b.d)-new Date(a.d);}).slice(0,3);
-  var el = document.getElementById('h-list');
-  el.innerHTML = recent.length ? recent.map(function(e){return ecard(e,true);}).join('') : '<div class="empty"><div class="empty-icon">&#128235;</div><p>No entries yet<br>Tap + to add your first sagan</p></div>';
+// HOME
+function rHome(){
+  var rc=E.filter(function(e){return e.t==='Received'&&(e.gt==='cash'||e.gt==='both');}).reduce(function(s,e){return s+e.a;},0);
+  var gv=E.filter(function(e){return e.t==='Given'&&(e.gt==='cash'||e.gt==='both');}).reduce(function(s,e){return s+e.a;},0);
+  var net=rc-gv;
+  var gifts=E.filter(function(e){return e.gt==='gift'||e.gt==='both';}).length;
+  var occasions=new Set(E.map(function(e){return e.o;}).filter(Boolean)).size;
+  document.getElementById('h-net').textContent=(net>=0?'':'-')+rs(Math.abs(net));
+  document.getElementById('h-recv').textContent=rs(rc);
+  document.getElementById('h-give').textContent=rs(gv);
+  document.getElementById('h-gifts').textContent=gifts;
+  document.getElementById('h-sub').textContent='across '+occasions+' occasion'+(occasions!==1?'s':'');
+  document.getElementById('h-ent').textContent=E.length;
+  document.getElementById('h-ppl').textContent=new Set(E.map(function(e){return e.n.toLowerCase().trim();})).size;
+  document.getElementById('h-evs').textContent=V.length;
+  // Limit bar
+  var lbw=document.getElementById('limit-bar-wrap');
+  if(!isPremium){
+    var pct=Math.min(100,Math.round((E.length/FREE_LIMIT)*100));
+    var warn=E.length>=40;
+    lbw.innerHTML='<div class="limit-bar" style="margin-top:12px"><div class="lb-row"><span class="lb-label">Free entries used</span><span class="lb-count">'+E.length+' / '+FREE_LIMIT+'</span></div><div class="lb-track"><div class="lb-fill'+(warn?' warn':'')+'" style="width:'+pct+'%"></div></div></div>';
+  } else {lbw.innerHTML='';}
+  // Premium banner
+  var pbw=document.getElementById('premium-banner-wrap');
+  if(!isPremium&&E.length>=40){
+    pbw.innerHTML='<div class="premium-banner" style="margin-top:10px" onclick="openPremium()"><div class="pb-left"><div class="pb-title">&#11088; Almost at your limit!</div><div class="pb-sub">Upgrade for unlimited entries + gift photos</div></div><button class="pb-btn">Upgrade</button></div>';
+  } else if(!isPremium){
+    pbw.innerHTML='<div class="premium-banner" style="margin-top:10px" onclick="openPremium()"><div class="pb-left"><div class="pb-title">&#11088; Unlock Premium</div><div class="pb-sub">Gift photos, unlimited entries, no ads</div></div><button class="pb-btn">&#8377;99/mo</button></div>';
+  } else {pbw.innerHTML='';}
+  // Recent list
+  var recent=[].concat(E).sort(function(a,b){return new Date(b.d)-new Date(a.d);}).slice(0,5);
+  var el=document.getElementById('h-list');
+  el.innerHTML=recent.length?recent.map(function(e){return ecard(e,true);}).join(''):'<div class="empty"><div class="empty-icon">&#128235;</div><p>No entries yet<br>Tap + to add your first shagun</p></div>';
+  // Ad banner (free users)
+  var aw=document.getElementById('ad-wrap');
+  if(!isPremium){
+    aw.innerHTML='<div class="ad-banner" style="margin-top:4px"><span class="ad-label">Ad</span><span class="ad-content">Manage your finances smarter with Fi Money</span></div>';
+  } else {aw.innerHTML='';}
 }
 
-function ecard(e, mini) {
-  var ev = V.find(function(v){return v.id===e.ev;});
-  var rc = e.t==='Received';
-  var meta = [];
-  if (e.o) meta.push(e.o);
-  if (ev) meta.push('<span class="evbadge">'+ev.n+'</span>');
-  if (e.r) meta.push('<span class="badge tag">'+e.r+'</span>');
-  return '<div class="card" onclick="tog(\'cx-'+e.id+'\')">'
-    +'<div class="card-row1"><span class="card-name">'+e.n+'</span><span class="card-amount '+(rc?'recv':'give')+'">'+rs(e.a)+'</span></div>'
+function ecard(e,mini){
+  var ev=V.find(function(v){return v.id===e.ev;});
+  var rc=e.t==='Received';
+  var isGift=e.gt==='gift';
+  var isBoth=e.gt==='both';
+  var amtColor=isGift?'gift':(rc?'recv':'give');
+  var badgeClass=isGift?'gift':isBoth?'both':(rc?'recv':'give');
+  var badgeText=isGift?'Gift':isBoth?'Cash+Gift':(rc?'Received':'Given');
+  var displayAmt=isGift?'Gift':(isBoth?rs(e.a)+' + Gift':rs(e.a));
+  var meta=[];
+  if(e.o)meta.push(e.o);
+  if(ev)meta.push('<span class="evbadge">'+ev.n+'</span>');
+  if(e.r)meta.push('<span class="badge tag">'+e.r+'</span>');
+  var expandContent='';
+  if(e.gi)'';
+  if(e.gd)expandContent+='<div style="margin-bottom:6px">&#127873; '+e.gd+'</div>';
+  if(e.nt)expandContent+='<div style="margin-bottom:6px">'+e.nt+'</div>';
+  if(!e.gd&&!e.nt)expandContent='<div style="margin-bottom:6px;color:#ddd">No notes</div>';
+  var actions=mini?'':'<div class="card-actions"><button class="edit-btn" onclick="event.stopPropagation();openAdd(\''+e.id+'\')">&#9998; Edit</button><button class="del-btn" onclick="event.stopPropagation();del(\''+e.id+'\')">&#128465; Delete</button></div>';
+  return'<div class="card" onclick="tog(\'cx-'+e.id+'\')">'
+    +'<div class="card-row1"><span class="card-name">'+e.n+'</span><span class="card-amount '+amtColor+'">'+displayAmt+'</span></div>'
     +'<div class="card-row2"><span class="card-sub">'+(meta.length?meta.join(' &nbsp;'):'')+'</span>'
-    +'<span style="display:flex;align-items:center;gap:6px"><span class="badge '+(rc?'recv':'give')+'">'+e.t+'</span><span class="card-sub">'+fd(e.d)+'</span></span></div>'
-    +'<div class="card-expand" id="cx-'+e.id+'">'
-    +(e.nt?'<div style="margin-bottom:8px">'+e.nt+'</div>':'<div style="margin-bottom:8px;color:#ddd">No notes</div>')
-    +(mini?'':'<button class="del-btn" onclick="event.stopPropagation();del(\''+e.id+'\')">Delete</button>')
-    +'</div></div>';
+    +'<span style="display:flex;align-items:center;gap:6px"><span class="badge '+badgeClass+'">'+badgeText+'</span><span class="card-sub">'+fd(e.d)+'</span></span></div>'
+    +'<div class="card-expand" id="cx-'+e.id+'">'+expandContent+actions+'</div></div>';
 }
+function tog(id){var el=document.getElementById(id);if(el)el.classList.toggle('open');}
 
-function tog(id) { var el=document.getElementById(id); if(el) el.classList.toggle('open'); }
-
-function rEvents() {
-  var el = document.getElementById('ev-list');
-  if (!V.length) { el.innerHTML='<div class="empty"><div class="empty-icon">&#128197;</div><p>No events yet.<br>Create one to group sagans!</p></div>'; return; }
-  el.innerHTML = V.map(function(v){
-    var lk = E.filter(function(e){return e.ev===v.id;});
-    var rc = lk.filter(function(e){return e.t==='Received';}).reduce(function(s,e){return s+e.a;},0);
-    var gv = lk.filter(function(e){return e.t==='Given';}).reduce(function(s,e){return s+e.a;},0);
-    var net = rc-gv;
-    return '<div class="ecard"><div class="ec-head" onclick="tog(\'ecb-'+v.id+'\')">'
+// EVENTS
+function rEvents(){
+  var el=document.getElementById('ev-list');
+  if(!V.length){el.innerHTML='<div class="empty"><div class="empty-icon">&#128197;</div><p>No events yet.<br>Create one to group sagans!</p></div>';return;}
+  el.innerHTML=V.map(function(v){
+    var lk=E.filter(function(e){return e.ev===v.id;});
+    var rc=lk.filter(function(e){return e.t==='Received'&&(e.gt==='cash'||e.gt==='both');}).reduce(function(s,e){return s+e.a;},0);
+    var gv=lk.filter(function(e){return e.t==='Given'&&(e.gt==='cash'||e.gt==='both');}).reduce(function(s,e){return s+e.a;},0);
+    var net=rc-gv;
+    return'<div class="ecard"><div class="ec-head" onclick="tog(\'ecb-'+v.id+'\')">'
       +'<div class="ec-top"><div class="ec-name">'+v.n+'</div><div class="ec-date">'+fd(v.d)+'</div></div>'
       +'<div><span class="badge tag">'+(v.tp||'Event')+'</span>&nbsp;<span class="badge tag">'+lk.length+' entries</span></div></div>'
-      +'<div class="ec-stats">'
-      +'<div class="ec-stat"><div class="esv" style="color:#6C63FF">'+rs(rc)+'</div><div class="esl">Received</div></div>'
+      +'<div class="ec-stats"><div class="ec-stat"><div class="esv" style="color:#6C63FF">'+rs(rc)+'</div><div class="esl">Received</div></div>'
       +'<div class="ec-stat"><div class="esv" style="color:#A855F7">'+rs(gv)+'</div><div class="esl">Given</div></div>'
-      +'<div class="ec-stat"><div class="esv" style="color:'+(net>=0?'#22c55e':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div><div class="esl">Net</div></div>'
-      +'</div><div class="ec-body" id="ecb-'+v.id+'">'
-      +(lk.length?lk.sort(function(a,b){return new Date(b.d)-new Date(a.d);}).map(function(e){
-        return '<div class="pc-row"><div class="pc-row-left">'+e.n+(e.o?' &middot; '+e.o:'')+' &middot; '+fd(e.d)+' <span class="badge '+(e.t==='Received'?'recv':'give')+'">'+e.t+'</span></div>'
-          +'<div class="pc-row-right" style="color:'+(e.t==='Received'?'#6C63FF':'#A855F7')+'">'+rs(e.a)+'</div></div>';
-      }).join(''):'<div class="pc-row" style="color:#ccc">No entries linked yet</div>')
+      +'<div class="ec-stat"><div class="esv" style="color:'+(net>=0?'#22c55e':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div><div class="esl">Net</div></div></div>'
+      +'<div class="ec-body" id="ecb-'+v.id+'">'
+      +(lk.length?lk.map(function(e){return'<div class="pc-row"><div class="pc-row-left">'+e.n+(e.o?' &middot; '+e.o:'')+' &middot; '+fd(e.d)+'</div><div class="pc-row-right" style="color:'+(e.t==='Received'?'#6C63FF':'#A855F7')+'">'+(e.gt==='gift'?'Gift':rs(e.a))+'</div></div>';}).join(''):'<div class="pc-row" style="color:#ccc">No entries</div>')
       +'</div></div>';
   }).join('');
 }
 
+// LOG
 function setLF(f,btn){lf=f;document.querySelectorAll('#lfc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rLog();}
 function setLS(s,btn){ls=s;document.querySelectorAll('#lsc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rLog();}
-
-function rLog() {
-  var q = (document.getElementById('log-q').value||'').toLowerCase();
-  var list = [].concat(E);
-  if (lf!=='all') list=list.filter(function(e){return e.t===lf;});
-  if (q) list=list.filter(function(e){
-    return e.n.toLowerCase().includes(q)||(e.o||'').toLowerCase().includes(q)
-      ||(V.find(function(v){return v.id===e.ev;})||{n:''}).n.toLowerCase().includes(q);
-  });
-  if (ls==='newest') list.sort(function(a,b){return new Date(b.d)-new Date(a.d);});
-  else if (ls==='oldest') list.sort(function(a,b){return new Date(a.d)-new Date(b.d);});
-  else if (ls==='high') list.sort(function(a,b){return b.a-a.a;});
+function rLog(){
+  var q=(document.getElementById('log-q').value||'').toLowerCase();
+  var list=[].concat(E);
+  if(lf==='Gift')list=list.filter(function(e){return e.gt==='gift'||e.gt==='both';});
+  else if(lf!=='all')list=list.filter(function(e){return e.t===lf;});
+  if(q)list=list.filter(function(e){return e.n.toLowerCase().includes(q)||(e.o||'').toLowerCase().includes(q)||(V.find(function(v){return v.id===e.ev;})||{n:''}).n.toLowerCase().includes(q);});
+  if(ls==='newest')list.sort(function(a,b){return new Date(b.d)-new Date(a.d);});
+  else if(ls==='oldest')list.sort(function(a,b){return new Date(a.d)-new Date(b.d);});
+  else if(ls==='high')list.sort(function(a,b){return b.a-a.a;});
   else list.sort(function(a,b){return a.a-b.a;});
-  var el = document.getElementById('log-list');
-  el.innerHTML = list.length ? list.map(function(e){return ecard(e,false);}).join('') : '<div class="empty"><div class="empty-icon">&#128269;</div><p>No entries found</p></div>';
+  var el=document.getElementById('log-list');
+  el.innerHTML=list.length?list.map(function(e){return ecard(e,false);}).join(''):'<div class="empty"><div class="empty-icon">&#128269;</div><p>No entries found</p></div>';
 }
 
+// PEOPLE
 function setPS(s,btn){ps=s;document.querySelectorAll('#psc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rPeople();}
-
-function rPeople() {
-  var q = (document.getElementById('ppl-q').value||'').toLowerCase();
-  var map = {};
+function rPeople(){
+  var q=(document.getElementById('ppl-q').value||'').toLowerCase();
+  var map={};
   E.forEach(function(e){
     var k=e.n.toLowerCase().trim();
-    if(!map[k])map[k]={n:e.n,r:e.r||'',recv:0,give:0,cnt:0,items:[]};
-    if(e.t==='Received')map[k].recv+=e.a;else map[k].give+=e.a;
+    if(!map[k])map[k]={n:e.n,r:e.r||'',recv:0,give:0,gifts:0,cnt:0,items:[]};
+    if(e.t==='Received'){if(e.gt==='cash'||e.gt==='both')map[k].recv+=e.a;}
+    else{if(e.gt==='cash'||e.gt==='both')map[k].give+=e.a;}
+    if(e.gt==='gift'||e.gt==='both')map[k].gifts++;
     map[k].cnt++;map[k].items.push(e);
   });
-  var list = Object.values(map);
-  if (q) list=list.filter(function(p){return p.n.toLowerCase().includes(q);});
-  if (ps==='recv') list.sort(function(a,b){return b.recv-a.recv;});
-  else if (ps==='give') list.sort(function(a,b){return b.give-a.give;});
-  else if (ps==='net') list.sort(function(a,b){return(b.recv-b.give)-(a.recv-a.give);});
+  var list=Object.values(map);
+  if(q)list=list.filter(function(p){return p.n.toLowerCase().includes(q);});
+  if(ps==='recv')list.sort(function(a,b){return b.recv-a.recv;});
+  else if(ps==='give')list.sort(function(a,b){return b.give-a.give;});
+  else if(ps==='net')list.sort(function(a,b){return(b.recv-b.give)-(a.recv-a.give);});
   else list.sort(function(a,b){return b.cnt-a.cnt;});
-  var el = document.getElementById('ppl-list');
-  if (!list.length) { el.innerHTML='<div class="empty"><div class="empty-icon">&#128101;</div><p>No people yet</p></div>'; return; }
-  el.innerHTML = list.map(function(p,i){
+  var el=document.getElementById('ppl-list');
+  if(!list.length){el.innerHTML='<div class="empty"><div class="empty-icon">&#128101;</div><p>No people yet</p></div>';return;}
+  el.innerHTML=list.map(function(p,i){
     var net=p.recv-p.give;
-    return '<div class="pcard"><div class="pc-head" onclick="tog(\'pb-'+i+'\')">'
-      +'<div><div class="pc-name">'+p.n+'</div><div class="pc-rel">'+(p.r?p.r+' &middot; ':'')+p.cnt+' time'+(p.cnt>1?'s':'')+'</div></div>'
-      +'<div><div class="pc-net" style="color:'+(net>=0?'#22c55e':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div></div></div>'
-      +'<div class="pc-body" id="pb-'+i+'"><div class="pc-totals">'
-      +'<div class="pc-tot"><div class="ptv" style="color:#6C63FF">'+rs(p.recv)+'</div><div class="ptl">Received</div></div>'
-      +'<div class="pc-tot"><div class="ptv" style="color:#A855F7">'+rs(p.give)+'</div><div class="ptl">Given</div></div>'
-      +'</div>'
+    return'<div class="pcard"><div class="pc-head" onclick="tog(\'pb-'+i+'\')">'
+      +'<div><div class="pc-name">'+p.n+'</div><div class="pc-rel">'+(p.r?p.r+' &middot; ':'')+p.cnt+' occasion'+(p.cnt>1?'s':'')+'</div></div>'
+      +'<div class="pc-right"><div class="pc-net" style="color:'+(net>=0?'#22c55e':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div><div class="pc-cnt">'+(p.gifts>0?p.gifts+' gift'+(p.gifts>1?'s':''):'no gifts')+'</div></div></div>'
+      +'<div class="pc-body" id="pb-'+i+'"><div class="pc-stats-row">'
+      +'<div class="pc-stat"><div class="psv" style="color:#6C63FF">'+rs(p.recv)+'</div><div class="psl">Received</div></div>'
+      +'<div class="pc-stat"><div class="psv" style="color:#A855F7">'+rs(p.give)+'</div><div class="psl">Given</div></div>'
+      +'<div class="pc-stat"><div class="psv" style="color:#FF6B6B">'+p.gifts+'</div><div class="psl">Gifts</div></div>'
+      +'</div><div class="pc-timeline-title">Timeline</div>'
       +p.items.sort(function(a,b){return new Date(b.d)-new Date(a.d);}).map(function(e){
         var ev=V.find(function(v){return v.id===e.ev;});
-        return '<div class="pc-row"><div class="pc-row-left">'+(e.o||'No occasion')+(ev?' &middot; '+ev.n:'')+' &middot; '+fd(e.d)+' <span class="badge '+(e.t==='Received'?'recv':'give')+'">'+e.t+'</span></div>'
-          +'<div class="pc-row-right" style="color:'+(e.t==='Received'?'#6C63FF':'#A855F7')+'">'+rs(e.a)+'</div></div>';
-      }).join('')+'</div></div>';
+        var display=e.gt==='gift'?'Gift &#127873;':(e.gt==='both'?rs(e.a)+' + Gift':rs(e.a));
+        return'<div class="pc-row"><div class="pc-row-left">'+(e.o||'No occasion')+(ev?' &middot; '+ev.n:'')+' &middot; '+fd(e.d)+' <span class="badge '+(e.t==='Received'?'recv':'give')+'">'+e.t+'</span></div>'
+          +'<div class="pc-row-right" style="color:'+(e.t==='Received'?'#6C63FF':'#A855F7')+'">'+display+'</div></div>';
+      }).join('')
+      +'</div></div>';
   }).join('');
 }
 
-function openAdd() {
-  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
-  ['f-name','f-rel','f-occ','f-amt','f-notes'].forEach(function(id){document.getElementById(id).value='';});
-  var sel=document.getElementById('f-ev');
-  sel.innerHTML='<option value="">-- None --</option>';
-  V.forEach(function(v){sel.innerHTML+='<option value="'+v.id+'">'+v.n+'</option>';});
-  setType('Received');
+// ADD / EDIT ENTRY
+function openAdd(id){
+  editingId=id||null;
+  photoBase64=null;
+  document.getElementById('photo-preview').style.display='none';
+  document.getElementById('photo-preview').src='';
+  document.getElementById('add-title').textContent=id?'Edit Entry':'Add Entry';
+  document.getElementById('save-entry-btn').textContent=id?'Update Entry':'Save Entry';
+  if(id){
+    var e=E.find(function(x){return x.id===id;});
+    if(!e)return;
+    document.getElementById('f-date').value=e.d||'';
+    document.getElementById('f-name').value=e.n;
+    document.getElementById('f-amt').value=e.a||'';
+    document.getElementById('f-occ').value=e.o||'';
+    document.getElementById('f-rel').value=e.r||'';
+    document.getElementById('f-notes').value=e.nt||'';
+    document.getElementById('f-gift-desc').value=e.gd||'';
+    var sel=document.getElementById('f-ev');
+    sel.innerHTML='<option value="">-- None --</option>';
+    V.forEach(function(v){sel.innerHTML+='<option value="'+v.id+'"'+(e.ev===v.id?' selected':'')+'>'+v.n+'</option>';});
+    setType(e.t);
+    setGiftType(e.gt||'cash');
+    if(e.gi){document.getElementById('photo-preview').src=e.gi;document.getElementById('photo-preview').style.display='block';}
+  } else {
+    document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+    ['f-name','f-rel','f-occ','f-amt','f-notes','f-gift-desc'].forEach(function(id){document.getElementById(id).value='';});
+    var sel=document.getElementById('f-ev');
+    sel.innerHTML='<option value="">-- None --</option>';
+    V.forEach(function(v){sel.innerHTML+='<option value="'+v.id+'">'+v.n+'</option>';});
+    setType('Received');setGiftType('cash');
+  }
   document.getElementById('add-overlay').classList.add('show');
 }
 
-function setType(t) {
+function setType(t){
   cType=t;
   document.getElementById('tt-recv').className='tt-btn'+(t==='Received'?' recv':'');
   document.getElementById('tt-give').className='tt-btn'+(t==='Given'?' give':'');
   document.getElementById('fl-person').innerHTML=(t==='Received'?'Received From':'Given To')+' <span class="req">*</span>';
 }
 
-async function saveEntry() {
-  var n=document.getElementById('f-name').value.trim();
-  var a=document.getElementById('f-amt').value;
-  if(!n||!a){toast('Name and amount are required');return;}
-  var btn=document.getElementById('save-entry-btn');
-  btn.disabled=true;btn.textContent='Saving...';
-  var r=await supa.from('entries').insert({
-    user_id:currentUser.id,type:cType,
-    date:document.getElementById('f-date').value||new Date().toISOString().split('T')[0],
-    occasion:document.getElementById('f-occ').value.trim(),
-    amount:Number(a),person_name:n,
-    relationship:document.getElementById('f-rel').value.trim(),
-    notes:document.getElementById('f-notes').value.trim(),
-    event_id:document.getElementById('f-ev').value||null
-  }).select().single();
-  btn.disabled=false;btn.textContent='Save Entry';
-  if(r.error){toast('Error: '+r.error.message);return;}
-  E.unshift(dbToEntry(r.data));
-  closeSheet('add-overlay');toast('Sagan saved!');rHome();
+function setGiftType(gt){
+  gType=gt;
+  ['cash','gift','both'].forEach(function(g){document.getElementById('gt-'+g).className='gt-btn'+(g===gt?' on':'');});
+  var showAmt=gt==='cash'||gt==='both';
+  var showGift=gt==='gift'||gt==='both';
+  document.getElementById('amount-section').style.display=showAmt?'block':'none';
+  document.getElementById('gift-section').style.display=showGift?'block':'none';
+  if(showGift){
+    var photoSection=document.getElementById('photo-section');
+    var photoPremium=document.getElementById('photo-premium-lock');
+    if(isPremium){photoSection.style.display='block';photoPremium.style.display='none';}
+    else{photoSection.style.display='none';photoPremium.style.display='block';}
+  }
 }
 
-function openCreateEvent() {
+function onPhotoSelect(e){
+  var file=e.target.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    // Compress image
+    var img=new Image();
+    img.onload=function(){
+      var canvas=document.createElement('canvas');
+      var MAX=600;
+      var w=img.width,h=img.height;
+      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      photoBase64=canvas.toDataURL('image/jpeg',0.7);
+      var prev=document.getElementById('photo-preview');
+      prev.src=photoBase64;prev.style.display='block';
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function saveEntry(){
+  var n=document.getElementById('f-name').value.trim();
+  var a=document.getElementById('f-amt').value;
+  var needsAmount=gType==='cash'||gType==='both';
+  if(!n){toast('Name is required');return;}
+  if(needsAmount&&!a){toast('Amount is required');return;}
+  if(!isPremium&&!editingId&&E.length>=FREE_LIMIT){toast('Free limit reached. Upgrade to Premium!');openPremium();return;}
+  var btn=document.getElementById('save-entry-btn');
+  btn.disabled=true;btn.textContent=editingId?'Updating...':'Saving...';
+  var payload={
+    user_id:currentUser.id,type:cType,gift_type:gType,
+    date:document.getElementById('f-date').value||new Date().toISOString().split('T')[0],
+    occasion:document.getElementById('f-occ').value.trim(),
+    amount:needsAmount?Number(a):0,
+    person_name:n,relationship:document.getElementById('f-rel').value.trim(),
+    notes:document.getElementById('f-notes').value.trim(),
+    gift_description:document.getElementById('f-gift-desc').value.trim(),
+    event_id:document.getElementById('f-ev').value||null,
+    gift_image:photoBase64||null
+  };
+  var r;
+  if(editingId){
+    r=await supa.from('entries').update(payload).eq('id',editingId).select().single();
+  } else {
+    r=await supa.from('entries').insert(payload).select().single();
+  }
+  btn.disabled=false;btn.textContent=editingId?'Update Entry':'Save Entry';
+  if(r.error){toast('Error: '+r.error.message);return;}
+  if(editingId){E=E.map(function(e){return e.id===editingId?dbToEntry(r.data):e;});}
+  else{E.unshift(dbToEntry(r.data));}
+  closeSheet('add-overlay');
+  toast(editingId?'Entry updated!':'Shagun saved!');
+  editingId=null;photoBase64=null;
+  rHome();
+}
+
+function openCreateEvent(){
   document.getElementById('ev-date').value=new Date().toISOString().split('T')[0];
   ['ev-name','ev-type','ev-notes'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('ev-overlay').classList.add('show');
 }
-
-async function saveEvent() {
+async function saveEvent(){
   var n=document.getElementById('ev-name').value.trim();
   var d=document.getElementById('ev-date').value;
   if(!n||!d){toast('Name and date required');return;}
   var btn=document.getElementById('save-event-btn');
   btn.disabled=true;btn.textContent='Saving...';
-  var r=await supa.from('events').insert({
-    user_id:currentUser.id,name:n,date:d,
-    occasion_type:document.getElementById('ev-type').value.trim()||'Event',
-    notes:document.getElementById('ev-notes').value.trim()
-  }).select().single();
+  var r=await supa.from('events').insert({user_id:currentUser.id,name:n,date:d,occasion_type:document.getElementById('ev-type').value.trim()||'Event',notes:document.getElementById('ev-notes').value.trim()}).select().single();
   btn.disabled=false;btn.textContent='Create Event';
   if(r.error){toast('Error: '+r.error.message);return;}
   V.unshift(dbToEvent(r.data));
   closeSheet('ev-overlay');toast('Event created!');rEvents();
 }
 
-async function del(id) {
+async function del(id){
   if(!confirm('Delete this entry?'))return;
   var r=await supa.from('entries').delete().eq('id',id);
   if(r.error){toast('Error deleting');return;}
   E=E.filter(function(e){return e.id!==id;});
-  rLog();toast('Deleted');
+  rLog();toast('Deleted');rHome();
 }
 
 function closeSheet(id){document.getElementById(id).classList.remove('show');}
@@ -633,77 +874,60 @@ function openSettings(){
   var email=currentUser?currentUser.email||'':'';
   document.getElementById('user-email').textContent=email;
   document.getElementById('user-avatar').textContent=email?email[0].toUpperCase():'?';
+  document.getElementById('user-plan').textContent=isPremium?'Premium ⭐':'Free Plan';
   document.getElementById('set-overlay').classList.add('show');
 }
 
-function shareBackup() {
-  var data=JSON.stringify({entries:E.map(function(e){return{id:e.id,t:e.t,d:e.d,o:e.o,a:e.a,n:e.n,r:e.r,nt:e.nt,ev:e.ev};}),events:V},null,2);
-  var filename='sagan-backup-'+new Date().toISOString().split('T')[0]+'.json';
+// PREMIUM
+function openPremium(){document.getElementById('premium-overlay').classList.add('show');}
+function selectPlan(p){
+  selectedPlan=p;
+  document.getElementById('pc-monthly').className='price-card'+(p==='monthly'?' selected':'');
+  document.getElementById('pc-yearly').className='price-card'+(p==='yearly'?' selected':'');
+}
+function upgradePremium(){
+  // Placeholder — integrate payment gateway (Razorpay/Stripe) here
+  toast('Payment coming soon! Contact us to upgrade.');
+  closeSheet('premium-overlay');
+}
+
+// BACKUP
+function shareBackup(){
+  var data=JSON.stringify({entries:E,events:V},null,2);
+  var filename='shagun-backup-'+new Date().toISOString().split('T')[0]+'.json';
   if(navigator.share&&navigator.canShare){
     var file=new File([data],filename,{type:'application/json'});
-    if(navigator.canShare({files:[file]})){
-      navigator.share({files:[file],title:'Sagan Tracker Backup'}).catch(function(){});
-      toast('Backup shared!');return;
-    }
+    if(navigator.canShare({files:[file]})){navigator.share({files:[file],title:'Shagun Backup'}).catch(function(){});toast('Backup shared!');return;}
   }
   exportData();
 }
-
-function exportData() {
-  var data=JSON.stringify({entries:E.map(function(e){return{id:e.id,t:e.t,d:e.d,o:e.o,a:e.a,n:e.n,r:e.r,nt:e.nt,ev:e.ev};}),events:V},null,2);
-  var b=new Blob([data],{type:'application/json'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(b);
-  a.download='sagan-backup-'+new Date().toISOString().split('T')[0]+'.json';
+function exportData(){
+  var b=new Blob([JSON.stringify({entries:E,events:V},null,2)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download='shagun-backup-'+new Date().toISOString().split('T')[0]+'.json';
   document.body.appendChild(a);a.click();
   setTimeout(function(){URL.revokeObjectURL(a.href);document.body.removeChild(a);},1000);
   toast('Backup downloaded');
 }
-
-function onFile(e) {
+function onFile(e){
   var f=e.target.files[0];if(!f)return;
   var r=new FileReader();
-  r.onload=function(ev){
-    try{imp=JSON.parse(ev.target.result);document.getElementById('set-btns').style.display='none';document.getElementById('set-confirm').style.display='block';}
-    catch(err){toast('Invalid file');}
-  };
+  r.onload=function(ev){try{imp=JSON.parse(ev.target.result);document.getElementById('set-btns').style.display='none';document.getElementById('set-confirm').style.display='block';}catch(err){toast('Invalid file');}};
   r.readAsText(f);e.target.value='';
 }
-
-async function doImport() {
-  if(!imp)return;
-  toast('Importing...');
-  var entries=imp.entries||[];
-  var events=imp.events||[];
-  for(var i=0;i<events.length;i++){
-    var ev=events[i];
-    await supa.from('events').upsert({id:ev.id,user_id:currentUser.id,name:ev.n,date:ev.d,occasion_type:ev.tp||'Event',notes:ev.nt||''});
-  }
-  for(var j=0;j<entries.length;j++){
-    var en=entries[j];
-    await supa.from('entries').upsert({id:en.id,user_id:currentUser.id,type:en.t,date:en.d,occasion:en.o||'',amount:en.a,person_name:en.n,relationship:en.r||'',notes:en.nt||'',event_id:en.ev||null});
-  }
-  cancelImport();closeSheet('set-overlay');
-  await loadAll();
-  toast('Data imported successfully!');
+async function doImport(){
+  if(!imp)return;toast('Importing...');
+  var entries=imp.entries||[],events=imp.events||[];
+  for(var i=0;i<events.length;i++){var ev=events[i];await supa.from('events').upsert({id:ev.id,user_id:currentUser.id,name:ev.n,date:ev.d,occasion_type:ev.tp||'Event',notes:ev.nt||''});}
+  for(var j=0;j<entries.length;j++){var en=entries[j];await supa.from('entries').upsert({id:en.id,user_id:currentUser.id,type:en.t,gift_type:en.gt||'cash',date:en.d,occasion:en.o||'',amount:en.a,person_name:en.n,relationship:en.r||'',notes:en.nt||'',gift_description:en.gd||'',event_id:en.ev||null});}
+  cancelImport();closeSheet('set-overlay');await loadAll();toast('Imported successfully!');
 }
+function cancelImport(){imp=null;document.getElementById('set-confirm').style.display='none';document.getElementById('set-btns').style.display='block';}
 
-function cancelImport(){
-  imp=null;
-  document.getElementById('set-confirm').style.display='none';
-  document.getElementById('set-btns').style.display='block';
-}
-
-function toast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(function(){t.classList.remove('show');},2500);
-}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2500);}
 
 initAuth();
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').catch(function(){});
-}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
 </script>
 </body>
 </html>
