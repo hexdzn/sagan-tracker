@@ -652,7 +652,7 @@ function ecard(e,mini){
   if(e.gd)expandContent+='<div style="margin-bottom:6px">&#127873; '+e.gd+'</div>';
   if(e.nt)expandContent+='<div style="margin-bottom:6px">'+e.nt+'</div>';
   if(!e.gd&&!e.nt)expandContent='<div style="margin-bottom:6px;color:#ddd">No notes</div>';
-  var actions=mini?'':'<div class="card-actions"><button class="edit-btn" onclick="event.stopPropagation();openAdd(\''+e.id+'\')">&#9998; Edit</button><button class="del-btn" onclick="event.stopPropagation();del(\''+e.id+'\')">&#128465; Delete</button></div>';
+  var actions=mini?'':'<div class="card-actions"><button class="edit-btn" onclick="event.stopPropagation();openAddById(this)" data-id="'+e.id+'">&#9998; Edit</button><button class="del-btn" onclick="event.stopPropagation();delById(this)" data-id="'+e.id+'">&#128465; Delete</button></div>';
   return'<div class="card" onclick="tog(\'cx-'+e.id+'\')">'
     +'<div class="card-row1"><span class="card-name">'+e.n+'</span><span class="card-amount '+amtColor+'">'+displayAmt+'</span></div>'
     +'<div class="card-row2"><span class="card-sub">'+(meta.length?meta.join(' &nbsp;'):'')+'</span>'
@@ -874,6 +874,8 @@ async function saveEvent(){
   closeSheet('ev-overlay');toast('Event created!');rEvents();
 }
 
+function openAddById(btn){var id=btn.getAttribute('data-id');openAdd(id);}
+function delById(btn){var id=btn.getAttribute('data-id');del(id);}
 async function del(id){
   if(!confirm('Delete this entry?'))return;
   var r=await supa.from('entries').delete().eq('id',id);
