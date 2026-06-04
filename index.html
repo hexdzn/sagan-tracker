@@ -626,7 +626,7 @@ function rHome(){
   // Recent list
   var recent=[].concat(E).sort(function(a,b){return new Date(b.d)-new Date(a.d);}).slice(0,5);
   var el=document.getElementById('h-list');
-  el.innerHTML=recent.length?recent.map(function(e){return ecard(e,true);}).join(''):'<div class="empty"><div class="empty-icon">&#128235;</div><p>No entries yet<br>Tap + to add your first shagun</p></div>';
+  el.innerHTML=recent.length?recent.map(function(e){return ecard(e,true);}).join(''):'<div class="empty"><div class="empty-icon">&#128235;</div><p>No entries yet<br>Tap + to add your first shagun</p></div>';initCardClicks(el);
   // Ad banner (free users)
   var aw=document.getElementById('ad-wrap');
   if(!isPremium){
@@ -647,19 +647,47 @@ function ecard(e,mini){
   if(e.o)meta.push(e.o);
   if(ev)meta.push('<span class="evbadge">'+ev.n+'</span>');
   if(e.r)meta.push('<span class="badge tag">'+e.r+'</span>');
-  var expandContent='';
-  if(e.gi)'';
-  if(e.gd)expandContent+='<div style="margin-bottom:6px">&#127873; '+e.gd+'</div>';
-  if(e.nt)expandContent+='<div style="margin-bottom:6px">'+e.nt+'</div>';
-  if(!e.gd&&!e.nt)expandContent='<div style="margin-bottom:6px;color:#ddd">No notes</div>';
-  var actions=mini?'':'<div class="card-actions"><button class="edit-btn" onclick="event.stopPropagation();openAddById(this)" data-id="'+e.id+'">&#9998; Edit</button><button class="del-btn" onclick="event.stopPropagation();delById(this)" data-id="'+e.id+'">&#128465; Delete</button></div>';
-  return'<div class="card" onclick="tog(\'cx-'+e.id+'\')">'
-    +'<div class="card-row1"><span class="card-name">'+e.n+'</span><span class="card-amount '+amtColor+'">'+displayAmt+'</span></div>'
-    +'<div class="card-row2"><span class="card-sub">'+(meta.length?meta.join(' &nbsp;'):'')+'</span>'
-    +'<span style="display:flex;align-items:center;gap:6px"><span class="badge '+badgeClass+'">'+badgeText+'</span><span class="card-sub">'+fd(e.d)+'</span></span></div>'
-    +'<div class="card-expand" id="cx-'+e.id+'">'+expandContent+actions+'</div></div>';
+  var notes='';
+  if(e.gd)notes+='<div style="margin-bottom:6px">&#127873; '+e.gd+'</div>';
+  if(e.nt)notes+='<div style="margin-bottom:6px">'+e.nt+'</div>';
+  if(!e.gd&&!e.nt)notes='<div style="margin-bottom:6px;color:#ddd">No notes</div>';
+  var btns=mini?'':'<div class="card-actions">'
+    +'<button class="edit-btn" data-action="edit" data-id="'+e.id+'">&#9998; Edit</button>'
+    +'<button class="del-btn" data-action="del" data-id="'+e.id+'">&#128465; Delete</button>'
+    +'</div>';
+  return [
+    '<div class="card" data-toggle="cx-'+e.id+'">',
+      '<div class="card-row1">',
+        '<span class="card-name">'+e.n+'</span>',
+        '<span class="card-amount '+amtColor+'">'+displayAmt+'</span>',
+      '</div>',
+      '<div class="card-row2">',
+        '<span class="card-sub">'+(meta.length?meta.join(' &nbsp;'):'')+'</span>',
+        '<span style="display:flex;align-items:center;gap:6px">',
+          '<span class="badge '+badgeClass+'">'+badgeText+'</span>',
+          '<span class="card-sub">'+fd(e.d)+'</span>',
+        '</span>',
+      '</div>',
+      '<div class="card-expand" id="cx-'+e.id+'">'+notes+btns+'</div>',
+    '</div>'
+  ].join('');
 }
 function tog(id){var el=document.getElementById(id);if(el)el.classList.toggle('open');}
+function initCardClicks(container){
+  container.addEventListener('click',function(evt){
+    var btn=evt.target.closest('[data-action]');
+    if(btn){
+      evt.stopPropagation();
+      var id=btn.getAttribute('data-id');
+      var action=btn.getAttribute('data-action');
+      if(action==='edit')openAdd(id);
+      if(action==='del')del(id);
+      return;
+    }
+    var card=evt.target.closest('[data-toggle]');
+    if(card){tog(card.getAttribute('data-toggle'));}
+  });
+}
 
 // EVENTS
 function rEvents(){
@@ -696,7 +724,7 @@ function rLog(){
   else if(ls==='high')list.sort(function(a,b){return b.a-a.a;});
   else list.sort(function(a,b){return a.a-b.a;});
   var el=document.getElementById('log-list');
-  el.innerHTML=list.length?list.map(function(e){return ecard(e,false);}).join(''):'<div class="empty"><div class="empty-icon">&#128269;</div><p>No entries found</p></div>';
+  el.innerHTML=list.length?list.map(function(e){return ecard(e,false);}).join(''):'<div class="empty"><div class="empty-icon">&#128269;</div><p>No entries found</p></div>';if(list.length)initCardClicks(el);
 }
 
 // PEOPLE
