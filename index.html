@@ -626,7 +626,7 @@ function rHome(){
   // Recent list
   var recent=[].concat(E).sort(function(a,b){return new Date(b.d)-new Date(a.d);}).slice(0,5);
   var el=document.getElementById('h-list');
-  el.innerHTML=recent.length?recent.map(function(e){return ecard(e,true);}).join(''):'<div class="empty"><div class="empty-icon">&#128235;</div><p>No entries yet<br>Tap + to add your first shagun</p></div>';initCardClicks(el);
+  el.innerHTML=recent.length?recent.map(function(e){return ecard(e,true);}).join(''):'<div class="empty"><div class="empty-icon">&#128235;</div><p>No entries yet<br>Tap + to add your first shagun</p></div>';
   // Ad banner (free users)
   var aw=document.getElementById('ad-wrap');
   if(!isPremium){
@@ -673,21 +673,24 @@ function ecard(e,mini){
   ].join('');
 }
 function tog(id){var el=document.getElementById(id);if(el)el.classList.toggle('open');}
-function initCardClicks(container){
-  container.addEventListener('click',function(evt){
-    var btn=evt.target.closest('[data-action]');
-    if(btn){
-      evt.stopPropagation();
-      var id=btn.getAttribute('data-id');
-      var action=btn.getAttribute('data-action');
-      if(action==='edit')openAdd(id);
-      if(action==='del')del(id);
-      return;
-    }
-    var card=evt.target.closest('[data-toggle]');
-    if(card){tog(card.getAttribute('data-toggle'));}
-  });
-}
+// Global click delegation - handles all card clicks, edit, delete
+document.addEventListener('click',function(evt){
+  var btn=evt.target.closest('[data-action]');
+  if(btn){
+    evt.stopPropagation();
+    evt.preventDefault();
+    var id=btn.getAttribute('data-id');
+    var action=btn.getAttribute('data-action');
+    if(action==='edit')openAdd(id);
+    if(action==='del')del(id);
+    return;
+  }
+  var card=evt.target.closest('[data-toggle]');
+  if(card){
+    evt.stopPropagation();
+    tog(card.getAttribute('data-toggle'));
+  }
+});
 
 // EVENTS
 function rEvents(){
@@ -724,7 +727,7 @@ function rLog(){
   else if(ls==='high')list.sort(function(a,b){return b.a-a.a;});
   else list.sort(function(a,b){return a.a-b.a;});
   var el=document.getElementById('log-list');
-  el.innerHTML=list.length?list.map(function(e){return ecard(e,false);}).join(''):'<div class="empty"><div class="empty-icon">&#128269;</div><p>No entries found</p></div>';if(list.length)initCardClicks(el);
+  el.innerHTML=list.length?list.map(function(e){return ecard(e,false);}).join(''):'<div class="empty"><div class="empty-icon">&#128269;</div><p>No entries found</p></div>';
 }
 
 // PEOPLE
