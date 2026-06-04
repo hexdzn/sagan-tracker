@@ -36,11 +36,11 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 .dash-mini .dl{font-size:11px;opacity:0.75;margin-top:2px}
 
 /* PREMIUM BANNER */
-.premium-banner{margin:0 16px 0;background:linear-gradient(135deg,#FF6B6B,#FF8E53);border-radius:14px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.premium-banner{margin:0 16px 0;background:#0F0F1A;border:1px solid rgba(255,215,0,0.3);border-radius:14px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
 .pb-left{color:#fff}
-.pb-title{font-size:13px;font-weight:700}
-.pb-sub{font-size:11px;opacity:0.85;margin-top:1px}
-.pb-btn{background:rgba(255,255,255,0.25);border:none;color:#fff;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap}
+.pb-title{font-size:13px;font-weight:700;color:#FFD700}
+.pb-sub{font-size:11px;color:rgba(255,255,255,0.5);margin-top:1px}
+.pb-btn{background:#FFD700;border:none;color:#0F0F1A;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap}
 
 /* AD BANNER */
 .ad-banner{margin:10px 16px 0;background:#fff;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;border:1px solid #efefef}
@@ -195,23 +195,23 @@ textarea.finput{resize:none;min-height:68px}
 .cn{flex:1;background:#fff;color:#1a1a2e;border:1.5px solid #e8e8f0;border-radius:10px;padding:12px;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif}
 
 /* PREMIUM SHEET */
-.premium-hero{background:linear-gradient(135deg,#6C63FF,#A855F7);border-radius:16px;padding:24px;text-align:center;margin-bottom:20px;color:#fff}
-.premium-hero .ph-icon{font-size:40px;margin-bottom:10px}
-.premium-hero .ph-title{font-size:20px;font-weight:700;margin-bottom:6px}
-.premium-hero .ph-sub{font-size:13px;opacity:0.85}
+.premium-hero{background:#0F0F1A;border-radius:20px;padding:28px 24px;text-align:center;margin-bottom:20px;color:#fff;position:relative;overflow:hidden;border:1px solid rgba(108,99,255,0.3)}
+.premium-hero .ph-icon{font-size:40px;margin-bottom:10px;filter:drop-shadow(0 0 12px rgba(255,215,0,0.6))}
+.premium-hero .ph-title{font-size:22px;font-weight:700;margin-bottom:6px;letter-spacing:-0.3px}
+.premium-hero .ph-sub{font-size:13px;color:rgba(255,255,255,0.6)}
 .feature-list{margin-bottom:20px}
-.feature-item{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:14px;color:#1a1a2e;border-bottom:1px solid #f5f5f5}
+.feature-item{display:flex;align-items:center;gap:10px;padding:10px 0;font-size:14px;color:#1a1a2e;border-bottom:1px solid #f5f5f5}
 .feature-item:last-child{border:none}
 .fi-icon{font-size:18px;width:28px;text-align:center;flex-shrink:0}
 .price-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.price-card{border:2px solid #ececf5;border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:all 0.2s}
-.price-card.selected{border-color:#6C63FF;background:#EEF0FF}
-.price-card .pc-period{font-size:11px;color:#888;margin-bottom:4px}
-.price-card .pc-price{font-size:20px;font-weight:700;color:#1a1a2e}
+.price-card{border:2px solid #ececf5;border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:all 0.2s;background:#fff}
+.price-card.selected{border-color:#FFD700;background:#0F0F1A;} .price-card.selected .pc-period{color:#aaa} .price-card.selected .pc-price{color:#FFD700} .price-card.selected .pc-save{color:#FFD700}
+.price-card .pc-period{font-size:11px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
+.price-card .pc-price{font-size:22px;font-weight:700;color:#1a1a2e}
 .price-card .pc-save{font-size:10px;color:#22c55e;font-weight:600;margin-top:2px}
 
 /* AUTH */
-#auth-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:32px 24px;background:linear-gradient(160deg,#f0f0f8 0%,#e8e8ff 100%)}
+#auth-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:32px 24px;background:linear-gradient(160deg,#f0f0f8 0%,#e8e8ff 100%);width:100%;position:fixed;top:0;left:0;z-index:100}
 .auth-logo{width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,#6C63FF,#A855F7);display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:20px;box-shadow:0 8px 24px rgba(108,99,255,0.3)}
 .auth-title{font-size:28px;font-weight:700;color:#1a1a2e;margin-bottom:6px}
 .auth-sub{font-size:14px;color:#888;text-align:center;margin-bottom:36px;line-height:1.6;max-width:280px}
@@ -381,8 +381,23 @@ textarea.finput{resize:none;min-height:68px}
   <label class="flabel">Date</label>
   <input class="finput" id="f-date" type="date">
   <label class="flabel">Occasion</label>
-  <input class="finput" id="f-occ" type="text" list="ol" placeholder="e.g. Diwali 2024">
-  <datalist id="ol"><option value="Diwali"><option value="Holi"><option value="Wedding"><option value="Birthday"><option value="Navratri"><option value="Bhai Dooj"></datalist>
+  <input class="finput" id="f-occ" type="text" list="ol" placeholder="Select or type occasion">
+  <datalist id="ol">
+<option value="Diwali"><option value="Holi"><option value="Navratri"><option value="Bhai Dooj">
+<option value="Raksha Bandhan"><option value="Karva Chauth"><option value="Ganesh Chaturthi">
+<option value="Durga Puja"><option value="Janmashtami"><option value="Ram Navami">
+<option value="Makar Sankranti"><option value="Lohri"><option value="Pongal">
+<option value="Onam"><option value="Vishu"><option value="Bihu">
+<option value="Ugadi"><option value="Gudi Padwa"><option value="Baisakhi">
+<option value="Eid ul-Fitr"><option value="Eid ul-Adha"><option value="Muharram">
+<option value="Christmas"><option value="Easter"><option value="Good Friday">
+<option value="Guru Nanak Jayanti"><option value="Gurpurab"><option value="Dussehra">
+<option value="Wedding"><option value="Engagement"><option value="Birthday">
+<option value="Anniversary"><option value="Baby Shower"><option value="Naming Ceremony">
+<option value="Thread Ceremony"><option value="Graduation"><option value="House Warming">
+<option value="New Year"><option value="Valentine's Day"><option value="Mother's Day">
+<option value="Father's Day">
+</datalist>
   <label class="flabel">Relationship</label>
   <input class="finput" id="f-rel" type="text" list="rl" placeholder="e.g. Uncle">
   <datalist id="rl"><option value="Uncle"><option value="Aunty"><option value="Neighbour"><option value="Family Friend"><option value="Cousin"><option value="Colleague"></datalist>
@@ -491,7 +506,7 @@ textarea.finput{resize:none;min-height:68px}
       <div class="pc-save">Save &#8377;689</div>
     </div>
   </div>
-  <button class="sbtn" onclick="upgradePremium()">Upgrade Now</button>
+  <button style="width:100%;background:#FFD700;color:#0F0F1A;border:none;border-radius:14px;padding:15px;font-size:15px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;margin-top:4px;box-shadow:0 4px 16px rgba(255,215,0,0.3)" onclick="upgradePremium()">⭐ Upgrade Now</button>
   <button class="cancel-btn" onclick="closeSheet('premium-overlay')">Maybe later</button>
 </div>
 </div>
@@ -868,7 +883,7 @@ async function del(id){
 }
 
 function closeSheet(id){document.getElementById(id).classList.remove('show');}
-function bgClose(e,id){if(e.target.id===id)closeSheet(id);}
+function bgClose(e,id){if(e.target===document.getElementById(id))closeSheet(id);}
 
 function openSettings(){
   var email=currentUser?currentUser.email||'':'';
