@@ -1,16 +1,15 @@
-const CACHE = 'shagun-v3';
-const FILES = ['/sagan-tracker/', '/sagan-tracker/index.html'];
+const CACHE = 'shagun-v5';
 self.addEventListener('install', e => {
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES).catch(() => {})));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.filter(k => k !== CACHE).map(k => caches.delete(k))
-    )).then(() => self.clients.claim())
+    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))))
+    .then(() => self.clients.claim())
+    .then(() => self.clients.matchAll().then(clients => clients.forEach(c => c.navigate(c.url))))
   );
 });
 self.addEventListener('fetch', e => {
+  // Network first - always get fresh content
   e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
 });
