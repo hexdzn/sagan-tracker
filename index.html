@@ -20,7 +20,7 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 .topbar-title{font-size:22px;font-weight:700;color:#1a1a2e}
 .topbar-actions{display:flex;gap:10px;align-items:center}
 .tb-btn{width:38px;height:38px;border-radius:50%;border:none;background:#f0f0f8;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6C63FF}
-.tb-btn.add{background:#6C63FF;color:#fff;font-size:24px;box-shadow:0 4px 12px rgba(108,99,255,0.35)}
+.tb-btn.add{background:#6C63FF;color:#fff;font-size:20px;line-height:1;box-shadow:0 4px 12px rgba(108,99,255,0.35)}
 .screen{display:none;flex:1;overflow-y:auto;padding-bottom:20px}
 .screen.active{display:block}
 
@@ -58,7 +58,7 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 /* ENTRY CARDS */
 .card{background:#fff;border-radius:16px;padding:14px 16px;margin:0 16px 10px;cursor:pointer;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
 .card:active{opacity:0.95}
-.card-row1{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.card-row1{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .card-name{font-size:15px;font-weight:600;color:#1a1a2e;flex:1;margin-right:8px}
 .card-amount{font-size:16px;font-weight:700;white-space:nowrap}
 .card-amount.recv{color:#6C63FF}
@@ -97,9 +97,9 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 
 /* SEARCH */
 .search-box{position:relative;padding:12px 16px 0}
-.search-box input{width:100%;border:none;border-radius:14px;padding:11px 14px 11px 40px;font-size:13px;font-family:'Inter',sans-serif;color:#1a1a2e;background:#fff;outline:none;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
+.search-box input{width:100%;border:none;border-radius:14px;padding:11px 14px 11px 38px;font-size:13px;font-family:'Inter',sans-serif;color:#1a1a2e;background:#fff;outline:none;box-shadow:0 1px 4px rgba(108,99,255,0.08)}
 .search-box input:focus{box-shadow:0 0 0 2px rgba(108,99,255,0.2)}
-.si{position:absolute;left:28px;top:50%;transform:translateY(-50%);color:#bbb;pointer-events:none}
+.si{position:absolute;left:28px;top:calc(12px + 50%);transform:translateY(-50%);color:#bbb;pointer-events:none;display:flex;align-items:center}
 
 /* CHIPS */
 .chips{display:flex;gap:6px;padding:8px 16px 0;overflow-x:auto;scrollbar-width:none}
@@ -305,17 +305,19 @@ textarea.finput{resize:none;min-height:68px}
     <span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
     <input type="text" placeholder="Search name, occasion, event..." oninput="rLog()" id="log-q">
   </div>
-  <div class="chips" id="lfc">
-    <button class="chip on" onclick="setLF('all',this)">All</button>
-    <button class="chip" onclick="setLF('Received',this)">Received</button>
-    <button class="chip" onclick="setLF('Given',this)">Given</button>
-    <button class="chip" onclick="setLF('Gift',this)">Gift</button>
-  </div>
-  <div class="chips" id="lsc" style="padding-top:4px">
-    <button class="chip on" onclick="setLS('newest',this)">Newest</button>
-    <button class="chip" onclick="setLS('oldest',this)">Oldest</button>
-    <button class="chip" onclick="setLS('high',this)">Amount &#8593;</button>
-    <button class="chip" onclick="setLS('low',this)">Amount &#8595;</button>
+  <div style="display:flex;align-items:center;gap:0;padding:8px 16px 0">
+    <div class="chips" id="lfc" style="padding:0;flex:1;overflow-x:auto">
+      <button class="chip on" onclick="setLF('all',this)">All</button>
+      <button class="chip" onclick="setLF('Received',this)">Received</button>
+      <button class="chip" onclick="setLF('Given',this)">Given</button>
+      <button class="chip" onclick="setLF('Gift',this)">Gift</button>
+    </div>
+    <select id="log-sort" onchange="setLSVal(this.value)" style="flex-shrink:0;margin-left:8px;border:none;background:#fff;border-radius:20px;padding:6px 10px;font-size:12px;font-weight:500;color:#888;font-family:'Inter',sans-serif;cursor:pointer;box-shadow:0 1px 3px rgba(108,99,255,0.08);outline:none;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23bbb'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 8px center;padding-right:22px">
+      <option value="newest">Newest</option>
+      <option value="oldest">Oldest</option>
+      <option value="high">Amount ↑</option>
+      <option value="low">Amount ↓</option>
+    </select>
   </div>
   <div style="margin-top:10px" id="log-list"></div>
 </div>
@@ -650,7 +652,6 @@ function ecard(e,mini){
   var meta=[];
   if(e.o)meta.push(e.o);
   if(ev)meta.push('<span class="evbadge">'+ev.n+'</span>');
-  if(e.r)meta.push('<span class="badge tag">'+e.r+'</span>');
   var notes='';
   if(e.gd)notes+='<div style="margin-bottom:6px">&#127873; '+e.gd+'</div>';
   if(e.nt)notes+='<div style="margin-bottom:6px">'+e.nt+'</div>';
@@ -662,8 +663,11 @@ function ecard(e,mini){
   return [
     '<div class="card'+(hasNotes&&!mini?' expandable':'')+'"'+(hasNotes&&!mini?' data-toggle="cx-'+e.id+'"':'')+'>',
       '<div class="card-row1">',
-        '<span class="card-name">'+e.n+'</span>',
-        (mini?'':'<span style="display:flex;align-items:center;gap:0">'+btnsSvg+'</span>'),
+        '<span style="display:flex;flex-direction:column;flex:1;min-width:0;margin-right:6px">',
+          '<span class="card-name">'+e.n+'</span>',
+          (e.r&&!mini?'<span style="font-size:11px;color:#bbb;margin-top:1px">'+e.r+'</span>':''),
+        '</span>',
+        (mini?'':'<span style="display:flex;align-items:center">'+btnsSvg+'</span>'),
         '<span class="card-amount '+amtColor+'" style="margin-left:8px">'+displayAmt+'</span>',
       '</div>',
       '<div class="card-row2">',
@@ -716,7 +720,7 @@ function rEvents(){
 
 // LOG
 function setLF(f,btn){lf=f;document.querySelectorAll('#lfc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rLog();}
-function setLS(s,btn){ls=s;document.querySelectorAll('#lsc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rLog();}
+function setLSVal(v){ls=v;rLog();}
 function rLog(){
   var q=(document.getElementById('log-q').value||'').toLowerCase();
   var list=[].concat(E);
