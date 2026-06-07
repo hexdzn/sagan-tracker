@@ -1,4 +1,4 @@
-const CACHE = 'shagun-v11';
+const CACHE = 'shagun-v12';
 self.addEventListener('install', e => {
   self.skipWaiting();
 });

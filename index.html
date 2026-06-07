@@ -568,7 +568,7 @@ async function loadAll(){
   document.getElementById('user-email').textContent=email;
   document.getElementById('user-avatar').textContent=email?email[0].toUpperCase():'?';
   // Admin accounts get permanent premium
-  var ADMINS=['piyushggrover@gmail.com'];
+  var ADMINS=['piyushggrover@gmail.com','grover159@gmail.com'];
   isPremium=ADMINS.indexOf(currentUser.email)!==-1||localStorage.getItem('sg_premium_'+currentUser.id)==='true';
   document.getElementById('user-plan').textContent=isPremium?'Premium ⭐':'Free Plan';
   document.getElementById('user-plan').className='user-plan '+(isPremium?'premium':'free');
