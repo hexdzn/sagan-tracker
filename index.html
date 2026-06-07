@@ -655,12 +655,29 @@ function rHome(){
   var recent=[].concat(E).sort(function(a,b){return new Date(b.d)-new Date(a.d);}).slice(0,5);
   var el=document.getElementById('h-list');
   el.innerHTML=recent.length?recent.map(function(e){return ecard(e,true);}).join(''):'<div class="empty"><div class="empty-icon">&#128235;</div><p>No entries yet<br>Tap + to add your first shagun</p></div>';
-  // Ad banner (free users)
+  // Ad banner (free users) — AdMob native on device, placeholder on web
   var aw=document.getElementById('ad-wrap');
   if(!isPremium){
-    aw.innerHTML='<div class="ad-banner" style="margin-top:4px"><span class="ad-label">Ad</span><span class="ad-content">Manage your finances smarter with Fi Money</span></div>';
-  } else {aw.innerHTML='';}
-}
+    if(isNative&&window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.AdMob){
+      var AdMob=window.Capacitor.Plugins.AdMob;
+      AdMob.showBanner({
+        adId:'ca-app-pub-8653053673345923/7919258741',
+        adSize:'BANNER',
+        position:'BOTTOM_CENTER',
+        margin:0,
+        isTesting:false
+      }).catch(function(){});
+      aw.innerHTML=''; // AdMob handles its own UI
+    } else {
+      aw.innerHTML='<div class="ad-banner" style="margin-top:4px"><span class="ad-label">Ad</span><span class="ad-content">Manage your finances smarter with Fi Money</span></div>';
+    }
+  } else {
+    aw.innerHTML='';
+    // Hide AdMob banner if premium
+    if(isNative&&window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.AdMob){
+      window.Capacitor.Plugins.AdMob.hideBanner().catch(function(){});
+    }
+  }
 
 function ecard(e,mini){
   var ev=V.find(function(v){return v.id===e.ev;});
