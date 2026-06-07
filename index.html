@@ -75,9 +75,9 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 .evbadge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;background:#EEF0FF;color:#6C63FF}
 .card-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #f5f5f5;font-size:12px;color:#888}
 .card-expand.open{display:block}
-.card-actions{display:flex;gap:8px;margin-top:10px}
-.edit-btn{flex:1;background:#EEF0FF;border:none;color:#6C63FF;border-radius:8px;padding:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
-.del-btn{flex:1;background:#FFF0F0;border:none;color:#e53e3e;border-radius:8px;padding:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.card-actions{display:flex;gap:6px;flex-shrink:0}
+.edit-btn{background:#EEF0FF;border:none;color:#6C63FF;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;line-height:1;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.del-btn{background:#FFF0F0;border:none;color:#e53e3e;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;line-height:1;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .gift-img{width:100%;border-radius:10px;margin-bottom:8px;max-height:180px;object-fit:cover}
 
 /* FREE LIMIT BAR */
@@ -653,12 +653,13 @@ function ecard(e,mini){
   if(e.gd)notes+='<div style="margin-bottom:6px">&#127873; '+e.gd+'</div>';
   if(e.nt)notes+='<div style="margin-bottom:6px">'+e.nt+'</div>';
   if(!e.gd&&!e.nt)notes='<div style="margin-bottom:6px;color:#ddd">No notes</div>';
-  var btns=mini?'':'<div class="card-actions" onclick="event.stopPropagation()" ontouchstart="event.stopPropagation()">'
-    +'<button class="edit-btn" data-action="edit" data-id="'+e.id+'" ontouchend="event.stopPropagation();event.preventDefault();openAdd(\''+e.id+'\')">&#9998; Edit</button>'
-    +'<button class="del-btn" data-action="del" data-id="'+e.id+'" ontouchend="event.stopPropagation();event.preventDefault();del(\''+e.id+'\')">&#128465; Delete</button>'
+  var btns=mini?'':'<div class="card-actions">'
+    +'<button class="edit-btn" data-action="edit" data-id="'+e.id+'">✏ Edit</button>'
+    +'<button class="del-btn" data-action="del" data-id="'+e.id+'">🗑</button>'
     +'</div>';
+  var hasNotes=e.gd||e.nt;
   return [
-    '<div class="card" data-toggle="cx-'+e.id+'">',
+    '<div class="card'+(hasNotes&&!mini?' expandable':'')+'"'+(hasNotes&&!mini?' data-toggle="cx-'+e.id+'"':'')+'>',
       '<div class="card-row1">',
         '<span class="card-name">'+e.n+'</span>',
         '<span class="card-amount '+amtColor+'">'+displayAmt+'</span>',
@@ -670,23 +671,17 @@ function ecard(e,mini){
           '<span class="card-sub">'+fd(e.d)+'</span>',
         '</span>',
       '</div>',
-      '<div class="card-expand" id="cx-'+e.id+'">'+notes+btns+'</div>',
+      (mini?'':'<div class="card-row2" style="margin-top:8px;justify-content:flex-end">'+btns+'</div>'),
+      (hasNotes&&!mini?'<div class="card-expand" id="cx-'+e.id+'">'+notes+'</div>':''),
     '</div>'
   ].join('');
 }
 function tog(id){var el=document.getElementById(id);if(el)el.classList.toggle('open');}
-// Capture-phase touchstart: block card-toggle when touching action buttons
-document.addEventListener('touchstart',function(evt){
-  if(evt.target.closest('[data-action]')||evt.target.closest('.card-actions')){
-    evt.stopPropagation();
-  }
-},true);
-// Global click delegation - handles all card clicks, edit, delete
+// Global click delegation
 document.addEventListener('click',function(evt){
   var btn=evt.target.closest('[data-action]');
   if(btn){
     evt.stopPropagation();
-    evt.preventDefault();
     var id=btn.getAttribute('data-id');
     var action=btn.getAttribute('data-action');
     if(action==='edit')openAdd(id);
@@ -694,10 +689,7 @@ document.addEventListener('click',function(evt){
     return;
   }
   var card=evt.target.closest('[data-toggle]');
-  if(card){
-    evt.stopPropagation();
-    tog(card.getAttribute('data-toggle'));
-  }
+  if(card)tog(card.getAttribute('data-toggle'));
 });
 
 // EVENTS
