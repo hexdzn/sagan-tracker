@@ -75,9 +75,10 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 .evbadge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;background:#EEF0FF;color:#6C63FF}
 .card-expand{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #f5f5f5;font-size:12px;color:#888}
 .card-expand.open{display:block}
-.card-actions{display:flex;gap:6px;flex-shrink:0}
-.edit-btn{background:#EEF0FF;border:none;color:#6C63FF;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;line-height:1;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-.del-btn{background:#FFF0F0;border:none;color:#e53e3e;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;line-height:1;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.card-actions{display:flex;gap:4px;flex-shrink:0;margin-left:6px}
+.edit-btn,.del-btn{width:28px;height:28px;border:none;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:'Inter',sans-serif;touch-action:manipulation;-webkit-tap-highlight-color:transparent;flex-shrink:0}
+.edit-btn{background:#EEF0FF;color:#6C63FF}
+.del-btn{background:#FFF0F0;color:#e53e3e}
 .gift-img{width:100%;border-radius:10px;margin-bottom:8px;max-height:180px;object-fit:cover}
 
 /* FREE LIMIT BAR */
@@ -652,17 +653,17 @@ function ecard(e,mini){
   var notes='';
   if(e.gd)notes+='<div style="margin-bottom:6px">&#127873; '+e.gd+'</div>';
   if(e.nt)notes+='<div style="margin-bottom:6px">'+e.nt+'</div>';
-  if(!e.gd&&!e.nt)notes='<div style="margin-bottom:6px;color:#ddd">No notes</div>';
-  var btns=mini?'':'<div class="card-actions">'
-    +'<button class="edit-btn" data-action="edit" data-id="'+e.id+'">✏ Edit</button>'
-    +'<button class="del-btn" data-action="del" data-id="'+e.id+'">🗑</button>'
+  var hasNotes=!!(e.gd||e.nt);
+  var btnsSvg=mini?'':'<div class="card-actions">'
+    +'<button class="edit-btn" data-action="edit" data-id="'+e.id+'" title="Edit"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
+    +'<button class="del-btn" data-action="del" data-id="'+e.id+'" title="Delete"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>'
     +'</div>';
-  var hasNotes=e.gd||e.nt;
   return [
     '<div class="card'+(hasNotes&&!mini?' expandable':'')+'"'+(hasNotes&&!mini?' data-toggle="cx-'+e.id+'"':'')+'>',
       '<div class="card-row1">',
         '<span class="card-name">'+e.n+'</span>',
-        '<span class="card-amount '+amtColor+'">'+displayAmt+'</span>',
+        (mini?'':'<span style="display:flex;align-items:center;gap:0">'+btnsSvg+'</span>'),
+        '<span class="card-amount '+amtColor+'" style="margin-left:8px">'+displayAmt+'</span>',
       '</div>',
       '<div class="card-row2">',
         '<span class="card-sub">'+(meta.length?meta.join(' &nbsp;'):'')+'</span>',
@@ -671,7 +672,6 @@ function ecard(e,mini){
           '<span class="card-sub">'+fd(e.d)+'</span>',
         '</span>',
       '</div>',
-      (mini?'':'<div class="card-row2" style="margin-top:8px;justify-content:flex-end">'+btns+'</div>'),
       (hasNotes&&!mini?'<div class="card-expand" id="cx-'+e.id+'">'+notes+'</div>':''),
     '</div>'
   ].join('');
