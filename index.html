@@ -11,6 +11,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-content:center;min-height:100vh}
@@ -514,6 +515,7 @@ textarea.finput{resize:none;min-height:68px}
 <script>
 var SUPA_URL='https://apemhtjldbjlbymolehm.supabase.co';
 var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwZW1odGpsZGJqbGJ5bW9sZWhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0Nzk4MDAsImV4cCI6MjA5NjA1NTgwMH0.ojZJN10-Tr_ZAMsK2sn7U3-o7g5etGskJbBRys1dCZg';
+var RAZORPAY_KEY='rzp_test_REPLACE_WITH_YOUR_KEY'; // ← swap for rzp_live_ key before release
 var FREE_LIMIT=50;
 var supa=supabase.createClient(SUPA_URL,SUPA_KEY);
 var currentUser=null,isPremium=false;
@@ -651,9 +653,9 @@ function ecard(e,mini){
   if(e.gd)notes+='<div style="margin-bottom:6px">&#127873; '+e.gd+'</div>';
   if(e.nt)notes+='<div style="margin-bottom:6px">'+e.nt+'</div>';
   if(!e.gd&&!e.nt)notes='<div style="margin-bottom:6px;color:#ddd">No notes</div>';
-  var btns=mini?'':'<div class="card-actions">'
-    +'<button class="edit-btn" data-action="edit" data-id="'+e.id+'">&#9998; Edit</button>'
-    +'<button class="del-btn" data-action="del" data-id="'+e.id+'">&#128465; Delete</button>'
+  var btns=mini?'':'<div class="card-actions" onclick="event.stopPropagation()" ontouchstart="event.stopPropagation()">'
+    +'<button class="edit-btn" data-action="edit" data-id="'+e.id+'" ontouchend="event.stopPropagation();event.preventDefault();openAdd(\''+e.id+'\')">&#9998; Edit</button>'
+    +'<button class="del-btn" data-action="del" data-id="'+e.id+'" ontouchend="event.stopPropagation();event.preventDefault();del(\''+e.id+'\')">&#128465; Delete</button>'
     +'</div>';
   return [
     '<div class="card" data-toggle="cx-'+e.id+'">',
@@ -673,6 +675,12 @@ function ecard(e,mini){
   ].join('');
 }
 function tog(id){var el=document.getElementById(id);if(el)el.classList.toggle('open');}
+// Capture-phase touchstart: block card-toggle when touching action buttons
+document.addEventListener('touchstart',function(evt){
+  if(evt.target.closest('[data-action]')||evt.target.closest('.card-actions')){
+    evt.stopPropagation();
+  }
+},true);
 // Global click delegation - handles all card clicks, edit, delete
 document.addEventListener('click',function(evt){
   var btn=evt.target.closest('[data-action]');
@@ -934,9 +942,50 @@ function selectPlan(p){
   document.getElementById('pc-yearly').className='price-card'+(p==='yearly'?' selected':'');
 }
 function upgradePremium(){
-  // Placeholder — integrate payment gateway (Razorpay/Stripe) here
-  toast('Payment coming soon! Contact us to upgrade.');
+  var amount=selectedPlan==='monthly'?9900:49900; // paise (₹99 or ₹499)
+  var desc=selectedPlan==='monthly'?'Shagun Premium — Monthly':'Shagun Premium — Yearly';
+  if(typeof Razorpay==='undefined'){toast('Payment unavailable, try again.');return;}
+  var options={
+    key:RAZORPAY_KEY,
+    amount:amount,
+    currency:'INR',
+    name:'Shagun',
+    description:desc,
+    image:'https://hexdzn.github.io/sagan-tracker/icon-192.png',
+    prefill:{email:currentUser&&currentUser.email?currentUser.email:''},
+    theme:{color:'#6C63FF'},
+    modal:{backdropclose:false,escape:false},
+    handler:function(response){
+      // Payment succeeded — mark premium in localStorage + Supabase profile
+      isPremium=true;
+      var expiry=new Date();
+      if(selectedPlan==='monthly'){expiry.setMonth(expiry.getMonth()+1);}
+      else{expiry.setFullYear(expiry.getFullYear()+1);}
+      localStorage.setItem('sg_premium_'+currentUser.id,'true');
+      localStorage.setItem('sg_premium_plan_'+currentUser.id,selectedPlan);
+      localStorage.setItem('sg_premium_expiry_'+currentUser.id,expiry.toISOString());
+      localStorage.setItem('sg_rzp_payment_id_'+currentUser.id,response.razorpay_payment_id);
+      // Persist to Supabase (best-effort, non-blocking)
+      supa.from('profiles').upsert({
+        user_id:currentUser.id,
+        is_premium:true,
+        premium_plan:selectedPlan,
+        premium_expiry:expiry.toISOString(),
+        razorpay_payment_id:response.razorpay_payment_id
+      }).then(function(){});
+      closeSheet('premium-overlay');
+      rDash();
+      document.getElementById('user-plan').textContent='Premium ⭐';
+      document.getElementById('user-plan').className='user-plan premium';
+      toast('🎉 Welcome to Premium!');
+    }
+  };
+  var rzp=new Razorpay(options);
+  rzp.on('payment.failed',function(resp){
+    toast('Payment failed: '+resp.error.description);
+  });
   closeSheet('premium-overlay');
+  rzp.open();
 }
 
 // BACKUP
