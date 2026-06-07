@@ -528,6 +528,11 @@ var selectedPlan='yearly',photoBase64=null;
 
 // AUTH
 async function initAuth(){
+  // Handle deep link token on native app (shagun://login-callback#access_token=...)
+  if(window.location.hash&&window.location.hash.includes('access_token')){
+    var r=await supa.auth.getSession();
+    if(r.data.session){currentUser=r.data.session.user;showApp();return;}
+  }
   var s=await supa.auth.getSession();
   if(s.data.session){currentUser=s.data.session.user;showApp();}
   else showAuth();
@@ -535,6 +540,20 @@ async function initAuth(){
     if(event==='SIGNED_IN'&&session){currentUser=session.user;showApp();}
     else if(event==='SIGNED_OUT'){currentUser=null;E=[];V=[];showAuth();}
   });
+  // Listen for Capacitor deep link (shagun://login-callback)
+  if(window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.App){
+    window.Capacitor.Plugins.App.addListener('appUrlOpen',function(data){
+      if(data.url&&data.url.includes('login-callback')){
+        var hash=data.url.split('#')[1];
+        if(hash){
+          window.location.hash=hash;
+          supa.auth.getSession().then(function(r){
+            if(r.data.session){currentUser=r.data.session.user;showApp();}
+          });
+        }
+      }
+    });
+  }
 }
 function showApp(){
   document.getElementById('auth-screen').style.display='none';
@@ -546,8 +565,11 @@ function showAuth(){
   document.getElementById('auth-screen').style.display='flex';
   document.getElementById('app').style.display='none';
 }
+// Detect if running inside Capacitor native app
+var isNative=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+var authRedirect=isNative?'shagun://login-callback':window.location.href;
 async function signInGoogle(){
-  var r=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});
+  var r=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:authRedirect}});
   if(r.error)toast('Error: '+r.error.message);
 }
 async function signInMagic(){
@@ -555,7 +577,7 @@ async function signInMagic(){
   if(!email){toast('Please enter your email');return;}
   var btn=document.getElementById('magic-btn');
   btn.disabled=true;btn.textContent='Sending...';
-  var r=await supa.auth.signInWithOtp({email:email,options:{emailRedirectTo:window.location.href}});
+  var r=await supa.auth.signInWithOtp({email:email,options:{emailRedirectTo:authRedirect}});
   if(r.error){toast('Error: '+r.error.message);btn.disabled=false;btn.textContent='Send Magic Link';}
   else{btn.textContent='Check your email!';toast('Magic link sent!');}
 }
