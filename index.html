@@ -428,7 +428,7 @@ textarea.finput{resize:none;min-height:68px}
 <div class="overlay" id="ev-overlay" onclick="bgClose(event,'ev-overlay')">
 <div class="sheet">
   <div class="sheet-handle"></div>
-  <div class="sheet-title">Create Event</div>
+  <div class="sheet-title" id="ev-overlay-title">Create Event</div>
   <label class="flabel">Event Name <span class="req">*</span></label>
   <input class="finput" id="ev-name" type="text" placeholder="e.g. Rahul's Wedding">
   <label class="flabel">Date <span class="req">*</span></label>
@@ -531,7 +531,7 @@ var RAZORPAY_KEY='rzp_test_Syhj2YPdTFSY2H';
 var FREE_LIMIT=50;
 var supa=supabase.createClient(SUPA_URL,SUPA_KEY);
 var currentUser=null,isPremium=false;
-var E=[],V=[],editingId=null;
+var E=[],V=[],editingId=null,editingEventId=null;
 var cType='Received',gType='cash',lf='all',ls='newest',ps='recv',imp=null;
 var selectedPlan='yearly',photoBase64=null;
 var authMode='signin';
@@ -768,6 +768,15 @@ document.addEventListener('click',function(evt){
     if(action==='del')del(id);
     return;
   }
+  var evBtn=evt.target.closest('[data-ev-action]');
+  if(evBtn){
+    evt.stopPropagation();
+    var evId=evBtn.getAttribute('data-ev-id');
+    var evAction=evBtn.getAttribute('data-ev-action');
+    if(evAction==='edit')openEditEvent(evId);
+    if(evAction==='del')deleteEvent(evId);
+    return;
+  }
   var card=evt.target.closest('[data-toggle]');
   if(card)tog(card.getAttribute('data-toggle'));
 });
@@ -781,8 +790,15 @@ function rEvents(){
     var rc=lk.filter(function(e){return e.t==='Received'&&(e.gt==='cash'||e.gt==='both');}).reduce(function(s,e){return s+e.a;},0);
     var gv=lk.filter(function(e){return e.t==='Given'&&(e.gt==='cash'||e.gt==='both');}).reduce(function(s,e){return s+e.a;},0);
     var net=rc-gv;
-    return'<div class="ecard"><div class="ec-head" onclick="tog(\'ecb-'+v.id+'\')">'
-      +'<div class="ec-top"><div class="ec-name">'+v.n+'</div><div class="ec-date">'+fd(v.d)+'</div></div>'
+    return'<div class="ecard"><div class="ec-head" data-toggle="ecb-'+v.id+'">'
+      +'<div class="ec-top">'
+      +'<div class="ec-name">'+v.n+'</div>'
+      +'<div style="display:flex;align-items:center;gap:4px">'
+      +'<button class="edit-btn" data-ev-action="edit" data-ev-id="'+v.id+'" title="Edit" style="width:28px;height:28px;border:none;border-radius:8px;background:#EEF0FF;color:#6C63FF;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;touch-action:manipulation"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>'
+      +'<button class="del-btn" data-ev-action="del" data-ev-id="'+v.id+'" title="Delete" style="width:28px;height:28px;border:none;border-radius:8px;background:#FFF0F0;color:#e53e3e;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;touch-action:manipulation"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>'
+      +'<div class="ec-date">'+fd(v.d)+'</div>'
+      +'</div>'
+      +'</div>'
       +'<div><span class="badge tag">'+(v.tp||'Event')+'</span>&nbsp;<span class="badge tag">'+lk.length+' entries</span></div></div>'
       +'<div class="ec-stats"><div class="ec-stat"><div class="esv" style="color:#6C63FF">'+rs(rc)+'</div><div class="esl">Received</div></div>'
       +'<div class="ec-stat"><div class="esv" style="color:#A855F7">'+rs(gv)+'</div><div class="esl">Given</div></div>'
@@ -968,8 +984,23 @@ async function saveEntry(){
 }
 
 function openCreateEvent(){
+  editingEventId=null;
+  document.getElementById('ev-overlay-title').textContent='Create Event';
+  document.getElementById('save-event-btn').textContent='Create Event';
   document.getElementById('ev-date').value=new Date().toISOString().split('T')[0];
   ['ev-name','ev-type','ev-notes'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('ev-overlay').classList.add('show');
+}
+function openEditEvent(id){
+  var v=V.find(function(x){return x.id===id;});
+  if(!v)return;
+  editingEventId=id;
+  document.getElementById('ev-overlay-title').textContent='Edit Event';
+  document.getElementById('save-event-btn').textContent='Save Changes';
+  document.getElementById('ev-name').value=v.n||'';
+  document.getElementById('ev-date').value=v.d||'';
+  document.getElementById('ev-type').value=v.tp||'';
+  document.getElementById('ev-notes').value=v.nt||'';
   document.getElementById('ev-overlay').classList.add('show');
 }
 async function saveEvent(){
@@ -978,11 +1009,31 @@ async function saveEvent(){
   if(!n||!d){toast('Name and date required');return;}
   var btn=document.getElementById('save-event-btn');
   btn.disabled=true;btn.textContent='Saving...';
-  var r=await supa.from('events').insert({user_id:currentUser.id,name:n,date:d,occasion_type:document.getElementById('ev-type').value.trim()||'Event',notes:document.getElementById('ev-notes').value.trim()}).select().single();
-  btn.disabled=false;btn.textContent='Create Event';
+  var payload={name:n,date:d,occasion_type:document.getElementById('ev-type').value.trim()||'Event',notes:document.getElementById('ev-notes').value.trim()};
+  var r;
+  if(editingEventId){
+    r=await supa.from('events').update(payload).eq('id',editingEventId).eq('user_id',currentUser.id).select().single();
+    btn.disabled=false;btn.textContent='Save Changes';
+    if(r.error){toast('Error: '+r.error.message);return;}
+    var idx=V.findIndex(function(x){return x.id===editingEventId;});
+    if(idx>-1)V[idx]=dbToEvent(r.data);
+    closeSheet('ev-overlay');toast('Event updated!');rEvents();
+  } else {
+    r=await supa.from('events').insert(Object.assign({user_id:currentUser.id},payload)).select().single();
+    btn.disabled=false;btn.textContent='Create Event';
+    if(r.error){toast('Error: '+r.error.message);return;}
+    V.unshift(dbToEvent(r.data));
+    closeSheet('ev-overlay');toast('Event created!');rEvents();
+  }
+}
+async function deleteEvent(id){
+  if(!confirm('Delete this event? Entries linked to it will not be deleted.'))return;
+  var r=await supa.from('events').delete().eq('id',id).eq('user_id',currentUser.id);
   if(r.error){toast('Error: '+r.error.message);return;}
-  V.unshift(dbToEvent(r.data));
-  closeSheet('ev-overlay');toast('Event created!');rEvents();
+  V=V.filter(function(v){return v.id!==id;});
+  // unlink entries
+  E.forEach(function(e){if(e.ev===id)e.ev=null;});
+  toast('Event deleted');rEvents();
 }
 
 function openAddById(btn){var id=btn.getAttribute('data-id');openAdd(id);}
