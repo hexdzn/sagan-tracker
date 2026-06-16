@@ -377,7 +377,12 @@ textarea.finput{resize:none;min-height:68px}
     <button class="gt-btn" id="gt-both" onclick="setGiftType('both')">&#127873;+&#128181; Both</button>
   </div>
   <label class="flabel" id="fl-person">Received From <span class="req">*</span></label>
-  <input class="finput" id="f-name" type="text" placeholder="e.g. Ramesh Uncle">
+  <div style="display:flex;gap:8px;align-items:stretch">
+    <input class="finput" id="f-name" type="text" placeholder="e.g. Ramesh Uncle" style="flex:1;margin:0">
+    <button id="import-contact-btn" onclick="importContact()" style="display:none;flex-shrink:0;border:1.5px solid #e0e0f0;background:#EEF0FF;color:#6C63FF;border-radius:12px;padding:0 12px;cursor:pointer;font-family:'Inter',sans-serif;align-items:center;gap:5px;font-size:12px;font-weight:600" title="Import from Contacts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+    </button>
+  </div>
   <div id="amount-section">
     <label class="flabel">Amount <span class="req">*</span></label>
     <input class="finput" id="f-amt" type="number" min="1" placeholder="e.g. 5100" inputmode="numeric">
@@ -487,6 +492,12 @@ textarea.finput{resize:none;min-height:68px}
     </button>
     <input type="file" id="fileInput" accept=".json" onchange="onFile(event)">
   </div>
+  <div class="set-section" id="security-section" style="display:none">Security</div>
+  <button class="set-row" id="biometric-row" onclick="toggleBiometric()" style="display:none">
+    <span class="set-icon">&#128274;</span>
+    <div style="flex:1"><div>Face ID / Touch ID Lock</div><div class="set-row-sub" id="biometric-status">Require biometrics to open app</div></div>
+    <span id="biometric-toggle" style="width:44px;height:26px;border-radius:13px;background:#ddd;position:relative;flex-shrink:0;transition:background 0.2s"><span style="position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform 0.2s" id="biometric-knob"></span></span>
+  </button>
   <div class="set-section">Sign Out</div>
   <button class="set-row" onclick="signOut()">
     <span class="set-icon">&#128682;</span>
@@ -579,7 +590,10 @@ async function initAuth(){
     });
   }
 }
-function showApp(){
+async function showApp(){
+  // Biometric gate (native + enabled only)
+  var ok=await biometricGate();
+  if(!ok){toast('Authentication required');return;}
   document.getElementById('auth-screen').style.display='none';
   var a=document.getElementById('app');
   a.style.display='flex';a.style.flexDirection='column';
@@ -922,6 +936,7 @@ function openAdd(id){
     V.forEach(function(v){sel.innerHTML+='<option value="'+v.id+'">'+v.n+'</option>';});
     setType('Received');setGiftType('cash');
   }
+  if(isNative){var icb=document.getElementById('import-contact-btn');if(icb)icb.style.display='flex';}
   document.getElementById('add-overlay').classList.add('show');
 }
 
@@ -1077,7 +1092,59 @@ function openSettings(){
   document.getElementById('user-email').textContent=email;
   document.getElementById('user-avatar').textContent=email?email[0].toUpperCase():'?';
   document.getElementById('user-plan').textContent=isPremium?'Premium ⭐':'Free Plan';
+  // Reveal native-only security options
+  if(isNative){
+    document.getElementById('security-section').style.display='';
+    document.getElementById('biometric-row').style.display='';
+    updateBiometricToggle();
+  }
   document.getElementById('set-overlay').classList.add('show');
+}
+
+// ---- Biometric lock (native iOS only) ----
+function biometricEnabled(){return localStorage.getItem('sg_biometric')==='1';}
+function updateBiometricToggle(){
+  var on=biometricEnabled();
+  document.getElementById('biometric-toggle').style.background=on?'#6C63FF':'#ddd';
+  document.getElementById('biometric-knob').style.transform=on?'translateX(18px)':'translateX(0)';
+}
+async function toggleBiometric(){
+  if(!isNative){toast('Only available in the app');return;}
+  var Bio=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.NativeBiometric;
+  if(!Bio){toast('Biometrics not available');return;}
+  if(biometricEnabled()){
+    localStorage.removeItem('sg_biometric');updateBiometricToggle();toast('Biometric lock off');return;
+  }
+  try{
+    var res=await Bio.isAvailable();
+    if(!res.isAvailable){toast('No Face ID / Touch ID set up on this device');return;}
+    await Bio.verifyIdentity({reason:'Enable biometric lock for Shagun',title:'Shagun'});
+    localStorage.setItem('sg_biometric','1');updateBiometricToggle();toast('Biometric lock on');
+  }catch(e){toast('Could not enable biometrics');}
+}
+// Called on app launch to gate access
+async function biometricGate(){
+  if(!isNative||!biometricEnabled())return true;
+  var Bio=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.NativeBiometric;
+  if(!Bio)return true;
+  try{await Bio.verifyIdentity({reason:'Unlock Shagun',title:'Shagun'});return true;}
+  catch(e){return false;}
+}
+
+// ---- Import from Contacts (native iOS only) ----
+async function importContact(){
+  if(!isNative){toast('Only available in the app');return;}
+  var Contacts=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Contacts;
+  if(!Contacts){toast('Contacts not available');return;}
+  try{
+    var perm=await Contacts.requestPermissions();
+    if(perm.contacts!=='granted'){toast('Contacts permission denied');return;}
+    var picked=await Contacts.pickContact({projection:{name:true}});
+    if(picked&&picked.contact&&picked.contact.name){
+      var n=picked.contact.name.display||((picked.contact.name.given||'')+' '+(picked.contact.name.family||'')).trim();
+      if(n)document.getElementById('f-name').value=n;
+    }
+  }catch(e){toast('Could not import contact');}
 }
 
 // PREMIUM
