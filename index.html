@@ -94,6 +94,12 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 .empty{text-align:center;padding:48px 20px;color:#bbb;background:#fff;border-radius:16px;margin:0 16px;box-shadow:0 1px 4px rgba(108,99,255,0.06)}
 .empty-icon{font-size:44px;margin-bottom:12px;opacity:0.35}
 .empty p{font-size:13px;line-height:1.6}
+.sr-grp-title{font-size:12px;font-weight:700;color:#6C63FF;text-transform:uppercase;letter-spacing:0.5px;padding:16px 16px 8px}
+.sr-row{background:#fff;border-radius:12px;padding:12px 14px;margin:0 16px 8px;box-shadow:0 1px 4px rgba(108,99,255,0.06);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sr-row:active{transform:scale(0.99)}
+.sr-main{font-size:14px;font-weight:600;color:#1a1a2e}
+.sr-sub{font-size:12px;color:#888;margin-top:2px}
+.sr-amt{font-size:13px;font-weight:600;flex-shrink:0}
 
 /* SEARCH */
 .search-box{position:relative;padding:12px 16px 0}
@@ -342,6 +348,11 @@ textarea.finput{resize:none;min-height:68px}
     <button class="chip" onclick="setPS('count',this)">By Times</button>
   </div>
   <div style="margin-top:10px" id="ppl-list"></div>
+</div>
+
+<!-- SEARCH RESULTS -->
+<div class="screen" id="s-search">
+  <div id="search-results"></div>
 </div>
 
 <!-- BOTTOM NAV -->
@@ -834,14 +845,83 @@ function rEvents(){
 // LOG
 function setLF(f,btn){lf=f;document.querySelectorAll('#lfc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rLog();}
 function setLSVal(v){ls=v;rLog();}
-// Universal search from header — filters Log + People; surfaces results in Log
+// Universal search — shows a grouped results view layered over the current page.
+// Does NOT navigate between tabs; clearing the query returns to the prior page.
 var uq='';
+var lastScreen='s-home';
 function universalSearch(q){
-  var active=(document.querySelector('.screen.active')||{}).id;
-  if(active!=='s-log'&&active!=='s-people'){var logNav=document.querySelectorAll('.nb')[2];if(logNav)nav('log',logNav);}
-  uq=(q||'').toLowerCase();
-  var uqi=document.getElementById('universal-q');if(uqi)uqi.value=q;
-  rLog();rPeople();
+  uq=(q||'').toLowerCase().trim();
+  var sr=document.getElementById('s-search');
+  if(uq){
+    var cur=document.querySelector('.screen.active');
+    if(cur&&cur.id!=='s-search')lastScreen=cur.id;
+    document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+    sr.classList.add('active');
+    renderSearch();
+  }else{
+    sr.classList.remove('active');
+    document.getElementById(lastScreen||'s-home').classList.add('active');
+  }
+}
+function matchQ(text){
+  text=(text||'').toLowerCase();
+  if(text.includes(uq))return true;
+  return uq.split(/\s+/).filter(Boolean).some(function(t){return text.includes(t);});
+}
+function goFromSearch(t){
+  var idx={home:0,events:1,log:2,people:3}[t];
+  var btn=document.querySelectorAll('.nb')[idx];
+  if(btn)nav(t,btn); // nav clears the query + hides results
+}
+function renderSearch(){
+  var el=document.getElementById('search-results');
+  if(!uq){el.innerHTML='';return;}
+  var html='';
+  // EVENTS
+  var evM=V.filter(function(v){return matchQ(v.n)||matchQ(v.tp);});
+  if(evM.length){
+    html+='<div class="sr-grp-title">Events</div>';
+    html+=evM.map(function(v){
+      var lk=E.filter(function(e){return e.ev===v.id;}).length;
+      return '<div class="sr-row" onclick="goFromSearch(\'events\')"><div><div class="sr-main">'+v.n+'</div>'
+        +'<div class="sr-sub">'+(v.tp||'Event')+' &middot; '+fd(v.d)+' &middot; '+lk+' entr'+(lk===1?'y':'ies')+'</div></div></div>';
+    }).join('');
+  }
+  // PEOPLE
+  var pmap={};
+  E.forEach(function(e){
+    var k=e.n.toLowerCase().trim();
+    if(!pmap[k])pmap[k]={n:e.n,r:e.r||'',cnt:0,recv:0,give:0};
+    if(e.t==='Received'){if(e.gt!=='gift')pmap[k].recv+=e.a;}
+    else{if(e.gt!=='gift')pmap[k].give+=e.a;}
+    pmap[k].cnt++;
+  });
+  var pplM=Object.values(pmap).filter(function(p){return matchQ(p.n);});
+  if(pplM.length){
+    html+='<div class="sr-grp-title">People</div>';
+    html+=pplM.map(function(p){
+      var net=p.recv-p.give;
+      return '<div class="sr-row" onclick="goFromSearch(\'people\')"><div><div class="sr-main">'+p.n+'</div>'
+        +'<div class="sr-sub">'+(p.r?p.r+' &middot; ':'')+p.cnt+' occasion'+(p.cnt>1?'s':'')+'</div></div>'
+        +'<div class="sr-amt" style="color:'+(net>=0?'#22c55e':'#e53e3e')+'">'+(net>=0?'+':'')+rs(net)+'</div></div>';
+    }).join('');
+  }
+  // ENTRIES (matches occasion / person / linked event / notes)
+  var enM=E.filter(function(e){
+    var evn=(V.find(function(v){return v.id===e.ev;})||{n:''}).n;
+    return matchQ(e.o)||matchQ(e.n)||matchQ(evn)||matchQ(e.gd)||matchQ(e.nt);
+  });
+  if(enM.length){
+    html+='<div class="sr-grp-title">Entries</div>';
+    html+=enM.map(function(e){
+      var ev=V.find(function(v){return v.id===e.ev;});
+      var disp=e.gt==='gift'?'Gift':(e.gt==='both'?rs(e.a)+' + Gift':rs(e.a));
+      return '<div class="sr-row" onclick="goFromSearch(\'log\')"><div><div class="sr-main">'+e.n+'</div>'
+        +'<div class="sr-sub">'+(e.o||'No occasion')+(ev?' &middot; '+ev.n:'')+' &middot; '+fd(e.d)+'</div></div>'
+        +'<div class="sr-amt" style="color:'+(e.t==='Received'?'#6C63FF':'#A855F7')+'">'+disp+'</div></div>';
+    }).join('');
+  }
+  el.innerHTML=html||'<div class="empty"><div class="empty-icon">&#128269;</div><p>No results for &ldquo;'+uq+'&rdquo;</p></div>';
 }
 function rLog(){
   var q=uq;
