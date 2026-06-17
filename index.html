@@ -316,11 +316,7 @@ textarea.finput{resize:none;min-height:68px}
 
 <!-- LOG -->
 <div class="screen" id="s-log">
-  <div class="search-box">
-    <span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-    <input type="text" placeholder="Search name, occasion, event..." oninput="rLog()" id="log-q">
-  </div>
-  <div style="display:flex;align-items:center;gap:0;padding:8px 16px 0">
+  <div style="display:flex;align-items:center;gap:0;padding:12px 16px 0">
     <div class="chips" id="lfc" style="padding:0;flex:1;overflow-x:auto">
       <button class="chip on" onclick="setLF('all',this)">All</button>
       <button class="chip" onclick="setLF('Received',this)">Received</button>
@@ -339,11 +335,7 @@ textarea.finput{resize:none;min-height:68px}
 
 <!-- PEOPLE -->
 <div class="screen" id="s-people">
-  <div class="search-box">
-    <span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" width="16" height="16"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-    <input type="text" placeholder="Search person..." oninput="rPeople()" id="ppl-q">
-  </div>
-  <div class="chips" id="psc">
+  <div class="chips" id="psc" style="padding-top:12px">
     <button class="chip on" onclick="setPS('recv',this)">By Received</button>
     <button class="chip" onclick="setPS('give',this)">By Given</button>
     <button class="chip" onclick="setPS('net',this)">By Net</button>
@@ -676,6 +668,7 @@ function fd(d){if(!d)return'';return new Date(d+'T00:00:00').toLocaleDateString(
 
 // NAV
 function nav(t,btn){
+  uq='';var uqi=document.getElementById('universal-q');if(uqi)uqi.value='';
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
   document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});
   document.getElementById('s-'+t).classList.add('active');
@@ -841,16 +834,17 @@ function rEvents(){
 // LOG
 function setLF(f,btn){lf=f;document.querySelectorAll('#lfc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rLog();}
 function setLSVal(v){ls=v;rLog();}
-// Universal search from header — jumps to Log tab and filters
+// Universal search from header — filters Log + People; surfaces results in Log
+var uq='';
 function universalSearch(q){
-  var logNav=document.querySelectorAll('.nb')[2]; // 3rd nav button = Log
-  if(logNav)nav('log',logNav);
-  var lq=document.getElementById('log-q');
-  if(lq)lq.value=q;
-  rLog();
+  var active=(document.querySelector('.screen.active')||{}).id;
+  if(active!=='s-log'&&active!=='s-people'){var logNav=document.querySelectorAll('.nb')[2];if(logNav)nav('log',logNav);}
+  uq=(q||'').toLowerCase();
+  var uqi=document.getElementById('universal-q');if(uqi)uqi.value=q;
+  rLog();rPeople();
 }
 function rLog(){
-  var q=(document.getElementById('log-q').value||'').toLowerCase();
+  var q=uq;
   var list=[].concat(E);
   if(lf==='Gift')list=list.filter(function(e){return e.gt==='gift'||e.gt==='both';});
   else if(lf!=='all')list=list.filter(function(e){return e.t===lf;});
@@ -866,7 +860,7 @@ function rLog(){
 // PEOPLE
 function setPS(s,btn){ps=s;document.querySelectorAll('#psc .chip').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');rPeople();}
 function rPeople(){
-  var q=(document.getElementById('ppl-q').value||'').toLowerCase();
+  var q=uq;
   var map={};
   E.forEach(function(e){
     var k=e.n.toLowerCase().trim();
