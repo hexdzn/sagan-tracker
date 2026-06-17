@@ -237,6 +237,7 @@ textarea.finput{resize:none;min-height:68px}
 .auth-btn{width:100%;max-width:320px;background:linear-gradient(135deg,#6C63FF,#A855F7);color:#fff;border:none;border-radius:14px;padding:13px;font-size:14px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;margin-top:2px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .auth-btn:disabled{opacity:0.6}
 .auth-err{font-size:12px;color:#e53e3e;text-align:center;margin-top:4px;min-height:18px;max-width:320px}
+.auth-link-btn{background:none;border:none;color:#6C63FF;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;padding:8px;margin-top:6px}
 
 /* TOAST */
 .toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:24px;font-size:13px;font-weight:500;z-index:200;opacity:0;transition:opacity 0.25s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
@@ -252,20 +253,44 @@ textarea.finput{resize:none;min-height:68px}
   <div class="auth-logo">&#128179;</div>
   <div class="auth-title">Shagun</div>
   <div class="auth-sub">Track sagan and gifts received and given at every occasion.</div>
-  <div class="auth-tab-row">
-    <button class="auth-tab active" id="tab-signin">Sign In</button>
-    <button class="auth-tab" id="tab-signup">Sign Up</button>
+  <!-- PHONE (primary) -->
+  <div id="auth-phone-step" style="width:100%;display:flex;flex-direction:column;align-items:center">
+    <input class="auth-input" id="auth-phone" type="tel" inputmode="numeric" placeholder="Mobile number" autocomplete="tel">
+    <div class="auth-err" id="auth-err"></div>
+    <button class="auth-btn" id="otp-send-btn">Send OTP</button>
   </div>
-  <input class="auth-input" id="auth-email" type="email" placeholder="Email address" autocomplete="email">
-  <input class="auth-input" id="auth-pass" type="password" placeholder="Password" autocomplete="current-password">
-  <input class="auth-input" id="auth-pass2" type="password" placeholder="Confirm password" style="display:none" autocomplete="new-password">
-  <div class="auth-err" id="auth-err"></div>
-  <button class="auth-btn" id="auth-btn">Sign In</button>
-  <div class="auth-divider" style="margin-top:20px"><span>or</span></div>
-  <button class="google-btn" id="google-btn">
-    <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-    Continue with Google
-  </button>
+
+  <!-- OTP (after send) -->
+  <div id="auth-otp-step" style="display:none;width:100%;flex-direction:column;align-items:center">
+    <div class="auth-sub" id="otp-sent-to" style="margin-bottom:14px"></div>
+    <input class="auth-input" id="auth-otp" type="text" inputmode="numeric" maxlength="6" placeholder="6-digit code" autocomplete="one-time-code">
+    <div class="auth-err" id="auth-otp-err"></div>
+    <button class="auth-btn" id="otp-verify-btn">Verify &amp; Continue</button>
+    <button class="auth-link-btn" id="otp-back-btn">Change number</button>
+  </div>
+
+  <!-- NAME (first-time phone users) -->
+  <div id="auth-name-step" style="display:none;width:100%;flex-direction:column;align-items:center">
+    <div class="auth-sub" style="margin-bottom:14px">One last thing &mdash; what should we call you?</div>
+    <input class="auth-input" id="auth-name" type="text" placeholder="Your name" autocomplete="name">
+    <div class="auth-err" id="auth-name-err"></div>
+    <button class="auth-btn" id="name-save-btn">Continue</button>
+  </div>
+
+  <button class="auth-link-btn" id="email-toggle-btn" style="margin-top:16px">Use email instead</button>
+
+  <!-- EMAIL (fallback, hidden) -->
+  <div id="auth-email-step" style="display:none;width:100%;flex-direction:column;align-items:center">
+    <div class="auth-tab-row" style="margin-top:8px">
+      <button class="auth-tab active" id="tab-signin">Sign In</button>
+      <button class="auth-tab" id="tab-signup">Sign Up</button>
+    </div>
+    <input class="auth-input" id="auth-email" type="email" placeholder="Email address" autocomplete="email">
+    <input class="auth-input" id="auth-pass" type="password" placeholder="Password" autocomplete="current-password">
+    <input class="auth-input" id="auth-pass2" type="password" placeholder="Confirm password" style="display:none" autocomplete="new-password">
+    <div class="auth-err" id="auth-email-err"></div>
+    <button class="auth-btn" id="auth-btn">Sign In</button>
+  </div>
 </div>
 
 <!-- MAIN APP -->
@@ -597,17 +622,50 @@ async function showApp(){
   // Biometric gate (native + enabled only)
   var ok=await biometricGate();
   if(!ok){toast('Authentication required');return;}
+  var name=await resolveName();
+  if(!name){ showNameStep(); return; }   // first-time phone user, no name yet
+  enterApp(name);
+}
+async function resolveName(){
+  if(!currentUser)return '';
+  var meta=currentUser.user_metadata||{};
+  var n=meta.full_name||meta.name||'';
+  if(!n){
+    var pr=await supa.from('profiles').select('display_name').eq('id',currentUser.id).maybeSingle();
+    if(pr.data&&pr.data.display_name)n=pr.data.display_name;
+  }
+  if(!n&&currentUser.email)n=currentUser.email.split('@')[0];
+  return n;
+}
+function showNameStep(){
+  document.getElementById('auth-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  ['auth-phone-step','auth-otp-step','auth-email-step'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display='none';
+  });
+  var et=document.getElementById('email-toggle-btn');if(et)et.style.display='none';
+  document.getElementById('auth-name-step').style.display='flex';
+  var inp=document.getElementById('auth-name');inp.value='';inp.focus();
+}
+async function saveName(){
+  var errEl=document.getElementById('auth-name-err');errEl.style.color='#e53e3e';errEl.textContent='';
+  var name=document.getElementById('auth-name').value.trim();
+  if(name.length<2){errEl.textContent='Please enter your name.';return;}
+  var btn=document.getElementById('name-save-btn');btn.disabled=true;btn.textContent='Saving...';
+  var r2=await supa.auth.updateUser({data:{name:name}});
+  // profiles write is best-effort (won't block if table/RLS not ready)
+  supa.from('profiles').upsert({id:currentUser.id,display_name:name}).then(function(){},function(){});
+  btn.disabled=false;btn.textContent='Continue';
+  if(r2.error){errEl.textContent=r2.error.message;return;}
+  if(r2.data&&r2.data.user)currentUser=r2.data.user;
+  document.getElementById('auth-name-step').style.display='none';
+  enterApp(name);
+}
+function enterApp(name){
   document.getElementById('auth-screen').style.display='none';
   var a=document.getElementById('app');
   a.style.display='flex';a.style.flexDirection='column';
-  // Greeting: use display name, else email prefix, capitalized
-  var name='';
-  if(currentUser){
-    var meta=currentUser.user_metadata||{};
-    name=meta.full_name||meta.name||'';
-    if(!name&&currentUser.email){name=currentUser.email.split('@')[0];}
-  }
-  if(name){name=name.charAt(0).toUpperCase()+name.slice(1);}
+  if(name)name=name.charAt(0).toUpperCase()+name.slice(1);
   document.getElementById('welcome-title').textContent=name?('Welcome, '+name):'Welcome';
   loadAll();
 }
@@ -617,6 +675,52 @@ function showAuth(){
 }
 // Detect if running inside Capacitor native app
 var isNative=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+function normalizePhone(v){
+  v=(v||'').replace(/[^\d+]/g,'');
+  if(v.charAt(0)==='+')return v;
+  if(v.length===10)return '+91'+v;
+  if(v.length===12&&v.slice(0,2)==='91')return '+'+v;
+  return v?('+'+v):'';
+}
+var otpPhone='';
+async function sendOtp(){
+  var errEl=document.getElementById('auth-err');errEl.style.color='#e53e3e';errEl.textContent='';
+  var phone=normalizePhone(document.getElementById('auth-phone').value);
+  if(!/^\+\d{10,15}$/.test(phone)){errEl.textContent='Enter a valid mobile number.';return;}
+  var btn=document.getElementById('otp-send-btn');btn.disabled=true;btn.textContent='Sending...';
+  var r=await supa.auth.signInWithOtp({phone:phone});
+  btn.disabled=false;btn.textContent='Send OTP';
+  if(r.error){errEl.textContent=r.error.message;return;}
+  otpPhone=phone;
+  document.getElementById('otp-sent-to').textContent='Code sent to '+phone;
+  document.getElementById('auth-phone-step').style.display='none';
+  document.getElementById('email-toggle-btn').style.display='none';
+  document.getElementById('auth-otp-step').style.display='flex';
+  document.getElementById('auth-otp').focus();
+}
+async function verifyOtp(){
+  var errEl=document.getElementById('auth-otp-err');errEl.style.color='#e53e3e';errEl.textContent='';
+  var token=document.getElementById('auth-otp').value.trim();
+  if(!/^\d{4,8}$/.test(token)){errEl.textContent='Enter the code from the SMS.';return;}
+  var btn=document.getElementById('otp-verify-btn');btn.disabled=true;btn.textContent='Verifying...';
+  var r=await supa.auth.verifyOtp({phone:otpPhone,token:token,type:'sms'});
+  btn.disabled=false;btn.textContent='Verify & Continue';
+  if(r.error){errEl.textContent=r.error.message;return;}
+  // onAuthStateChange SIGNED_IN -> showApp() takes over
+}
+function otpBack(){
+  document.getElementById('auth-otp-step').style.display='none';
+  document.getElementById('auth-otp').value='';
+  document.getElementById('auth-otp-err').textContent='';
+  document.getElementById('auth-phone-step').style.display='flex';
+  document.getElementById('email-toggle-btn').style.display='block';
+}
+function toggleEmailLogin(){
+  var em=document.getElementById('auth-email-step');
+  var show=(em.style.display==='none'||!em.style.display);
+  em.style.display=show?'flex':'none';
+  document.getElementById('email-toggle-btn').textContent=show?'Use mobile number instead':'Use email instead';
+}
 async function signInGoogle(){
   var redirect=isNative?'shagun://login-callback':window.location.href;
   var r=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:redirect}});
@@ -626,7 +730,7 @@ async function doAuth(){
   var email=document.getElementById('auth-email').value.trim();
   var pass=document.getElementById('auth-pass').value;
   var pass2=document.getElementById('auth-pass2').value;
-  var errEl=document.getElementById('auth-err');
+  var errEl=document.getElementById('auth-email-err');
   var btn=document.getElementById('auth-btn');
   errEl.textContent='';errEl.style.color='#e53e3e';
   if(!email||!pass){errEl.textContent='Please enter email and password.';return;}
@@ -658,7 +762,8 @@ async function loadAll(){
   document.getElementById('user-avatar').textContent=email?email[0].toUpperCase():'?';
   // Admin accounts get permanent premium
   var ADMINS=['piyushggrover@gmail.com','grover159@gmail.com'];
-  isPremium=ADMINS.indexOf(currentUser.email)!==-1||localStorage.getItem('sg_premium_'+currentUser.id)==='true';
+  var adminPhone=(currentUser.phone||'').replace(/\D/g,'')==='919999240758';
+  isPremium=ADMINS.indexOf(currentUser.email)!==-1||adminPhone||localStorage.getItem('sg_premium_'+currentUser.id)==='true';
   document.getElementById('user-plan').textContent=isPremium?'Premium ⭐':'Free Plan';
   document.getElementById('user-plan').className='user-plan '+(isPremium?'premium':'free');
   var [er,vr]=await Promise.all([
@@ -1331,10 +1436,16 @@ function cancelImport(){imp=null;document.getElementById('set-confirm').style.di
 function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2500);}
 
 // Wire auth buttons via event listeners (most reliable on mobile)
+document.getElementById('otp-send-btn').addEventListener('click',function(){sendOtp();});
+document.getElementById('otp-verify-btn').addEventListener('click',function(){verifyOtp();});
+document.getElementById('otp-back-btn').addEventListener('click',function(){otpBack();});
+document.getElementById('name-save-btn').addEventListener('click',function(){saveName();});
+document.getElementById('email-toggle-btn').addEventListener('click',function(){toggleEmailLogin();});
 document.getElementById('tab-signin').addEventListener('click',function(){switchAuthTab('signin');});
 document.getElementById('tab-signup').addEventListener('click',function(){switchAuthTab('signup');});
 document.getElementById('auth-btn').addEventListener('click',function(){doAuth();});
-document.getElementById('google-btn').addEventListener('click',function(){signInGoogle();});
+// Google parked — re-add the button markup + uncomment to restore:
+// document.getElementById('google-btn').addEventListener('click',function(){signInGoogle();});
 
 initAuth();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
