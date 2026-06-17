@@ -1010,7 +1010,7 @@ function openAdd(id){
     V.forEach(function(v){sel.innerHTML+='<option value="'+v.id+'">'+v.n+'</option>';});
     setType('Received');setGiftType('cash');
   }
-  if(isNative){var icb=document.getElementById('import-contact-btn');if(icb)icb.style.display='flex';}
+  var icb=document.getElementById('import-contact-btn');if(icb)icb.style.display=contactsSupported()?'flex':'none';
   document.getElementById('add-overlay').classList.add('show');
 }
 
@@ -1205,20 +1205,40 @@ async function biometricGate(){
   catch(e){return false;}
 }
 
-// ---- Import from Contacts (native iOS only) ----
+// ---- Import from Contacts (native iOS Capacitor plugin OR web Contact Picker API) ----
+function contactsSupported(){
+  if(isNative&&window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Contacts)return true;
+  if(navigator.contacts&&typeof navigator.contacts.select==='function')return true;
+  return false;
+}
 async function importContact(){
-  if(!isNative){toast('Only available in the app');return;}
-  var Contacts=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Contacts;
-  if(!Contacts){toast('Contacts not available');return;}
   try{
-    var perm=await Contacts.requestPermissions();
-    if(perm.contacts!=='granted'){toast('Contacts permission denied');return;}
-    var picked=await Contacts.pickContact({projection:{name:true}});
-    if(picked&&picked.contact&&picked.contact.name){
-      var n=picked.contact.name.display||((picked.contact.name.given||'')+' '+(picked.contact.name.family||'')).trim();
-      if(n)document.getElementById('f-name').value=n;
+    // Native iOS / Android app via Capacitor community Contacts plugin
+    if(isNative&&window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Contacts){
+      var Contacts=window.Capacitor.Plugins.Contacts;
+      var perm=await Contacts.requestPermissions();
+      if(perm.contacts!=='granted'){toast('Contacts permission denied');return;}
+      var picked=await Contacts.pickContact({projection:{name:true}});
+      if(picked&&picked.contact&&picked.contact.name){
+        var nn=picked.contact.name.display||((picked.contact.name.given||'')+' '+(picked.contact.name.family||'')).trim();
+        if(nn){document.getElementById('f-name').value=nn;toast('Added '+nn);}
+      }
+      return;
     }
-  }catch(e){toast('Could not import contact');}
+    // Web Contact Picker API (Chrome/Edge/Samsung Internet on Android, HTTPS only)
+    if(navigator.contacts&&typeof navigator.contacts.select==='function'){
+      var sel=await navigator.contacts.select(['name'],{multiple:false});
+      if(sel&&sel.length){
+        var n=(sel[0].name&&sel[0].name[0])||'';
+        if(n){document.getElementById('f-name').value=n;toast('Added '+n);}
+      }
+      return;
+    }
+    toast('Contact picker isn\u2019t supported here \u2014 use the app or type the name');
+  }catch(e){
+    if(e&&e.name==='AbortError')return; // user dismissed the picker
+    toast('Could not import contact');
+  }
 }
 
 // PREMIUM
