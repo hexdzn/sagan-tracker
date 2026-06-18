@@ -44,9 +44,6 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 .pb-btn{background:#FFD700;border:none;color:#0F0F1A;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap}
 
 /* AD BANNER */
-.ad-banner{margin:10px 16px 0;background:#fff;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;border:1px solid #efefef}
-.ad-label{font-size:9px;color:#bbb;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0}
-.ad-content{font-size:12px;color:#888;flex:1}
 
 /* PILLS */
 .pills{display:flex;gap:10px;padding:12px 16px 0}
@@ -127,6 +124,9 @@ body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-cont
 .pc-stat .psv{font-size:14px;font-weight:700}
 .pc-stat .psl{font-size:10px;color:#aaa;margin-top:2px}
 .pc-timeline-title{font-size:11px;font-weight:600;color:#aaa;text-transform:uppercase;letter-spacing:0.4px;padding:10px 16px 6px}
+.pc-insight{font-size:12px;color:#666;font-style:italic;padding:8px 16px 0}
+.pc-suggest{font-size:13px;color:#1a1a2e;background:#f5f5fb;border-radius:10px;padding:9px 12px;margin:8px 16px 2px}
+.pc-suggest b{color:#6C63FF}
 .pc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-bottom:1px solid #fafafa;font-size:12px}
 .pc-row:last-child{border:none}
 .pc-row-left{color:#888;flex:1;margin-right:8px}
@@ -780,6 +780,19 @@ function dbToEntry(r){
 }
 function dbToEvent(r){return{id:r.id,n:r.name,d:r.date,tp:r.occasion_type||'Event',nt:r.notes||''};}
 function rs(n){return'\u20B9'+Number(n).toLocaleString('en-IN');}
+function shagunRound(amt){
+  if(!amt||amt<=0)return 1100;
+  var tiers=[101,251,501,1001,1100,2100,5100,11000,21000,51000,101000];
+  for(var i=0;i<tiers.length;i++){if(tiers[i]>=amt)return tiers[i];}
+  return Math.ceil(amt/1000)*1000+1;
+}
+function reciprocityNote(recv,give){
+  if(recv===0&&give===0)return 'No cash recorded yet';
+  var net=recv-give;
+  if(net>0)return 'They\u2019ve given you '+rs(net)+' more than you\u2019ve given back';
+  if(net<0)return 'You\u2019ve given '+rs(-net)+' more than you\u2019ve received';
+  return 'All square \u2014 you\u2019re even';
+}
 function fd(d){if(!d)return'';return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}
 
 // NAV
@@ -822,35 +835,15 @@ function rHome(){
   if(!isPremium&&E.length>=40){
     pbw.innerHTML='<div class="premium-banner" style="margin-top:10px" onclick="openPremium()"><div class="pb-left"><div class="pb-title">&#11088; Almost at your limit!</div><div class="pb-sub">Upgrade for unlimited entries + gift photos</div></div><button class="pb-btn">Upgrade</button></div>';
   } else if(!isPremium){
-    pbw.innerHTML='<div class="premium-banner" style="margin-top:10px" onclick="openPremium()"><div class="pb-left"><div class="pb-title">&#11088; Unlock Premium</div><div class="pb-sub">Gift photos, unlimited entries, no ads</div></div><button class="pb-btn">&#8377;99/mo</button></div>';
+    pbw.innerHTML='<div class="premium-banner" style="margin-top:10px" onclick="openPremium()"><div class="pb-left"><div class="pb-title">&#11088; Unlock Premium</div><div class="pb-sub">Gift photos &amp; unlimited entries</div></div><button class="pb-btn">&#8377;99/mo</button></div>';
   } else {pbw.innerHTML='';}
   // Recent list
   var recent=[].concat(E).sort(function(a,b){return new Date(b.d)-new Date(a.d);}).slice(0,5);
   var el=document.getElementById('h-list');
   el.innerHTML=recent.length?recent.map(function(e){return ecard(e,true);}).join(''):'<div class="empty"><div class="empty-icon">&#128235;</div><p>No entries yet<br>Tap + to add your first shagun</p></div>';
-  // Ad banner (free users) — AdMob native on device, placeholder on web
+  // Ads removed for v1 (no ad SDK = cleaner App Store privacy review)
   var aw=document.getElementById('ad-wrap');
-  if(!isPremium){
-    if(isNative&&window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.AdMob){
-      var AdMob=window.Capacitor.Plugins.AdMob;
-      AdMob.showBanner({
-        adId:'ca-app-pub-8653053673345923/7919258741',
-        adSize:'BANNER',
-        position:'BOTTOM_CENTER',
-        margin:0,
-        isTesting:false
-      }).catch(function(){});
-      aw.innerHTML=''; // AdMob handles its own UI
-    } else {
-      aw.innerHTML='<div class="ad-banner" style="margin-top:4px"><span class="ad-label">Ad</span><span class="ad-content">Manage your finances smarter with Fi Money</span></div>';
-    }
-  } else {
-    aw.innerHTML='';
-    // Hide AdMob banner if premium
-    if(isNative&&window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.AdMob){
-      window.Capacitor.Plugins.AdMob.hideBanner().catch(function(){});
-    }
-  }
+  if(aw)aw.innerHTML='';
 }
 
 function ecard(e,mini){
@@ -1072,7 +1065,10 @@ function rPeople(){
       +'<div class="pc-stat"><div class="psv" style="color:#6C63FF">'+rs(p.recv)+'</div><div class="psl">Received</div></div>'
       +'<div class="pc-stat"><div class="psv" style="color:#A855F7">'+rs(p.give)+'</div><div class="psl">Given</div></div>'
       +'<div class="pc-stat"><div class="psv" style="color:#FF6B6B">'+p.gifts+'</div><div class="psl">Gifts</div></div>'
-      +'</div><div class="pc-timeline-title">Timeline</div>'
+      +'</div>'
+      +'<div class="pc-insight">'+reciprocityNote(p.recv,p.give)+'</div>'
+      +((p.recv>0||p.give>0)?'<div class="pc-suggest">&#128161; Suggested next gift: <b>'+rs(shagunRound(p.recv>p.give?(p.recv-p.give):Math.max(p.recv,p.give)))+'</b></div>':'')
+      +'<div class="pc-timeline-title">Timeline</div>'
       +p.items.sort(function(a,b){return new Date(b.d)-new Date(a.d);}).map(function(e){
         var ev=V.find(function(v){return v.id===e.ev;});
         var display=e.gt==='gift'?'Gift &#127873;':(e.gt==='both'?rs(e.a)+' + Gift':rs(e.a));
