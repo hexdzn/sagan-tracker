@@ -79,6 +79,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:
 .edit-btn{background:#EEF0FF;color:#6C63FF}
 .del-btn{background:#FFF0F0;color:#e53e3e}
 .gift-img{width:100%;border-radius:10px;margin-bottom:8px;max-height:180px;object-fit:cover}
+.card-thumb{width:34px;height:34px;border-radius:8px;object-fit:cover;cursor:pointer;margin-right:6px;border:1px solid #ececf5;flex-shrink:0}
+#imgViewer{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));box-sizing:border-box;animation:ovFade 0.2s ease}
+#imgViewer.show{display:flex}
+#imgViewer img{max-width:100%;max-height:100%;border-radius:12px;object-fit:contain}
 
 /* FREE LIMIT BAR */
 .limit-bar{margin:0 16px 10px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 1px 4px rgba(108,99,255,0.06)}
@@ -172,10 +176,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:
 .sheet-foot .sbtn{margin-top:0}
 
 /* ENTRY TYPE TOGGLE */
-.type-toggle{display:flex;background:#f0f0f8;border-radius:14px;padding:3px;margin-bottom:16px}
+.type-toggle{display:flex;background:rgba(240,240,248,0.55);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:3px;margin-bottom:16px;backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,0.5),0 1px 3px rgba(108,99,255,0.06)}
 .tt-btn{flex:1;border:none;background:transparent;border-radius:12px;padding:10px 6px;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;color:#aaa;transition:all 0.2s}
-.tt-btn.recv{background:#6C63FF;color:#fff;box-shadow:0 2px 8px rgba(108,99,255,0.3)}
-.tt-btn.give{background:#A855F7;color:#fff;box-shadow:0 2px 8px rgba(168,85,247,0.3)}
+.tt-btn.recv{background:linear-gradient(135deg,rgba(108,99,255,0.92),rgba(108,99,255,0.78));color:#fff;box-shadow:0 2px 10px rgba(108,99,255,0.32),inset 0 1px 0 rgba(255,255,255,0.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.tt-btn.give{background:linear-gradient(135deg,rgba(168,85,247,0.92),rgba(168,85,247,0.78));color:#fff;box-shadow:0 2px 10px rgba(168,85,247,0.32),inset 0 1px 0 rgba(255,255,255,0.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 
 /* GIFT TYPE TOGGLE */
 .gift-toggle{display:flex;background:#f0f0f8;border-radius:14px;padding:3px;margin-bottom:16px}
@@ -474,6 +478,7 @@ textarea.finput{resize:none;min-height:68px}
   <label class="flabel">Notes</label>
   <textarea class="finput" id="f-notes" placeholder="Any notes" rows="2"></textarea>
   <input type="file" id="photoInput" accept="image/*" capture="environment" onchange="onPhotoSelect(event)">
+<div id="imgViewer" onclick="closeImg()"><img id="imgViewerImg" src="" alt="gift photo"></div>
   </div>
   <div class="sheet-foot">
   <button class="sbtn" id="save-entry-btn" onclick="saveEntry()">Save Entry</button>
@@ -924,7 +929,7 @@ function ecard(e,mini){
           '<span class="card-name">'+e.n+'</span>',
           (e.r&&!mini?'<span style="font-size:11px;color:#bbb;margin-top:1px">'+e.r+'</span>':''),
         '</span>',
-        (mini?'':'<span style="display:flex;align-items:center">'+btnsSvg+'</span>'),
+        (mini?'':'<span style="display:flex;align-items:center">'+(e.gi?'<img class="card-thumb" data-action="img" data-id="'+e.id+'" src="'+e.gi+'" alt="gift photo">':'')+btnsSvg+'</span>'),
         '<span class="card-amount '+amtColor+'" style="margin-left:8px">'+displayAmt+'</span>',
       '</div>',
       '<div class="card-row2">',
@@ -948,6 +953,7 @@ document.addEventListener('click',function(evt){
     var action=btn.getAttribute('data-action');
     if(action==='edit')openAdd(id);
     if(action==='del')del(id);
+    if(action==='img')openImg(id);
     return;
   }
   var evBtn=evt.target.closest('[data-ev-action]');
@@ -962,6 +968,9 @@ document.addEventListener('click',function(evt){
   var card=evt.target.closest('[data-toggle]');
   if(card)tog(card.getAttribute('data-toggle'));
 });
+
+function openImg(id){var e=E.find(function(x){return x.id===id;});if(!e||!e.gi)return;document.getElementById('imgViewerImg').src=e.gi;document.getElementById('imgViewer').classList.add('show');hap('LIGHT');}
+function closeImg(){document.getElementById('imgViewer').classList.remove('show');document.getElementById('imgViewerImg').src='';}
 
 // EVENTS
 function rEvents(){
