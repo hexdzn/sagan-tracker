@@ -11,7 +11,6 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Inter',sans-serif;background:#f0f0f8;display:flex;justify-content:center;min-height:100vh}
@@ -504,11 +503,6 @@ textarea.finput{resize:none;min-height:68px}
       <div class="user-plan free" id="user-plan">Free Plan</div>
     </div>
   </div>
-  <div class="set-section">Account</div>
-  <button class="set-row" onclick="openPremium()">
-    <span class="set-icon">&#11088;</span>
-    <div><div>Upgrade to Premium</div><div class="set-row-sub">₹99/month · Unlimited entries + photos</div></div>
-  </button>
   <div class="set-section">Backup</div>
   <button class="set-row" onclick="shareBackup()">
     <span class="set-icon">&#128279;</span>
@@ -782,12 +776,10 @@ async function loadAll(){
   var email=currentUser.email||'';
   document.getElementById('user-email').textContent=email;
   document.getElementById('user-avatar').textContent=email?email[0].toUpperCase():'?';
-  // Admin accounts get permanent premium
-  var ADMINS=['piyushggrover@gmail.com','grover159@gmail.com'];
-  var adminPhone=(currentUser.phone||'').replace(/\D/g,'')==='919999240758';
-  isPremium=ADMINS.indexOf(currentUser.email)!==-1||adminPhone||localStorage.getItem('sg_premium_'+currentUser.id)==='true';
-  document.getElementById('user-plan').textContent=isPremium?'Premium ⭐':'Free Plan';
-  document.getElementById('user-plan').className='user-plan '+(isPremium?'premium':'free');
+  // App is fully free — every feature unlocked for everyone
+  isPremium=true;
+  var planEl=document.getElementById('user-plan');
+  if(planEl){planEl.textContent='';planEl.style.display='none';}
   var [er,vr]=await Promise.all([
     supa.from('entries').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false}),
     supa.from('events').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false})
@@ -1167,13 +1159,13 @@ function onPhotoSelect(e){
     var img=new Image();
     img.onload=function(){
       var canvas=document.createElement('canvas');
-      var MAX=600;
+      var MAX=480;
       var w=img.width,h=img.height;
       if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
       if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
       canvas.width=w;canvas.height=h;
       canvas.getContext('2d').drawImage(img,0,0,w,h);
-      photoBase64=canvas.toDataURL('image/jpeg',0.7);
+      photoBase64=canvas.toDataURL('image/jpeg',0.5);
       var prev=document.getElementById('photo-preview');
       prev.src=photoBase64;prev.style.display='block';
     };
