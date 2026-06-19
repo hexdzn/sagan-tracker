@@ -852,6 +852,7 @@ function nav(t,btn){
   document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});
   document.getElementById('s-'+t).classList.add('active');
   btn.classList.add('on');
+  hap('LIGHT');
   if(t==='home')rHome();
   if(t==='events')rEvents();
   if(t==='log')rLog();
@@ -1238,6 +1239,7 @@ async function saveEntry(){
   }
   btn.disabled=false;btn.textContent=editingId?'Update Entry':'Save Entry';
   if(r.error){toast('Error: '+r.error.message);return;}
+  try{if(isNative&&window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Haptics)window.Capacitor.Plugins.Haptics.notification({type:'SUCCESS'});}catch(e){}
   if(editingId){E=E.map(function(e){return e.id===editingId?dbToEntry(r.data):e;});}
   else{E.unshift(dbToEntry(r.data));}
   closeSheet('add-overlay');
@@ -1494,6 +1496,13 @@ document.getElementById('auth-btn').addEventListener('click',function(){doAuth()
 var gbtn=document.getElementById('google-btn'); if(gbtn)gbtn.addEventListener('click',function(){signInGoogle();});
 var abtn=document.getElementById('apple-btn'); if(abtn)abtn.addEventListener('click',function(){signInApple();});
 registerDeepLinkHandler();
+function hap(style){try{if(isNative&&window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.Haptics)window.Capacitor.Plugins.Haptics.impact({style:style||'LIGHT'});}catch(e){}}
+function initNative(){
+  if(!isNative||!window.Capacitor||!window.Capacitor.Plugins)return;
+  try{if(window.Capacitor.Plugins.StatusBar)window.Capacitor.Plugins.StatusBar.setStyle({style:'DARK'});}catch(e){}
+  try{if(window.Capacitor.Plugins.SplashScreen)window.Capacitor.Plugins.SplashScreen.hide();}catch(e){}
+}
+initNative();
 // Swipe-down-to-dismiss for bottom sheets (iOS-style)
 (function(){
   function bindSheet(sheet){
